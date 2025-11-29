@@ -335,3 +335,294 @@
 #menu-toggle:checked~.dropdown-menu {
     display: block;
 }
+
+/* About Page - Bartolome Ibarreta */
+
+* {
+    font-family: Poppins, San serif;
+    background-color: transparent;
+}
+
+h1,
+h2,
+h3,
+p {
+    margin: 0px;
+    padding: 0px;
+}
+
+body {
+    margin: 0;
+    background-color: #ffffff;
+}
+
+/* ===== ABOUT PAGE STYLES ===== */
+.about header {
+    display: flex;
+    justify-content: space-between;
+    height: 100px;
+    background-color: #1C5186;
+    color: #FFFFFF;
+    padding: 20px 60px 20px 30px;
+}
+
+.about .header-image {
+    display: flex;
+    align-self: center;
+}
+
+.about .header-image img {
+    height: 100px;
+    width: 205px;
+}
+
+.about .header-info {
+    display: flex;
+    align-items: center;
+    gap: 50px;
+}
+
+.about .header-h1 {
+    display: flex;
+    align-self: center;
+}
+
+.about .header-h1 h1 {
+    font-family: Poppins;
+    font-weight: 500;
+    font-size: 47px;
+}
+
+.about .header-menu {
+    align-self: center;
+    font-size: 70px;
+}
+
+/* About Main Styles */
+.about .main-container {
+    font-family: 'Poppins', sans-serif;
+    padding: 130px 20px 20px 20px;
+    margin: 0px 0px 300px 0px;
+}
+
+.about .main-container h2 {
+    font-weight: bolder;
+    font-size: 80px;
+    margin-bottom: 20px;
+}
+
+.about .main-container p {
+    font-weight: normal;
+    font-size: 33px;
+}
+
+/* About Section 1 */
+.about .main-section1 {
+    display: flex;
+    justify-content: space-between;
+    gap: 50px;
+    height: 520px;
+    margin: 20px;
+    padding: 40px;
+    color: #000000;
+    background-color: #F0F2F3;
+    border: solid 0px transparent;
+    border-radius: 20px;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08), 0 4px 8px rgba(0, 0, 0, 0.12);
+}
+
+.about .main-section1 iframe {
+    border: solid transparent;
+    border-radius: 8px;
+    box-shadow: 0 3px 6px rgba(0, 0, 0, 0.12), 0 6px 12px rgba(0, 0, 0, 0.18);
+}
+
+/* About Section 2 */
+.about .main-section2 {
+    display: flex;
+    justify-content: space-between;
+    gap: 50px;
+    height: 530px;
+    margin: 20px;
+    padding: 150px 40px 40px 40px;
+    border: solid 0px transparent;
+    border-radius: 20px;
+    color: #000000;
+    background-color: none;
+}
+
+.about .image-container2 {
+    height: 460px;
+    width: 730px;
+    padding: 40px 30px;
+    background-color: #F0F2F3;
+    border: 0;
+    border-radius: 20px;
+    box-shadow: 0 2px 4px rgba(5, 0, 0, 0.08), 0 4px 8px rgba(5, 0, 0, 0.12);
+}
+
+.about .main-section2 img {
+    height: 460px;
+    width: auto;
+    border: 0;
+    border-radius: 8px;
+    background-color: gray;
+}
+
+.about .main-section2 h2 {
+    text-align: right;
+}
+
+.about .main-section2 p {
+    text-align: right;
+}
+
+/* About Section 3 */
+.about .main-section3 {
+    display: flex;
+    justify-content: space-between;
+    gap: 50px;
+    height: 650px;
+    margin: 20px;
+    padding: 150px 40px 40px 40px;
+    border: solid 0px transparent;
+    border-radius: 20px;
+    color: #000000;
+    background-color: none;
+}
+
+.about .image-container3 {
+    height: 460px;
+    width: 730px;
+    padding: 40px 30px;
+    background-color: #F0F2F3;
+    border: 0;
+    border-radius: 20px;
+    box-shadow: 0 2px 4px rgba(5, 0, 0, 0.08), 0 4px 8px rgba(5, 0, 0, 0.12);
+}
+
+.about .main-section3 img {
+    height: 460px;
+    width: auto;
+    border: 0;
+    border-radius: 8px;
+    background-color: gray;
+}
+
+.about .main-section3 h2 {
+    text-align: left;
+}
+
+.about .main-section3 p {
+    text-align: left;
+}
+
+/* About Footer Styles */
+.about .footer-container {
+    height: 447px;
+    background-color: #1C5186;
+    padding: 13px 21px 13px 21px;
+}
+
+.about .footer-section1 {
+    padding: 8px 0px 0px 20px;
+}
+
+.about .footer-section1 h2 {
+    font: Poppins;
+    color: #FFFFFF;
+    font-size: 57px;
+    font-weight: bold;
+}
+
+.about .footer-section2 {
+    display: flex;
+    flex-direction: row;
+    gap: 180px;
+    justify-content: space-between;
+    padding: 20px 20px 0px 50px;
+}
+
+.about .social-accounts,
+.about .contact-information {
+    display: flex;
+    flex-direction: column;
+    gap: 13px;
+    flex: 1;
+    min-width: 300px;
+}
+
+.about .soc-items,
+.about .con-items {
+    display: flex;
+    align-items: center;
+}
+
+.about .footer-section2 a {
+    text-decoration: none;
+}
+
+.about .footer-section2 p {
+    font-family: 'Kantumruy Pro', sans-serif;
+    font-weight: 500;
+    font-size: 30px;
+    color: #FFFFFF;
+    margin: 0;
+}
+
+/* About Social Media Style */
+.about .soc-items {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.about .footer-icon .bi-facebook {
+    color: #FFFFFF;
+    font-size: 35px;
+}
+
+.about .footer-icon .bi-tiktok {
+    color: #FFFFFF;
+    font-size: 35px;
+}
+
+.about .footer-icon .bi-youtube {
+    color: #FFFFFF;
+    font-size: 35px;
+}
+
+/* About Contact Information Styles */
+.about .con-items {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.about .footer-icon .bi-envelope {
+    color: #FFFFFF;
+    font-size: 35px;
+}
+
+.about .footer-icon .bi-telephone {
+    color: #FFFFFF;
+    font-size: 35px;
+}
+
+.about .footer-icon .bi-geo-alt-fill {
+    color: #FFFFFF;
+    font-size: 35px;
+}
+
+.about .footer-section3 {
+    font-family: 'Kantumruy Pro', sans-serif;
+    padding: 30px 20px 0px 20px;
+}
+
+.about .footer-section3 p {
+    font-weight: normal;
+    font-size: 24px;
+    color: #FFFFFF;
+}
+
+/* ABOUT STYLE END */
