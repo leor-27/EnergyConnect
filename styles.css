@@ -705,7 +705,7 @@
 
     /* Social Media and Contact Information Icon Styles */
     .about .footer-icon .bi-facebook { color: #FFFFFF;font-size: 35px; }   /* Facebook */
-    .about .footer-icon .tiktok-icon {
+    .about .footer-icon .tiktok-icon { 
         display: flex;
         align-items: center;
         justify-content: center;
