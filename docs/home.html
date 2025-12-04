@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Home</title>
+    <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+    <div class="header-home">
+        <a href = "home.html">
+            <img src="images/logo.png" alt="Energy FM 106.3 Naga Logo" class="logo">
+        </a>
+
+        <input type="checkbox" id="menu-toggle">
+        <label for="menu-toggle" class="menu-icon">&#9776;</label>
+
+        <div class="dropdown-menu">
+            <a href="about.html">About</a>
+            <a href="profiles.html">Profiles</a>
+            <a href="programs.html">Programs</a>
+            <a href="stream.html">Stream</a>
+            <a href="news.html">News</a>
+        </div>
+    </div>
+
+    <div class="banner">
+        <h2>BASTA ENERGY, NUMBER 1 PIRMI!</h2>
+
+        <div class="hosts-home">
+            <img style="width: 850px; height: auto;" src="images/EFDJS.png">
+        </div>
+
+        <div class="listen">
+            <button id="liveBtn" class="listen-button">
+                <div class="listen-title">LISTEN LIVE HERE   <img src = "images/listen_live.png"></div>
+                <div class="listen-subtitle">On Air: Troye Sivan – Youth</div>
+            </button>
+
+            <!-- Hidden audio tag -->
+            <audio id="liveAudio">
+                <source src="https://stream.zeno.fm/klewk28qlqquv.m3u" type="audio/mpeg">
+            </audio>
+        </div>
+    </div>
+
+    <div class = "break-box"></div>
+    <div class="section-title">FEATURED PROGRAMS</div>
+    <div class="programs">
+
+        <div class="program-card-home">
+            <div class="program-header">GOOD MORNING ENERGY | WEEKDAYS, SAT</div>
+            <div>Time: 12:00 AM – 5:00 AM</div>
+            <div>Music Only 🎧</div>
+        </div>
+
+        <div class="program-card-home">
+            <div class="program-header">GOOD MORNING ENERGY | WEEKDAYS, SAT</div>
+            <div>Time: 12:00 AM – 5:00 AM</div>
+            <div>Music Only 🎧</div>
+        </div>
+
+        <div class="program-card-home">
+            <div class="program-header">GOOD MORNING ENERGY | WEEKDAYS, SAT</div>
+            <div>Time: 12:00 AM – 5:00 AM</div>
+            <div>Music Only 🎧</div>
+        </div>
+    </div>
+
+    <div class="section-title-news">LATEST NEWS UPDATES</div>
+    <div class="news">
+        <div class="news-card-home">
+            <img src = "images/typhoon_photo.png" width = "325" height = "300">
+            <div class="news-header">BAGYONG UWAN 2025</div>
+            <div>Inquirer News | November 8, 2025</div>
+            <div>By: Keith Clores</div>
+        </div>
+    </div>
+    <script>
+        const audio = document.getElementById("liveAudio");
+        const btn = document.getElementById("liveBtn");
+        const title = btn.querySelector(".listen-title");
+        let isPlaying = false;
+
+        function setPlayState() {
+            title.innerHTML = `▶   LISTEN LIVE HERE   <img src="images/listen_live.png">`;
+        }
+        function setPauseState() {
+            title.innerHTML = `⏸   PAUSE LIVE STREAM <img src="images/listen_live.png">`;
+        }
+
+        btn.addEventListener("click", () => {
+            if (!isPlaying) {
+                audio.play();
+                isPlaying = true;
+                setPauseState();
+            } else {
+                audio.pause();
+                isPlaying = false;
+                setPlayState();
+            }
+        });
+        setPlayState(); // default on load
+    </script>
+</body>
+
+    <div class = "footer">
+        <footer>Privacy Policy | Energy FM © 2010</footer>
+    </div>
+</html>

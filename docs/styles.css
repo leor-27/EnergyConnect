@@ -1,3 +1,76 @@
+/* =>> LOCAL FONTS */
+    /* Poppins */
+@font-face {
+    font-family: 'Poppins';
+    src: url('fonts/poppins/Poppins-Light.woff2') format('woff2');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap; }
+
+@font-face {
+    font-family: 'Poppins';
+    src: url('fonts/poppins/Poppins-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap; }
+
+@font-face {
+    font-family: 'Poppins';
+    src: url('fonts/poppins/Poppins-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap; }
+
+@font-face {
+    font-family: 'Poppins';
+    src: url('fonts/poppins/Poppins-SemiBold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap; }
+
+@font-face {
+    font-family: 'Poppins';
+    src: url('fonts/poppins/Poppins-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap; }
+    
+    /* Kantumruy Pro */
+@font-face {
+    font-family: 'Kantumruy Pro';
+    src: url('fonts/kantumruy-pro/KantumruyPro-Light.woff2') format('woff2');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap; }
+
+@font-face {
+    font-family: 'Kantumruy Pro';
+    src: url('fonts/kantumruy-pro/KantumruyPro-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap; }
+
+@font-face {
+    font-family: 'Kantumruy Pro';
+    src: url('fonts/kantumruy-pro/KantumruyPro-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap; }
+
+@font-face {
+    font-family: 'Kantumruy Pro';
+    src: url('fonts/kantumruy-pro/KantumruyPro-SemiBold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap; }
+
+@font-face {
+    font-family: 'Kantumruy Pro';
+    src: url('fonts/kantumruy-pro/KantumruyPro-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap; }
+
 html, body {
     overflow-x: hidden;
     width: 100%;
@@ -796,3 +869,56 @@ html, body {
     }
 
 /* END BLOCK: ABOUT PAGE STYLES*/
+
+/* LANDING PAGE */
+
+.landing-page {
+    background-image: url(images/landing_page.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+}
+
+.landing-page h1 {
+    color: white;
+}
+
+.continue {
+    text-align: center;
+    background-image: url(images/continue.png);
+    background-repeat: no-repeat;
+    background-position: center;
+    background-size: cover;
+    background-attachment: fixed;
+    border: 12px;
+    width: 550px;
+    height: 300px;
+    border-radius: 15px;
+}
+
+.continue h1 {
+    font-weight: 500;
+    color: black;
+    padding-top: 25px;
+}
+
+/* .continue {
+    display: flex;
+    justify-content: center;
+}
+
+.continue-button {
+    width: 90%;
+    max-width: 500px;
+    padding: 25px 20px;
+    background: #D9D9D9;
+    border: none;
+    border-radius: 30px;
+    box-shadow: 0px 4px 15px rgba(0,0,0,0.1);
+    cursor: pointer;
+    transition: 0.3s;
+    text-align: center;
+}
+
+
