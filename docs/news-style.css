@@ -194,12 +194,18 @@ h4 {
     display: flex;
     justify-content: flex-start;
     align-items: center;
-    gap: 25px;
+    gap: 40px;
     margin: 20px;
     padding: 10px;
     padding-top: 20px;
     padding-bottom: 75px;
     padding-left: 30px;
+        overflow-x: auto;       /* enables horizontal scrolling */
+    overflow-y: hidden;
+    scroll-behavior: smooth;
+
+        flex-wrap: nowrap;    /* 🚫 do not wrap to next row */
+    white-space: nowrap; 
 }
 
 .news-card {
@@ -211,6 +217,8 @@ h4 {
     border-radius: 10px;
     background-color: rgba(238, 238, 238, 1);
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
+       flex: 0 0 350px;     /* 🟢 fixed width + no shrinking */
+    white-space: normal;
 }
 
 .news-card img {
