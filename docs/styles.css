@@ -105,11 +105,55 @@ html, body {
     color: yellow;
     font-size: 30px;
     padding-bottom: 15px;
+    margin-bottom: 15px;
 }
 
 .hosts-home img {
     height: 270px;
     margin-bottom: -10px;
+}
+
+@media (max-width: 1024px) {
+    .banner {
+        padding-top: 100px; /* pushes text down away from logo */
+    }
+    .banner h2 {
+        font-size: 26px;
+    }
+    .hosts-home img {
+        width: 70% !important;
+    }
+}
+
+/* Mobile */
+@media (max-width: 768px) {
+    .banner {
+        padding-top: 120px; /* more space so title clears logo */
+        min-height: 230px;
+    }
+    .banner h2 {
+        font-size: 22px;
+        padding: 0 15px;
+    }
+    .hosts-home img {
+        width: 65% !important;
+    }
+}
+
+/* Small phones */
+@media (max-width: 480px) {
+    .banner {
+        padding-top: 140px; /* ensures absolute clearance */
+        min-height: 220px;
+    }
+    .banner h2 {
+        font-size: 18px;
+        line-height: 1.3;
+        padding: 0 10px;
+    }
+    .hosts-home img {
+        width: 55% !important;
+    }
 }
 
 .section-title, .section-title-news {
