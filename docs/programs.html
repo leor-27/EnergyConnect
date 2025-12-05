@@ -27,7 +27,8 @@
         <div class="header-overlay">
             <h1>ENERGY PROGRAMS</h1>
             <p class = "intro-programs">Pangga, may ENERGY ka pa ba? Tara na! Dive into the world of ENERGY FM where all your favorite programs are in ONE place!<br>
-            From music that keeps you vibing to live broadcasts and talk shows that keep you company, everything is here. Check out each program's schedule and anchors so you'll always know what's airing next!</p>
+            From music that keeps you vibing to live broadcasts and talk shows that keep you company, everything is here. Check out each program's schedule and 
+            anchors so you'll always know what's airing next!</p>
         </div>
     </header>
 
@@ -38,9 +39,13 @@
         <div class="top-bar">
             <h2>ALL PROGRAMS</h2>
 
-            <button class="filter-btn">
-                TITLE ▼
-            </button>
+            <select id="filter-select" class="filter-btn">
+              <option value="title">TITLE (A–Z)</option>
+              <option value="time">TIME (Earliest to Latest)</option>
+              <option value="weekdays">WEEKDAYS</option>
+              <option value="sat">SATURDAY</option>
+              <option value="sun">SUNDAY</option>
+          </select>
         </div>
 
         <div class="program-list">
@@ -56,7 +61,8 @@
                 </div>
 
                 <div class="card-right">
-                    <p>An all-night musical journey for the late hours. This program provides a continuous stream of hits, creating a serene and dreamlike atmosphere as the city rests.</p>
+                    <p>An all-night musical journey for the late hours. This program provides a continuous stream of hits, 
+                      creating a serene and dreamlike atmosphere as the city rests.</p>
                 </div>
             </div>
 
@@ -67,100 +73,96 @@
         <footer>Privacy Policy | Energy FM © 2010</footer>
     </div>
 
-<script>
-        function formatToAMPM(time24) {
-    // time24 is like "14:30:45" or "08:05:00"
-    const [hour, minute] = time24.split(':'); // ignore seconds
-    const h = parseInt(hour) % 12 || 12; // 0 → 12
-    const ampm = parseInt(hour) >= 12 ? 'PM' : 'AM';
-    return `${h}:${minute} ${ampm}`;
-    }
-  function isProgramOnline(programDayTypes, startTime, endTime) {
-    const now = new Date();
+    <script>
+      function formatToAMPM(time24) {
+        const [hour, minute] = time24.split(':');
+        const h = (hour % 12) || 12;
+        return `${h}:${minute} ${hour >= 12 ? 'PM' : 'AM'}`;
+      }
 
-    const [startHour, startMinute] = startTime.split(':').map(Number);
-    const [endHour, endMinute] = endTime.split(':').map(Number);
+      function isProgramOnline(days, startT, endT) {
+        const now = new Date();
+        const [startHour, startMinute] = startT.split(':').map(Number);
+        const [endHour, endMinute] = endT.split(':').map(Number);
 
-    const start = new Date(now);
-    start.setHours(startHour, startMinute, 0, 0);
+        const start = new Date(now); start.setHours(startHour, startMinute, 0);
+        const end = new Date(now);   end.setHours(endHour, endMinute, 0);
+        if (end < start) end.setDate(end.getDate() + 1); // spans midnight
 
-    const end = new Date(now);
-    end.setHours(endHour, endMinute, 0, 0);
+        const map = { WEEKDAYS:[1,2,3,4,5], SAT:[6], SUN:[0] };
+        const correctDay = days.some(d => map[d]?.includes(now.getDay()));
 
-    // Handle midnight wrap
-    if (end < start) end.setDate(end.getDate() + 1);
+        return now >= start && now <= end && correctDay;
+      }
 
-    const isWithinTime = now >= start && now <= end;
+      Promise.all([
+        fetch('http://localhost:5500/programs').then(r=>r.json()),
+        fetch('http://localhost:5500/program_day_type').then(r=>r.json()),
+        fetch('http://localhost:5500/daytype').then(r=>r.json()),
+        fetch('http://localhost:5500/program_anchor_assignment').then(r=>r.json()),
+        fetch('http://localhost:5500/djs').then(r=>r.json())
+      ]).then(([programs, programDayTypes, dayTypes, assignments, djs]) => {
 
-    // Map day type names to weekdays (0 = Sunday, 6 = Saturday)
-    const daysMap = {
-      "WEEKDAYS": [1, 2, 3, 4, 5],
-      "SAT": [6],
-      "SUN": [0],
-    };
+        const list = document.querySelector('.program-list');
 
-    // Check if any day type matches today
-    const isCorrectDay = programDayTypes.some(dt => daysMap[dt]?.includes(now.getDay()));
+        const timeToSec = t => {
+          const [h,m,s] = t.split(':').map(Number);
+          return (h||0)*3600 + (m||0)*60 + (s||0);
+        };
 
-    return isWithinTime && isCorrectDay;
-  }
+        const getDays = id =>
+          programDayTypes
+            .filter(p=>p.PROGRAM_ID===id)
+            .map(p=>dayTypes.find(d=>d.ID===p.DAY_TYPE_ID)?.DAY_TYPE);
 
-  Promise.all([
-    fetch('http://localhost:5500/programs').then(res => res.json()),
-    fetch('http://localhost:5500/program_day_type').then(res => res.json()), // fetch Program_Day_Type
-    fetch('http://localhost:5500/daytype').then(res => res.json()),
-    fetch('http://localhost:5500/program_anchor_assignment').then(res => res.json()),
-    fetch('http://localhost:5500/djs').then(res => res.json())
-  ])
-  .then(([programs, programDayTypes, dayTypes, assignments, djs]) => {
-    const programList = document.querySelector('.program-list');
-    programList.innerHTML = '';
+        const getDJs = id =>
+          assignments.filter(a=>a.PROGRAM_ID===id)
+                    .map(a=>{
+                      const dj=djs.find(d=>d.ID===a.DJ_ID);
+                      return dj?.STAGE_NAME || dj?.REAL_NAME?.toUpperCase();
+                    }).join(', ');
 
-    programs.forEach(program => {
-      // Get all day type IDs for this program
-      const programDayTypeIDs = programDayTypes
-        .filter(pdt => pdt.PROGRAM_ID === program.ID)
-        .map(pdt => pdt.DAY_TYPE_ID);
+        function render(filter='title'){
+          list.innerHTML = '';
+          let data = [...programs];
 
-      // Get corresponding day type names
-      const programDayTypeNames = programDayTypeIDs.map(id => {
-        const dt = dayTypes.find(d => d.ID === id);
-        return dt ? dt.DAY_TYPE : '';
-      });
+          //  Filtering (no more show all — default is A-Z)
+          if(['weekdays','sat','sun'].includes(filter)){
+            const map={weekdays:'WEEKDAYS',sat:'SAT',sun:'SUN'};
+            data = data.filter(p => getDays(p.ID).includes(map[filter]));
+          }
 
-      // Get all DJs assigned to this program
-      const assignedDJs = assignments
-        .filter(a => a.PROGRAM_ID === program.ID)
-        .map(a => {
-          const dj = djs.find(d => d.ID === a.DJ_ID);
-          if (!dj) return "";
-          return dj.STAGE_NAME || dj.REAL_NAME.toUpperCase();
-        })
-        .join(', ');
+          // Sorting
+          if(filter==='time') data.sort((a,b)=> timeToSec(a.START_TIME) - timeToSec(b.START_TIME));
+          else data.sort((a,b)=> (a.TITLE||'').localeCompare(b.TITLE||''));
 
-      const isOnline = isProgramOnline(programDayTypeNames, program.START_TIME, program.END_TIME);
-      const statusClass = isOnline ? "online" : "offline";
-      const statusText = isOnline ? "ON AIR" : "OFFLINE";
+          data.forEach(p=>{
+            const days = getDays(p.ID);
+            const djsList = getDJs(p.ID);
+            const online = isProgramOnline(days,p.START_TIME,p.END_TIME);
 
-      const card = document.createElement('div');
-      card.classList.add('program-card');
-      card.innerHTML = `
-        <div class="card-left">
-          <div class="title-status">
-            <h3>${program.TITLE}</h3>
-            <span class="status ${statusClass}">${statusText}</span>
-          </div>
-          <p class="schedule">${formatToAMPM(program.START_TIME)} – ${formatToAMPM(program.END_TIME)} | ${programDayTypeNames.join(', ')}</p>
-          <p class="hosts">${assignedDJs || program.TYPE}</p>
-        </div>
-        <div class="card-right">
-          <p>${program.DESCRIPTION || 'Program description here'}</p>
-        </div>
-      `;
-      programList.appendChild(card);
-    });
-  })
-  .catch(err => console.error(err));
-</script>
+            list.innerHTML += `
+            <div class="program-card">
+              <div class="card-left">
+                <div class="title-status">
+                  <h3>${p.TITLE}</h3>
+                  <span class="status ${online?'online':'offline'}">${online?'ON AIR':'OFFLINE'}</span>
+                </div>
+                <p class="schedule">${formatToAMPM(p.START_TIME)}–${formatToAMPM(p.END_TIME)} | ${days.join(', ')}</p>
+                <p class="hosts">${djsList || p.TYPE}</p>
+              </div>
+              <div class="card-right">
+                <p>${p.DESCRIPTION || 'Program description here'}</p>
+              </div>
+            </div>`;
+          });
+        }
+
+        render('title');
+
+        document.getElementById('filter-select').addEventListener('change', e => render(e.target.value));
+    })
+        .catch(err => console.error(err));
+    </script>
 </body>
 </html>

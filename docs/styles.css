@@ -298,7 +298,8 @@ html, body {
 
 .header {
     background: url('images/header_photo.png') center/cover no-repeat;
-    height: 350px;
+        min-height: 350px;      /* ✔ Minimum height but can grow if text expands */
+    padding-bottom: 40px; 
     position: relative;
      box-shadow: 0 10px 20px rgba(0, 0, 0, 4);
 }
@@ -313,7 +314,7 @@ html, body {
 
 .header-overlay h1 {
     padding-top: 24px;
-    font-size: 60px;
+     font-size: clamp(2rem, 6vw, 60px); /* scales between 2rem and 60px */
     font-weight:900;
     letter-spacing: -2px;
 }
@@ -324,6 +325,7 @@ html, body {
     margin-left: auto;
     margin-right: auto;
     line-height: 1.7;
+
 }
 
 .content {
@@ -350,11 +352,12 @@ html, body {
     background: #535252;
     color: white;
     border: none;
-    padding: 10px 30px;
+    padding: 0 30px;
     border-radius: 12px;
     cursor: pointer;
-    word-spacing: 20px;
     font-weight: bold;
+    font-size: 12px;
+    height: 28px;
 }
 
 .program-list {
@@ -456,6 +459,22 @@ html, body {
 
     .card-right {
         margin-top: 10px;
+    }
+}
+
+@media (max-width: 768px) {
+    .intro-programs {
+        font-size: 0.95rem; /* smaller on tablets/phones */
+        padding-left: 30px;
+        padding-right: 30px;
+    }
+}
+
+@media (max-width: 480px) {
+    .intro-programs {
+        font-size: 0.85rem; /* even smaller on mobile */
+        padding-left: 15px;
+        padding-right: 15px;
     }
 }
 
@@ -870,55 +889,107 @@ html, body {
 
 /* END BLOCK: ABOUT PAGE STYLES*/
 
-/* LANDING PAGE */
-
-.landing-page {
-    background-image: url(images/landing_page.png);
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
+/* LANDING PAGE BASE */
+body.landing-page {
+    background: linear-gradient(#1d4f8f, #d1d1d1);
     background-attachment: fixed;
-}
-
-.landing-page h1 {
-    color: white;
-}
-
-.continue {
+    font-family: 'Inter', sans-serif;
+    margin: 0;
+    padding: 0;
     text-align: center;
-    background-image: url(images/continue.png);
-    background-repeat: no-repeat;
-    background-position: center;
-    background-size: cover;
-    background-attachment: fixed;
-    border: 12px;
-    width: 550px;
-    height: 300px;
+}
+
+/* HEADER */
+.landing-page-header {
+    margin-top: 80px;
+}
+
+.header-logo-row {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    gap: 15px; /* spacing between logo and text */
+}
+
+.logo-landing-page {
+    width: 100px;
+}
+
+.station-title {
+    color: white;
+    margin-top: 10px;
+    font-weight: 300;
+    font-size: 20px;
+}
+
+.header-line {
+    width: 300px;
+    height: 1px;
+    background: rgba(255,255,255,0.4);
+    margin: 15px auto 50px auto;
+}
+
+/* WELCOME TITLE */
+.welcome-title {
+    color: white;
+    font-size: 42px;
+    margin-bottom: 90px;
+    font-weight: 300;
+    padding-top: 15px;
+}
+
+.welcome-title span {
+    font-weight: 700;
+}
+
+/* CONTINUE BOX */
+.continue {
+    margin: 0 auto;
+    width: 520px;
+    height: 240px;
     border-radius: 15px;
+    background: rgba(255,255,255,0.45);
+    box-shadow: 0 4px 20px rgba(0,0,0,0.15);
+    backdrop-filter: blur(6px);
+    padding-top: 30px;
 }
 
 .continue h1 {
-    font-weight: 500;
-    color: black;
-    padding-top: 25px;
+    font-weight: 400;
+    font-size: 22px;
+    color: #222;
 }
 
-/* .continue {
+/* BUTTONS */
+.button-row {
+    margin-top: 90px;
     display: flex;
     justify-content: center;
+    gap: 90px;
 }
 
-.continue-button {
-    width: 90%;
-    max-width: 500px;
-    padding: 25px 20px;
-    background: #D9D9D9;
-    border: none;
-    border-radius: 30px;
-    box-shadow: 0px 4px 15px rgba(0,0,0,0.1);
+.user-button,
+.admin-button {
+    width: 160px;
+    padding: 14px 0;
+    border-radius: 10px;
+    font-size: 17px;
     cursor: pointer;
-    transition: 0.3s;
-    text-align: center;
+    display: inline-block;
+    text-decoration: none;
 }
 
+/* User button (gray) */
+.user-button {
+    background: #e5e5e5;
+    color: #333;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.2);
+}
+
+/* Admin button (blue) */
+.admin-button {
+    background: #1e4e8d;
+    color: white;
+    box-shadow: 0 2px 4px rgba(0,0,0,0.3);
+}
 
