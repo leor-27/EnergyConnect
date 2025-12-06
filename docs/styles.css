@@ -1224,12 +1224,11 @@ body.landing-page {
     margin-bottom: 80px;
 }
 
-
-    .admin-home header {
-        display: flex;
-        justify-content: space-between;
-        height: 108px;
-        padding: 20px 60px 20px 30px;
-        color: #FFFFFF;
-        background-color: #1C5186;
-    }
+.admin-home header, .admin-edit_programs header {
+    display: flex;
+    justify-content: space-between;
+    height: 108px;
+    padding: 20px 60px 20px 30px;
+    color: #FFFFFF;
+    background-color: #1C5186;
+}
