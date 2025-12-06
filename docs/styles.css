@@ -281,7 +281,6 @@ html, body {
     }
 }
 
-
 .description {
     margin-bottom: 100px;
 }
@@ -289,7 +288,10 @@ html, body {
 .description h1 {
     text-align: center; 
     padding-top: 50px;
-    font-size: 50px;
+    font-size: 46px;
+}
+
+.dj-name {
     padding-bottom: 20px;
 }
 
