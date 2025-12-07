@@ -34,7 +34,7 @@
         <div class="listen">
             <button id="liveBtn" class="listen-button">
                 <div class="listen-title">LISTEN LIVE HERE   <img src = "images/listen_live.png"></div>
-                <div class="listen-subtitle">On Air: Troye Sivan – Youth</div>
+                <div class="listen-subtitle">On Air: Loading...</div>
             </button>
 
             <!-- Hidden audio tag -->
@@ -104,32 +104,89 @@
         </div>
     </div>
 
-    <script>
-        const audio = document.getElementById("liveAudio");
-        const btn = document.getElementById("liveBtn");
-        const title = btn.querySelector(".listen-title");
-        let isPlaying = false;
+<script>
+const audio = document.getElementById("liveAudio");
+const btn   = document.getElementById("liveBtn");
+const title = btn.querySelector(".listen-title");
+let isPlaying = false;
 
-        function setPlayState() {
-            title.innerHTML = `▶   LISTEN LIVE HERE   <img src="images/listen_live.png">`;
-        }
-        function setPauseState() {
-            title.innerHTML = `⏸   PAUSE LIVE STREAM <img src="images/listen_live.png">`;
-        }
+function setPlayState() {
+    title.innerHTML = `▶    LISTEN LIVE HERE   <img src="images/listen_live.png">`;
+}
+function setPauseState() {
+    title.innerHTML = `⏸    PAUSE LIVE STREAM   <img src="images/listen_live.png">`;
+}
 
-        btn.addEventListener("click", () => {
-            if (!isPlaying) {
-                audio.play();
-                isPlaying = true;
-                setPauseState();
-            } else {
-                audio.pause();
-                isPlaying = false;
-                setPlayState();
-            }
-        });
-        setPlayState(); // default on load
-    </script>
+btn.addEventListener("click", () => {
+    if (!isPlaying) { audio.play(); isPlaying = true; setPauseState(); }
+    else { audio.pause(); isPlaying = false; setPlayState(); }
+});
+setPlayState();
+
+// ========================
+// FETCH PROGRAM DATA
+// ========================
+Promise.all([
+    fetch('http://localhost:5500/programs').then(r => r.json()),
+    fetch('http://localhost:5500/program_day_type').then(r => r.json()),
+    fetch('http://localhost:5500/daytype').then(r => r.json())
+]).then(([programs, programDayTypes, dayTypes]) => {
+
+    const subtitle = document.querySelector(".listen-subtitle");
+    subtitle.textContent = "On Air: Loading..."; // default state
+
+    const now = new Date();
+    const day = now.getDay(); // 0=Sun ... 6=Sat
+    const nowSec = now.getHours()*3600 + now.getMinutes()*60 + now.getSeconds();
+
+    const map = { WEEKDAYS:[1,2,3,4,5], SAT:[6], SUN:[0] }; // MOVED HERE (GLOBAL USE)
+
+    const formatToSec = t => {
+        const [h,m,s] = t.split(':').map(Number);
+        return h*3600 + m*60 + (s||0);
+    };
+
+    function getDays(id) {
+        return programDayTypes
+            .filter(p=>p.PROGRAM_ID===id)
+            .map(p=> dayTypes.find(d=>d.ID===p.DAY_TYPE_ID)?.DAY_TYPE);
+    }
+
+    function isNowOnAir(program) {
+        const start = formatToSec(program.START_TIME);
+        const end   = formatToSec(program.END_TIME);
+        const days = getDays(program.ID);
+
+        const fitsDay = days.some(d => map[d]?.includes(day));
+        const withinTime = start < end
+            ? nowSec >= start && nowSec <= end
+            : nowSec >= start || nowSec <= end; // handles overnight shows
+
+        console.log(`CHECKING → ${program.TITLE}`, {fitsDay, withinTime});
+        return fitsDay && withinTime;
+    }
+
+    // FIND CURRENT PROGRAM
+    const onAir = programs.find(p => isNowOnAir(p));
+
+    if (onAir) {
+        subtitle.textContent = `On Air: ${onAir.TITLE}`;
+        return;
+    }
+
+    // FIND NEXT PROGRAM (previously broken because map wasn't accessible)
+    const upcoming = programs
+        .filter(p => getDays(p.ID).some(d => map[d]?.includes(day)))
+        .sort((a,b)=> formatToSec(a.START_TIME)-formatToSec(b.START_TIME))
+        .find(p => formatToSec(p.START_TIME) > nowSec);
+
+    subtitle.textContent = upcoming
+        ? `Next: ${upcoming.TITLE} at ${upcoming.START_TIME}`
+        : `No Active Program`;
+    
+}).catch(err => console.error(err));
+</script>
+
 
     </body>
     <div class = "footer">

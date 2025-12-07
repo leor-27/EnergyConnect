@@ -133,8 +133,13 @@
           }
 
           // Sorting
-          if(filter==='time') data.sort((a,b)=> timeToSec(a.START_TIME) - timeToSec(b.START_TIME));
-          else data.sort((a,b)=> (a.TITLE||'').localeCompare(b.TITLE||''));
+          // Sorting
+if (filter === 'time' || ['weekdays', 'sat', 'sun'].includes(filter)) {
+    data.sort((a, b) => timeToSec(a.START_TIME) - timeToSec(b.START_TIME)); // sort by time
+} else {
+    data.sort((a,b)=> (a.TITLE||'').localeCompare(b.TITLE||'')); // A–Z
+}
+
 
           data.forEach(p=>{
             const days = getDays(p.ID);

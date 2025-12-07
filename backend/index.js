@@ -28,18 +28,6 @@ app.get('/', (req, res) => {
   res.send('Hello from Express.js Server!');
 });
 
-// // Define a GET route to fetch data from MySQL
-// app.get('/data', (req, res) => {
-//   const query = 'SELECT DAY_TYPE FROM Day_Type'; // replace with your table name
-//   connection.query(query, (err, results) => {
-//     if (err) {
-//       res.status(500).send(err);
-//     } else {
-//       res.json(results); // send MySQL data as JSON
-//     }
-//   });
-// });
-
 function fetchTable(res, tableName, columnName) {
   const query = columnName === '*' 
     ? `SELECT * FROM ${tableName}`
