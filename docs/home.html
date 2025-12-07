@@ -33,7 +33,7 @@
 
         <div class="listen">
             <button id="liveBtn" class="listen-button">
-                <div class="listen-title">LISTEN LIVE HERE   <img src = "images/listen_live.png"></div>
+                <div class="listen-title"><img src = "images/play_button.svg" class = "play">LISTEN LIVE HERE   <img src = "images/listen_live.svg"></div>
                 <div class="listen-subtitle">On Air: Loading...</div>
             </button>
 
@@ -111,10 +111,10 @@ const title = btn.querySelector(".listen-title");
 let isPlaying = false;
 
 function setPlayState() {
-    title.innerHTML = `▶    LISTEN LIVE HERE   <img src="images/listen_live.png">`;
+    title.innerHTML = `<img src = "images/play_button.svg" class="play">    LISTEN LIVE HERE   <img src="images/listen_live.svg">`;
 }
 function setPauseState() {
-    title.innerHTML = `⏸    PAUSE LIVE STREAM   <img src="images/listen_live.png">`;
+    title.innerHTML = `<img src = "images/pause_button.svg"  class="pause">    PAUSE LIVE STREAM   <img src="images/listen_live.svg">`;
 }
 
 btn.addEventListener("click", () => {

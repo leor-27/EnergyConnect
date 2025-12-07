@@ -711,6 +711,33 @@ transform: scale(1.02);
     color: #333;
 }
 
+.listen-title img {
+    vertical-align: middle; /* aligns icons with text vertically */
+    height: 30px;           /* adjust size to match text */
+    width: auto;
+    margin-right: 5px;     /* spacing between icon and text */
+    position: relative;
+    top: -3px;              /* moves image up slightly */
+}
+
+.listen-title img:last-child {
+    margin-right: 0;        /* no extra spacing after the last icon */
+    margin-left: 5px;       /* spacing between text and right icon */
+    position: relative;
+    top: -3px;              /* match the same vertical adjustment */
+    width: 35px;
+}
+
+.listen-title img.pause {
+    height: 37px;   /* slightly smaller if needed */
+    width: auto;
+    vertical-align: middle;
+    position: relative;
+    top: -3px;
+    right: -4px;
+}
+
+
 /* =>> ABOUT PAGE STYLES */
 
     /* Icons */
