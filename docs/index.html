@@ -40,6 +40,11 @@
     <h1 id="form-title">Sign In</h1>
 
     <form id="admin-form" class="admin-form">
+
+        <!-- Name field (hidden at first) -->
+        <label id="name-label" style="display:none;">Name</label>
+        <input type="text" id="name" style="display:none;">
+
         <label id="input-label">Email / Username</label>
         <input type="text" id="email">
 
@@ -90,33 +95,46 @@ document.getElementById("admin-form").addEventListener("submit", function(e){
         return;
     }
 
-    if(step === "login") {
-        // Check admin credentials
-        if(inputVal === ADMIN_EMAIL && passwordVal === ADMIN_PASSWORD) {
-            // Transform form into "Set Your Credentials"
-            step = "set";
-            formTitle.innerText = "Set Your Credentials";
-            inputLabel.innerText = "Username";
-            inputField.value = "";
-            passwordField.value = "";
-            button.innerText = "Set Your Credentials";
-            // Hide Google login
-            googleLogin.style.display = "none";
-        } else {
-            alert("Incorrect email or password.");
-        }
-    } else if(step === "set") {
-        // Capture new username/password (for demo only)
-        const username = inputField.value.trim();
-        const password = passwordField.value.trim();
-        if(!username || !password) {
-            alert("Please fill in both fields.");
-            return;
-        }
-        alert(`Username and password set!\nUsername: ${username}`);
-        // Redirect to admin-home.html
-        window.location.href = "admin-home.html";
+if(step === "login") {
+
+    if(inputVal === ADMIN_EMAIL && passwordVal === ADMIN_PASSWORD) {
+
+        step = "set";
+        formTitle.innerText = "Set Your Credentials";
+
+        inputLabel.innerText = "Username";
+        inputField.value = "";
+        passwordField.value = "";
+        button.innerText = "Save Credentials";
+
+        // Make continue box taller for the Name field
+        document.querySelector(".continue").style.height = "440px";
+
+        googleLogin.style.display = "none";
+
+        // Show Name field
+        document.getElementById("name-label").style.display = "block";
+        document.getElementById("name").style.display = "block";
+
+    } else {
+        alert("Incorrect email or password.");
     }
+
+} else if(step === "set") {
+
+    const username = inputField.value.trim();
+    const password = passwordField.value.trim();
+    const nameVal = document.getElementById("name").value.trim();
+
+    if(!username || !password || !nameVal) {
+        alert("Please fill in all fields: Name, Username, and Password.");
+        return;
+    }
+
+    alert(`Credentials Set:\nName: ${nameVal}\nUsername: ${username}`);
+    window.location.href = "admin-home.html";
+}
+
 });
 </script>
 
