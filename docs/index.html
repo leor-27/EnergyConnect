@@ -37,20 +37,20 @@
 
     <!-- Admin Login (hidden at first) -->
 <section id="admin-login" class="admin-section" style="display:none;">
-    <h1>Sign In</h1>
+    <h1 id="form-title">Sign In</h1>
 
     <form id="admin-form" class="admin-form">
-        <label>Email</label>
+        <label id="input-label">Email / Username</label>
         <input type="text" id="email">
 
-        <label>Password</label>
+        <label id="password-label">Password</label>
         <input type="password" id="password">
 
         <div class="login">
-            <button type="submit" class="login-button">Login</button>
+            <button type="submit" class="login-button" id="login-btn">Login</button>
         </div>
 
-        <p class="google-login">Login using   
+        <p class="google-login" id="google-login">Login using   
             <a href="https://accounts.google.com/signin">
                 <img src="images/google.png" class="google-icon">
             </a>
@@ -59,49 +59,66 @@
 </section>
 
 <script>
-document.getElementById("show-admin").addEventListener("click", () => {
-    // hide first screen
-    document.getElementById("main-continue").style.display = "none";
-
-    // show admin login
-    const adminBox = document.getElementById("admin-login");
-    adminBox.style.display = "block";
-
-    // adjust continue box height
-    const continueBox = document.querySelector(".continue");
-    continueBox.style.height = "410px";
-
-    // smooth scroll
-    adminBox.scrollIntoView({ behavior: "smooth" });
-});
-
-// Predefined admin credentials (for demo purposes)
 const ADMIN_EMAIL = "admin@example.com";
 const ADMIN_PASSWORD = "Admin123!";
 
-document.getElementById("admin-form").addEventListener("submit", function(e) {
-    e.preventDefault(); // prevent form from submitting
+let step = "login"; // track current step
 
-    const email = document.getElementById("email").value.trim();
-    const password = document.getElementById("password").value.trim();
+document.getElementById("show-admin").addEventListener("click", () => {
+    document.getElementById("main-continue").style.display = "none";
+    const adminBox = document.getElementById("admin-login");
+    adminBox.style.display = "block";
+    document.querySelector(".continue").style.height = "410px";
+    adminBox.scrollIntoView({ behavior: "smooth" });
+});
 
-    // Check if inputs are empty
-    if (!email || !password) {
-        alert("Please enter both email and password.");
+document.getElementById("admin-form").addEventListener("submit", function(e){
+    e.preventDefault();
+
+    const inputField = document.getElementById("email");
+    const passwordField = document.getElementById("password");
+    const button = document.getElementById("login-btn");
+    const inputLabel = document.getElementById("input-label");
+    const formTitle = document.getElementById("form-title");
+    const googleLogin = document.getElementById("google-login");
+
+    const inputVal = inputField.value.trim();
+    const passwordVal = passwordField.value.trim();
+
+    if (!inputVal || !passwordVal) {
+        alert("Please fill in both fields.");
         return;
     }
 
-    // Check credentials
-    if (email === ADMIN_EMAIL && password === ADMIN_PASSWORD) {
-        // correct login → redirect
+    if(step === "login") {
+        // Check admin credentials
+        if(inputVal === ADMIN_EMAIL && passwordVal === ADMIN_PASSWORD) {
+            // Transform form into "Set Your Credentials"
+            step = "set";
+            formTitle.innerText = "Set Your Credentials";
+            inputLabel.innerText = "Username";
+            inputField.value = "";
+            passwordField.value = "";
+            button.innerText = "Set Your Credentials";
+            // Hide Google login
+            googleLogin.style.display = "none";
+        } else {
+            alert("Incorrect email or password.");
+        }
+    } else if(step === "set") {
+        // Capture new username/password (for demo only)
+        const username = inputField.value.trim();
+        const password = passwordField.value.trim();
+        if(!username || !password) {
+            alert("Please fill in both fields.");
+            return;
+        }
+        alert(`Username and password set!\nUsername: ${username}`);
+        // Redirect to admin-home.html
         window.location.href = "admin-home.html";
-    } else {
-        alert("Incorrect email or password.");
     }
 });
 </script>
-
-
 
 </body>
 </html>
