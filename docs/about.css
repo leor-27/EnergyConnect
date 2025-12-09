@@ -71,45 +71,6 @@
         font-style: normal;
         font-display: swap; }
 
-/* #menu-toggle {
-    display: none;}
-
-.menu-icon {
-    font-size: 32px;
-    cursor: pointer;
-    user-select: none;
-    margin-right: 30px;
-    position: absolute;
-    right: 0%;
-    top: 20px;
-    color: white;}
-
-.dropdown-menu {
-    position: absolute;
-    top: 75px;
-    right: 20px;
-    width: 150px;
-    background: white;
-    border-radius: 5px;
-    padding: 10px 0;
-    display: none;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
-    z-index: 99;}
-
-.dropdown-menu a {
-    display: block;
-    padding: 12px 18px;
-    text-decoration: none;
-    color: black;
-    font-size: 17px;
-    text-align: center;
-    font-weight: 501;}
-
-.dropdown-menu a:hover {
-    background: #e0eefc;}
-
-#menu-toggle:checked~.dropdown-menu { display: block; }  */
-
 /* About Page */
 html, body {
     height: auto;
@@ -131,7 +92,7 @@ html, body {
 	min-height: 100vh;
 	gap: 0;
 	grid-template-columns: auto 1fr 1fr 1fr 100px;
-	grid-template-rows: 80px 140px 1fr 1fr 1fr auto auto;
+	grid-template-rows: 100px 140px 1fr 1fr 1fr auto auto;
 	grid-template-areas:
 		"header header header header header"
 		". . . . ."
@@ -160,55 +121,20 @@ html, body {
 
 /* About Page: Header */
 .about .logo {
-	position: absolute;
-	top: 13px;
-	left: 20px;
-	height: 60px;
-	width: auto;
-	z-index: 10; }
+    position: absolute;   
+    top: 15px;           
+    left: 15px;           
+    height: 75px;         
+    width: auto;          
+    z-index: 10;          
+}
 
 .about .header-text h1 {
 	position: absolute;
-	top: 20px;
+	top: 29px;
 	right: 85px;
 	font-weight: 500;
 	font-size: 24px; }
-
-.about #menu-toggle {
-	display: none; } 
-
-.about #menu-toggle:checked~.dropdown-menu {
-	display: block; }
-
-.about .menu-icon {
-	font-size: 32px;
-	position: absolute;
-	right: 0%;
-	top: 18px;
-	margin-right: 30px;
-	cursor: pointer;
-	user-select: none; }
-
-.about .dropdown-menu {
-	display: none;
-	position: absolute;
-	top: 75px;
-	right: 20px;
-	width: 150px;
-	padding: 10px 0;
-	background: white;
-	border-radius: 5px;
-	box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
-	z-index: 99; }
-
-.about .dropdown-menu a {
-	display: block;
-	text-align: center;
-	padding: 12px 18px;
-	color: black;
-	font-size: 17px;
-	font-weight: 420;
-	text-decoration: none; }
 
 /* About Page: Main */
 .about main h2 {
@@ -600,7 +526,7 @@ html, body {
 		font-size: 11px;
 		padding-top: 22px; }}
 
-        .footer-section {
+    .footer-section {
     padding-bottom: 40px; /* extra space so last line is visible */
     padding-top: 40px;    /* optional, for clean spacing */
     min-height: auto;     /* allow it to grow naturally */
