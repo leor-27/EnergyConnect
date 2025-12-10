@@ -127,66 +127,47 @@ setPlayState();
 // FETCH PROGRAM DATA
 // ========================
 Promise.all([
-    fetch('http://localhost:5500/programs').then(r => r.json()),
-    fetch('http://localhost:5500/program_day_type').then(r => r.json()),
-    fetch('http://localhost:5500/daytype').then(r => r.json())
+    fetch('http://localhost:8000/backend/fetch.php?table=PROGRAM').then(r=>r.json()),
+    fetch('http://localhost:8000/backend/fetch.php?table=Program_Day_Type').then(r => r.json()),
+    fetch('http://localhost:8000/backend/fetch.php?table=Day_Type').then(r => r.json())
 ]).then(([programs, programDayTypes, dayTypes]) => {
-
     const subtitle = document.querySelector(".listen-subtitle");
-    subtitle.textContent = "On Air: Loading..."; // default state
-
     const now = new Date();
-    const day = now.getDay(); // 0=Sun ... 6=Sat
-    const nowSec = now.getHours()*3600 + now.getMinutes()*60 + now.getSeconds();
-
-    const map = { WEEKDAYS:[1,2,3,4,5], SAT:[6], SUN:[0] }; // MOVED HERE (GLOBAL USE)
+    const day = now.getDay();
+    const nowSec = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
+    const map = { WEEKDAYS:[1,2,3,4,5], SAT:[6], SUN:[0] };
 
     const formatToSec = t => {
         const [h,m,s] = t.split(':').map(Number);
         return h*3600 + m*60 + (s||0);
     };
 
-    function getDays(id) {
-        return programDayTypes
-            .filter(p=>p.PROGRAM_ID===id)
-            .map(p=> dayTypes.find(d=>d.ID===p.DAY_TYPE_ID)?.DAY_TYPE);
-    }
+    const getDays = id =>
+        programDayTypes
+            .filter(p => p.PROGRAM_ID == id)
+            .map(p => dayTypes.find(d => d.ID == p.DAY_TYPE_ID)?.DAY_TYPE);
 
-    function isNowOnAir(program) {
+    const isNowOnAir = program => {
         const start = formatToSec(program.START_TIME);
-        const end   = formatToSec(program.END_TIME);
+        const end = formatToSec(program.END_TIME);
         const days = getDays(program.ID);
-
         const fitsDay = days.some(d => map[d]?.includes(day));
-        const withinTime = start < end
-            ? nowSec >= start && nowSec <= end
-            : nowSec >= start || nowSec <= end; // handles overnight shows
-
-        console.log(`CHECKING → ${program.TITLE}`, {fitsDay, withinTime});
+        const withinTime = start < end ? nowSec >= start && nowSec <= end : nowSec >= start || nowSec <= end;
         return fitsDay && withinTime;
-    }
+    };
 
-    // FIND CURRENT PROGRAM
     const onAir = programs.find(p => isNowOnAir(p));
-
-    if (onAir) {
-        subtitle.textContent = `On Air: ${onAir.TITLE}`;
-        return;
+    if (onAir) subtitle.textContent = `On Air: ${onAir.TITLE}`;
+    else {
+        const upcoming = programs
+            .filter(p => getDays(p.ID).some(d => map[d]?.includes(day)))
+            .sort((a,b) => formatToSec(a.START_TIME) - formatToSec(b.START_TIME))
+            .find(p => formatToSec(p.START_TIME) > nowSec);
+        subtitle.textContent = upcoming ? `Next: ${upcoming.TITLE} at ${upcoming.START_TIME}` : "No Active Program";
     }
-
-    // FIND NEXT PROGRAM (previously broken because map wasn't accessible)
-    const upcoming = programs
-        .filter(p => getDays(p.ID).some(d => map[d]?.includes(day)))
-        .sort((a,b)=> formatToSec(a.START_TIME)-formatToSec(b.START_TIME))
-        .find(p => formatToSec(p.START_TIME) > nowSec);
-
-    subtitle.textContent = upcoming
-        ? `Next: ${upcoming.TITLE} at ${upcoming.START_TIME}`
-        : `No Active Program`;
-    
-}).catch(err => console.error(err));
+})
+.catch(err => console.error(err));
 </script>
-
 
     </body>
     <div class = "footer">

@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link href="admin-home.css" rel="stylesheet">
+    </head>
+<body class="admin-home">
+
+    <header>
+        <div class="header-content">
+            <div class="header-left">
+                <a href="admin.html" class="logo-link">
+                    <img src="images/logo.png" class="logo" alt="105.3 Energy FM Logo">
+                </a>
+            </div>
+
+            <input type="checkbox" id="menu-toggle">
+            <label for="menu-toggle" class="menu-icon">&#9776;</label>
+
+            <div class="dropdown-menu">
+                <a href="index.html">Logout</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="dashboard-content">
+        <h1>ADMIN DASHBOARD</h1>
+        
+        
+        <div class="admin-buttons">
+            <a href="admin-attach-news.html" class="btn attach-news-button">
+                <i class="fas fa-paperclip"></i> Attach News </a>
+                
+            <a href="admin-add-programs.html" class="btn add-programs-button">
+                <i class="fas fa-plus"></i> Add Programs </a>
+        </div>
+        
+        <hr>
+
+        <section class="program-list-section">
+            <div class="program-list">
+
+                <div class="program-card">
+                    <div class="card-details">
+                        <div class="card-left-info">
+                            <h3 class="program-title">GOOD MORNING ENERGY</h3>
+                            <p class="schedule">12:00 AM – 5:00 AM | **MON – SAT**</p>
+                            <p class="hosts">MUSIC ONLY</p>
+                        </div>
+                        <div class="card-description">
+                            <p>An all-night musical journey for the late hours. This program provides a continuous stream of hits, creating a serene and dreamlike atmosphere as the city rests.</p>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <span class="edit-icon">&#9998;</span>
+                        <span class="delete-icon">&#128465;</span>
+                    </div>
+                </div>
+
+                <div class="program-card">
+                    <div class="card-details">
+                        <div class="card-left-info">
+                            <h3 class="program-title">GOOD MORNING ENERGY</h3>
+                            <p class="schedule">12:00 AM – 5:00 AM | **MON – SAT**</p>
+                            <p class="hosts">MUSIC ONLY</p>
+                        </div>
+                        <div class="card-description">
+                            <p>An all-night musical journey for the late hours. This program provides a continuous stream of hits, creating a serene and dreamlike atmosphere as the city rests.</p>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <span class="edit-icon">&#9998;</span>
+                        <span class="delete-icon">&#128465;</span>
+                    </div>
+                </div>
+
+                <div class="program-card">
+                    <div class="card-details">
+                        <div class="card-left-info">
+                            <h3 class="program-title">GOOD MORNING ENERGY</h3>
+                            <p class="schedule">12:00 AM – 5:00 AM | **MON – SAT**</p>
+                            <p class="hosts">MUSIC ONLY</p>
+                        </div>
+                        <div class="card-description">
+                            <p>An all-night musical journey for the late hours. This program provides a continuous stream of hits, creating a serene and dreamlike atmosphere as the city rests.</p>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <span class="edit-icon">&#9998;</span>
+                        <span class="delete-icon">&#128465;</span>
+                    </div>
+                </div>
+
+            </div>
+        </section>
+
+        <section class="add-item-form">
+            <form action="/submit-item" method="POST">
+                <div class="form-row form-top-row">
+                    <input type="text" id="headline" name="headline" placeholder="Headline">
+                    <textarea id="description" name="description" placeholder="Description"></textarea>
+                    <button type="submit" class="add-button">Add</button>
+                </div>
+                
+                <div class="form-row form-bottom-row">
+                    <input type="time" id="time" name="time" placeholder="Time">
+                    <input type="date" id="date" name="date" placeholder="Date">
+                    <select id="type" name="type">
+                        <option value="" disabled selected hidden>Type</option>
+                        <option value="program">MUSIC ONLY</option>
+                        <option value="news">WITH HOST</option>
+                    </select>
+                </div>
+            </form>
+        </section>
+
+    </main>
+    
+    <footer>
+        Privacy Policy | Energy FM © 2025
+    </footer>
+
+</body>
+</html> 

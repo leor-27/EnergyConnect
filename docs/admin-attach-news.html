@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="en" class="admin-attach-news">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Admin Dashboard</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="admin-attach-news.css" rel="stylesheet">
+</head>
+<body class="admin-home">
+    <header>
+        <div class="header-content">
+            <section class="header-image">
+                <a href="admin-home.html" class="logo-link">
+                    <img src="images/logo.png" class="logo" alt="Energy FM Logo">
+                </a>
+            </section>
+        </div>
+
+        <input type="checkbox" id="menu-toggle">
+        <label for="menu-toggle" class="menu-icon">&#9776;</label>
+
+        <div class="dropdown-menu">
+            <a href="index.html">Logout</a>
+        </div>
+    </header>
+
+    <div class="dashboard-content">
+        <h1>ADMIN DASHBOARD</h1>
+
+        <div class="admin-buttons">
+            <a href="admin-attach-news.html" class="btn attach-news-button">
+                <i class="fas fa-paperclip"></i> Attach News
+            </a>
+            <a href="admin-add-programs.html" class="btn add-programs-button">
+                <i class="fas fa-plus"></i> Add Programs
+            </a>
+        </div> 
+
+        <hr>
+       
+        <div class="attach-news-card">
+            <section class="add-item2">
+                <form action="/submit-item" method="POST">
+                    <div class ="form-row2">
+                        <input type="text" id="attachnewslink" name="attach news link" placeholder="Attach News Link Here">
+                       <input type="text2" id="headline" name="headline" placeholder="Headline">
+                       <input type="text2" id="author" name="author" placeholder="Author/s Name">
+                       <input type="text2" id="newsorg" name="newsorg" placeholder="News Organization/Company">
+                       
+                       <textarea id="description" name="description" placeholder="Description"></textarea>
+                    </div>
+                </form>
+            </section>
+        </div>
+
+    </div>
+    <footer>
+        Privacy Policy | Energy FM © 2025
+    </footer>
+</body>
+</html>

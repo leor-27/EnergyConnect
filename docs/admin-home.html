@@ -1,23 +1,141 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" class="admin-attach-news">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
-    <link href = "styles.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <link href="admin-home.css" rel="stylesheet">
 </head>
-<body class = "admin-home">
+<body class="admin-home">
     <header>
-    <a href="admin-home.html">
-        <img src="images/logo.png" alt="Energy FM 106.3 Naga Logo" class="logo">
-    </a>
+        <div class="header-content">
+            <section class="header-image">
+                <a href="admin-home.html" class="logo-link">
+                    <img src="images/logo.png" class="logo" alt="Energy FM Logo">
+                </a>
+            </section>
+        </div>
 
-        <section class="header-image">
-        <a href = "home.html">
-            <img src="images/logo.png" alt="Energy FM 106.3 Naga Logo">
-        </a>
-        </section>
+        <input type="checkbox" id="menu-toggle">
+        <label for="menu-toggle" class="menu-icon">&#9776;</label>
 
+        <div class="dropdown-menu">
+            <a href="index.html">Logout</a>
+        </div>
     </header>
+
+    <div class="dashboard-content">
+        <h1>ADMIN DASHBOARD</h1>
+
+        <div class="admin-buttons">
+            <a href="admin-attach-news.html" class="btn attach-news-button">
+                <i class="fas fa-paperclip"></i> Attach News
+            </a>
+            <a href="admin-add-programs.html" class="btn add-programs-button">
+                <i class="fas fa-plus"></i> Add Programs
+            </a>
+        </div> 
+
+        <hr>
+        
+        <div class="news-card-grid">
+            
+            <div class="program-card-admin"> 
+                <div class="card-details-wrapper">
+
+                    <div class="card-header-news">
+                        <span class="program-title">Inquirer News</span>
+                    </div>
+                    
+                    <a href = "https://newsinfo.inquirer.net/2151485/24-areas-under-signal-no-1-due-to-td-wilma">
+                        <img src="images/examplepic.jpg" alt="News Image" class="news-image">
+                    </a>
+                    
+                    <div class="news-info">
+                        <p class="card-description">
+                            MANILA, Philippines — Tropical Depression Wilma slightly decelerated as it continued to approach the country’s landmass on Friday afternoon, according to the Philippine Atmospheric, Geophysical and Astronomical Services Administration (Pagasa).
+                        </p>
+                        <p class="hosts">By: 
+                            <a href = "https://newsinfo.inquirer.net/byline/jason-sigales" target="_blank">
+                                <b>Jason Sigales</b>
+                            </a>
+                        </p>
+                        <p class="published-date">Published On: <b>December 10, 2025</b></p>
+                    </div>
+
+                    <div class="card-actions card-actions-news">
+                    <span class="edit-icon"><i class="fas fa-pencil-alt"></i></span>
+                    <span class="delete-icon"><i class="fas fa-trash-alt"></i></span>
+                </div>
+                </div>
+                
+            </div>
+
+            <div class="program-card-admin">
+                <div class="card-details-wrapper">
+                    <div class="card-header-news">
+                        <span class="program-title">Inquirer Net</span>
+                    </div>
+                    
+                    <a href = "https://newsinfo.inquirer.net/2151485/24-areas-under-signal-no-1-due-to-td-wilma">
+                        <img src="images/examplepic.jpg" alt="News Image" class="news-image">
+                    </a>
+
+                    <div class="news-info">
+                        <p class="card-description">
+                            MANILA, Philippines — Tropical Depression Wilma slightly decelerated as it continued to approach the country’s landmass on Friday afternoon, according to the Philippine Atmospheric, Geophysical and Astronomical Services Administration (Pagasa).
+                        </p>
+                        <p class="hosts">By: 
+                            <a href = "https://newsinfo.inquirer.net/byline/jason-sigales" target="_blank">
+                                <b>Jason Sigales</b>
+                            </a>
+                        </p>
+                        <p class="published-date">Published On: <b>December 10, 2025</b></p>
+                    </div>
+
+                    <div class="card-actions card-actions-news">
+                    <span class="edit-icon"><i class="fas fa-pencil-alt"></i></span>
+                    <span class="delete-icon"><i class="fas fa-trash-alt"></i></span>
+                </div>
+                </div>
+
+            </div> 
+
+            <div class="program-card-admin">
+                <div class="card-details-wrapper">
+                    <div class="card-header-news">
+                        <span class="program-title">Inquirer News</span>
+                    </div>
+                    
+                    <a href = "https://newsinfo.inquirer.net/2151485/24-areas-under-signal-no-1-due-to-td-wilma">
+                        <img src="images/examplepic.jpg" alt="News Image" class="news-image">
+                    </a>
+                                        
+                    <div class="news-info">
+                        <p class="card-description">
+                            MANILA, Philippines — Tropical Depression Wilma slightly decelerated as it continued to approach the country’s landmass on Friday afternoon, according to the Philippine Atmospheric, Geophysical and Astronomical Services Administration (Pagasa).
+                        </p>
+                        <p class = "hosts">
+                            By: <a href="https://newsinfo.inquirer.net/byline/keith-clores" target="_blank"><b>Keith Clores</b></a>
+                        </p>
+                        <p class="published-date">Published On: <b>December 10, 2025</b></p>
+                    </div>
+
+                    <div class="card-actions card-actions-news">
+                    <span class="edit-icon"><i class="fas fa-pencil-alt"></i></span>
+                    <span class="delete-icon"><i class="fas fa-trash-alt"></i></span>
+                </div>
+                </div>
+                
+    
+            </div>
+            
+        </div>
+    </div>
+    
+    <footer>
+        Privacy Policy | Energy FM © 2025
+    </footer>
 </body>
 </html>
