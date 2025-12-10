@@ -121,7 +121,6 @@ h1 {
     margin: 30px 0 20px 0;
     font-weight: bold;
     text-align: left;
-    margin-top: 17px;
 }
 
 /* Admin Buttons */
@@ -243,14 +242,13 @@ hr {
 .card-actions {
     display: flex;
     gap: 10px;
-    color: #999;
+    color: #999; 
     font-size: 1.1em;
-    padding-top: 5px;
+    padding-top: 5px; 
 }
 
 .card-actions span:hover {
-    color: var(--energy-blue);
-    cursor: pointer;
+    color: var(--energy-blue); 
 }
 
 /* --- New Item Form Section (Bottom) --- */
@@ -275,7 +273,8 @@ hr {
 .add-item-form input[type="date"],
 .add-item-form input[type="time"],
 .add-item-form select {
-    padding: 12px;
+    padding: 16px;
+    padding-right: 24px;
     border: 1px solid #ccc;
     border-radius: 5px;
     font-size: 1em;
@@ -294,14 +293,15 @@ hr {
 }
 
 #headline {
-    flex-basis: 30%;
-    flex-grow: 0;
+    flex-basis: auto; /* Remove old flex-basis */
+    flex-grow: 1; /* Make it fill the full width of its new parent (.input-group-left) */
+    width: 100%;
 }
 
 #description {
     flex-grow: 1;
-    resize: vertical;
-    height: 100px;
+    resize: none;
+    height: 105px;
 }
 
 .add-button {
@@ -328,4 +328,54 @@ footer {
     color: white;
     margin-top: 0px;
     margin-bottom: 0px;
+}
+
+.input-group-left {
+    /* Use the same 30% width that #headline had, but make it rigid */
+    flex-basis: 30%; 
+    flex-shrink: 0; /* Do not allow it to shrink */
+    display: flex;
+    flex-direction: column; /* Stack the elements vertically */
+    gap: 15px; /* Adds space between Headline and Time/Date/Type row */
+}
+
+/* 3. Ensure the inner row for time/date/type behaves correctly */
+.form-bottom-row {
+    /* Keep display: flex and gap: 15px from .form-row */
+    width: 100%; /* Ensure this row takes up the full width of .input-group-left */
+    /* Remove margin-bottom: 15px if you don't want space below these inputs */
+    margin-bottom: 0; 
+}
+
+.to {
+    padding-top: 12px;
+}
+
+/* --- RESPONSIVE LAYOUT FOR FORM (MOBILE/TABLET) --- */
+@media (max-width: 768px) {
+
+    /* 1. Stack the main row elements vertically */
+    .form-top-row {
+        flex-direction: column;
+        align-items: stretch; /* Makes children take full width */
+    }
+
+    /* 2. Headline/Time/Type group: Ensure it takes full width */
+    .input-group-left {
+        flex-basis: auto; /* Remove fixed 30% width */
+        width: 100%;
+        margin-bottom: 15px; /* Add space below the headline/time group */
+    }
+
+    /* 3. Description Box: Ensure it takes full width */
+    #description {
+        width: 100%;
+        margin-bottom: 15px; /* Add space below description */
+    }
+
+    /* 4. Add Button: Push it to the bottom and make it full width */
+    .add-button {
+        width: 100%;
+        align-self: auto; /* Remove the old align-self: flex-start */
+    }
 }

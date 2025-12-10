@@ -54,9 +54,9 @@
                             <p>An all-night musical journey for the late hours. This program provides a continuous stream of hits, creating a serene and dreamlike atmosphere as the city rests.</p>
                         </div>
                     </div>
-                    <div class="card-actions">
-                        <span class="edit-icon">&#9998;</span>
-                        <span class="delete-icon">&#128465;</span>
+                    <div class="card-actions card-actions-news">
+                        <span class="edit-icon"><i class="fas fa-pencil-alt"></i></span>
+                        <span class="delete-icon"><i class="fas fa-trash-alt"></i></span>
                     </div>
                 </div>
 
@@ -71,9 +71,9 @@
                             <p>An all-night musical journey for the late hours. This program provides a continuous stream of hits, creating a serene and dreamlike atmosphere as the city rests.</p>
                         </div>
                     </div>
-                    <div class="card-actions">
-                        <span class="edit-icon">&#9998;</span>
-                        <span class="delete-icon">&#128465;</span>
+                    <div class="card-actions card-actions-news">
+                        <span class="edit-icon"><i class="fas fa-pencil-alt"></i></span>
+                        <span class="delete-icon"><i class="fas fa-trash-alt"></i></span>
                     </div>
                 </div>
 
@@ -88,9 +88,9 @@
                             <p>An all-night musical journey for the late hours. This program provides a continuous stream of hits, creating a serene and dreamlike atmosphere as the city rests.</p>
                         </div>
                     </div>
-                    <div class="card-actions">
-                        <span class="edit-icon">&#9998;</span>
-                        <span class="delete-icon">&#128465;</span>
+                    <div class="card-actions card-actions-news">
+                        <span class="edit-icon"><i class="fas fa-pencil-alt"></i></span>
+                        <span class="delete-icon"><i class="fas fa-trash-alt"></i></span>
                     </div>
                 </div>
 
@@ -99,21 +99,27 @@
 
         <section class="add-item-form">
             <form action="/submit-item" method="POST">
+                
                 <div class="form-row form-top-row">
+    
+                <div class="input-group-left">
                     <input type="text" id="headline" name="headline" placeholder="Headline">
-                    <textarea id="description" name="description" placeholder="Description"></textarea>
-                    <button type="submit" class="add-button">Add</button>
+
+                    <div class="form-row form-bottom-row">
+                        <input type="time" id="time" name="time" placeholder="Start Time">
+                        <p class = "to">-</p>
+                        <input type="time" id="time" name="time" placeholder="End Time">
+                        <select id="type" name="type">
+                            <option value="" disabled selected hidden>Type</option>
+                            <option value="program">MUSIC ONLY</option>
+                            <option value="news">WITH HOST</option>
+                        </select>
+                    </div>
                 </div>
                 
-                <div class="form-row form-bottom-row">
-                    <input type="time" id="time" name="time" placeholder="Time">
-                    <input type="date" id="date" name="date" placeholder="Date">
-                    <select id="type" name="type">
-                        <option value="" disabled selected hidden>Type</option>
-                        <option value="program">MUSIC ONLY</option>
-                        <option value="news">WITH HOST</option>
-                    </select>
-                </div>
+                <textarea id="description" name="description" placeholder="Description"></textarea>
+                <button type="submit" class="add-button">Add</button>
+            </div>
             </form>
         </section>
 

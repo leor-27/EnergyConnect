@@ -118,7 +118,6 @@ h1 {
     margin: 30px 0 20px 0;
     font-weight: bold;
     text-align: left;
-    margin-top: 17px;
 }
 
 /* Admin Buttons */
@@ -217,7 +216,7 @@ hr {
 
 #description {
     flex-grow: 1; 
-    resize: vertical;
+    resize: none;
     height: 100px;
 }
 
