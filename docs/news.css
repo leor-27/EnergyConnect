@@ -1,5 +1,3 @@
-/* News */
-
 * {
     margin: 0;
     padding: 0;
@@ -20,7 +18,6 @@
     height: auto;
     min-height: 350px;
     position: relative;
-    /* box-shadow: 0 10px 20px rgba(0, 0, 0, 4); */
     box-shadow: 0 5px 8px rgba(0, 0, 0, 0.50);
 }
 
@@ -41,7 +38,6 @@
 }
 
 .header-overlay p {
-    /* padding-top: 35px; */
     padding-top: 35px;
     padding-bottom: 15px;
     width: 80%;
@@ -58,7 +54,6 @@
 
 .break-box {
     background-color: rgba(69, 78, 87, 1);
-    /* height: 50px; */
     width: 100%;
     height: auto;
     min-height: 50px;
@@ -125,7 +120,7 @@
 }
 
 .news-content h1 {
-        padding-top: 20px;
+    padding-top: 20px;
     padding-bottom: 10px;
     font-size: 40px;
     font-weight: 800;
@@ -135,7 +130,6 @@
     padding: 15px 10px;
     font-size: 20px;
     font-weight: 200;
-
     padding-left: 0;
 }
 
@@ -200,11 +194,10 @@ h4 {
     padding-top: 20px;
     padding-bottom: 75px;
     padding-left: 30px;
-        overflow-x: auto;       /* enables horizontal scrolling */
+    overflow-x: auto; /* enables horizontal scrolling */
     overflow-y: hidden;
     scroll-behavior: smooth;
-
-        flex-wrap: nowrap;    /* 🚫 do not wrap to next row */
+    flex-wrap: nowrap; /* makes sure that it dosn't wrap to next row */
     white-space: nowrap; 
 }
 
@@ -217,9 +210,9 @@ h4 {
     border-radius: 10px;
     background-color: rgba(238, 238, 238, 1);
     box-shadow: 0 4px 4px rgba(0, 0, 0, 0.25);
-    flex: 0 0 350px;     /* 🟢 fixed width + no shrinking */
+    flex: 0 0 350px;
     white-space: normal;
-    min-height: 550px; /* adjust based on your hardcoded cards */
+    min-height: 550px;
     display: flex;
     flex-direction: column;
     justify-content: space-between;
@@ -288,10 +281,10 @@ h4 {
     background-color: #1C5186;
     margin-top: 75px;
     height: 75px;
-    position: fixed;     /* fixes it relative to viewport */
-    bottom: 0;           /* stick to bottom */
-    left: 0;             /* align left */
-    width: 100%;         /* full width */
+    position: fixed;  
+    bottom: 0;  
+    left: 0;  
+    width: 100%;
     z-index: 100; 
 }
 
@@ -353,5 +346,3 @@ h4 {
     padding-bottom: 20px;
     padding-left: 30px;
 }
-
-/* News - admin view */

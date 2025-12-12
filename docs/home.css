@@ -46,7 +46,7 @@ html, body {
 
 @media (max-width: 1024px) {
     .banner {
-        padding-top: 100px; /* pushes text down away from logo */
+        padding-top: 100px; 
     }
     .banner h2 {
         font-size: 26px;
@@ -56,10 +56,9 @@ html, body {
     }
 }
 
-/* Mobile */
 @media (max-width: 768px) {
     .banner {
-        padding-top: 120px; /* more space so title clears logo */
+        padding-top: 120px;
         min-height: 230px;
     }
     .banner h2 {
@@ -71,10 +70,9 @@ html, body {
     }
 }
 
-/* Small phones */
 @media (max-width: 480px) {
     .banner {
-        padding-top: 140px; /* ensures absolute clearance */
+        padding-top: 140px;
         min-height: 220px;
     }
     .banner h2 {
@@ -153,8 +151,6 @@ html, body {
     padding-bottom: 15px;
 }
 
-
-/* Mobile adjustments */
 @media (max-width: 600px) {
     .dj-section {
         flex-direction: column;
@@ -176,11 +172,10 @@ html, body {
     }
 
     .right-button {
-        right: calc(45% - 425px / 2 - 60px); /* bigger gap for large screens */
+        right: calc(45% - 425px / 2 - 60px);
     }
 }
 
-/* Programs */
 * {
     margin: 0;
     padding: 0;
@@ -208,10 +203,10 @@ html, body {
     background-color: #1C5186;
     margin-top: 75px;
     height: 75px;
-    position: fixed;     /* fixes it relative to viewport */
-    bottom: 0;           /* stick to bottom */
-    left: 0;             /* align left */
-    width: 100%;         /* full width */
+    position: fixed;   
+    bottom: 0;    
+    left: 0;    
+    width: 100%;   
     z-index: 100; 
 }
 
@@ -305,24 +300,24 @@ html, body {
 }
 
 .listen-title img {
-    vertical-align: middle; /* aligns icons with text vertically */
-    height: 30px;           /* adjust size to match text */
+    vertical-align: middle; 
+    height: 30px;        
     width: auto;
-    margin-right: 5px;     /* spacing between icon and text */
+    margin-right: 5px;    
     position: relative;
-    top: -3px;              /* moves image up slightly */
+    top: -3px;        
 }
 
 .listen-title img:last-child {
-    margin-right: 0;        /* no extra spacing after the last icon */
-    margin-left: 5px;       /* spacing between text and right icon */
+    margin-right: 0;
+    margin-left: 5px;
     position: relative;
-    top: -3px;              /* match the same vertical adjustment */
+    top: -3px;  
     width: 35px;
 }
 
 .listen-title img.pause {
-    height: 37px;   /* slightly smaller if needed */
+    height: 37px;  
     width: auto;
     vertical-align: middle;
     position: relative;

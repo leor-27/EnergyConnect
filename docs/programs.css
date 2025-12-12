@@ -3,7 +3,6 @@ html, body {
     width: 100%;
 }
 
-/* Programs */
 * {
     margin: 0;
     padding: 0;
@@ -35,10 +34,10 @@ html, body {
 
 .header {
     background: url('images/header_photo.png') center/cover no-repeat;
-        min-height: 350px;      /* ✔ Minimum height but can grow if text expands */
+    min-height: 350px;      
     padding-bottom: 40px; 
     position: relative;
-     box-shadow: 0 10px 20px rgba(0, 0, 0, 4);
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 4);
 }
 
 .header-overlay {
@@ -62,7 +61,6 @@ html, body {
     margin-left: auto;
     margin-right: auto;
     line-height: 1.7;
-
 }
 
 .content {
@@ -82,7 +80,7 @@ html, body {
 .top-bar h2 {
     color: #991111;
     font-weight: 900;
-   font-size: clamp(12px, 4vw, 20px);
+    font-size: clamp(12px, 4vw, 20px);
 }
 
 .filter-btn {
@@ -134,7 +132,7 @@ html, body {
 .title-status h3 {
     font-size: 20px;
     font-weight: 900;
-     margin: 0;
+    margin: 0;
 }
 
 .status {
@@ -172,10 +170,10 @@ html, body {
     background-color: #1C5186;
     margin-top: 75px;
     height: 75px;
-    position: fixed;     /* fixes it relative to viewport */
-    bottom: 0;           /* stick to bottom */
-    left: 0;             /* align left */
-    width: 100%;         /* full width */
+    position: fixed;     
+    bottom: 0;           
+    left: 0;             
+    width: 100%;         
     z-index: 100; 
 }
 
@@ -202,7 +200,7 @@ html, body {
 
 @media (max-width: 768px) {
     .intro-programs {
-        font-size: 0.95rem; /* smaller on tablets/phones */
+        font-size: 0.95rem;
         padding-left: 30px;
         padding-right: 30px;
     }
@@ -210,7 +208,7 @@ html, body {
 
 @media (max-width: 480px) {
     .intro-programs {
-        font-size: 0.85rem; /* even smaller on mobile */
+        font-size: 0.85rem; 
         padding-left: 15px;
         padding-right: 15px;
     }
@@ -260,13 +258,4 @@ html, body {
 
 #menu-toggle:checked~.dropdown-menu {
     display: block;
-}
-
-.admin-home header, .admin-edit_programs header {
-    display: flex;
-    justify-content: space-between;
-    height: 108px;
-    padding: 20px 60px 20px 30px;
-    color: #FFFFFF;
-    background-color: #1C5186;
 }

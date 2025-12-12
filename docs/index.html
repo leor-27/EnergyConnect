@@ -8,7 +8,6 @@
 </head>
 <body class="landing-page">
 
-    <!-- Logo + Title -->
     <div class="landing-page-header">
         <div class="header-logo-row">
             <a href="index.html">
@@ -20,125 +19,118 @@
         <div class="header-line"></div>
     </div>
 
-    <!-- Main Welcome -->
     <h1 class="welcome-title">Welcome to <span>ENERGYCONNECT</span></h1>
 
-    <!-- Continue Box -->
-<!-- Continue Box -->
-<div class="continue">
+    <div class="continue">
 
-    <!-- Continue As (shown first) -->
-    <section id="main-continue" class="continue-section">
-        <h1>Continue as</h1>
+        <!-- shown first-->
+        <section id="main-continue" class="continue-section">
+            <h1>Continue as</h1>
 
-        <div class="button-row">
-            <a href="home.html" class="user-button">a User</a>
-            <button id="show-admin" class="admin-button" type="button">an Admin</button>
-        </div>
+            <div class="button-row">
+                <a href="home.html" class="user-button">a User</a>
+                <button id="show-admin" class="admin-button" type="button">an Admin</button>
+            </div>
+        </section>
+
+        <!-- admin login (hidden at first) -->
+        <section id="admin-login" class="admin-section" style="display:none;">
+            <h1 id="form-title">Sign In</h1>
+
+            <form id="admin-form" class="admin-form">
+
+            <label id="name-label" style="display: none;">Name</label> <!-- hidden at first also -->
+            <input type="text" id="name" style="display:none;">
+
+            <label id="input-label">Email / Username</label>
+            <input type="text" id="email">
+
+            <label id="password-label">Password</label>
+            <input type="password" id="password">
+
+            <div class="login">
+                <button type="submit" class="login-button" id="login-btn">Login</button>
+            </div>
+
+            <p class="google-login" id="google-login">Login using   
+                <a href="https://accounts.google.com/signin">
+                    <img src="images/google.png" class="google-icon">
+                </a>
+            </p>
+        </form>
     </section>
 
-    <!-- Admin Login (hidden at first) -->
-<section id="admin-login" class="admin-section" style="display:none;">
-    <h1 id="form-title">Sign In</h1>
+    <script>
+    const ADMIN_EMAIL = "admin@example.com";
+    const ADMIN_PASSWORD = "Admin123!";
 
-    <form id="admin-form" class="admin-form">
+    let step = "login";
 
-        <!-- Name field (hidden at first) -->
-        <label id="name-label" style="display:none;">Name</label>
-        <input type="text" id="name" style="display:none;">
+    document.getElementById("show-admin").addEventListener("click", () => {
+        document.getElementById("main-continue").style.display = "none";
+        const adminBox = document.getElementById("admin-login");
+        adminBox.style.display = "block";
+        document.querySelector(".continue").style.height = "410px";
+        adminBox.scrollIntoView({ behavior: "smooth" });
+    });
 
-        <label id="input-label">Email / Username</label>
-        <input type="text" id="email">
+    document.getElementById("admin-form").addEventListener("submit", function(e){
+        e.preventDefault();
 
-        <label id="password-label">Password</label>
-        <input type="password" id="password">
+        const inputField = document.getElementById("email");
+        const passwordField = document.getElementById("password");
+        const button = document.getElementById("login-btn");
+        const inputLabel = document.getElementById("input-label");
+        const formTitle = document.getElementById("form-title");
+        const googleLogin = document.getElementById("google-login");
 
-        <div class="login">
-            <button type="submit" class="login-button" id="login-btn">Login</button>
-        </div>
+        const inputVal = inputField.value.trim();
+        const passwordVal = passwordField.value.trim();
 
-        <p class="google-login" id="google-login">Login using   
-            <a href="https://accounts.google.com/signin">
-                <img src="images/google.png" class="google-icon">
-            </a>
-        </p>
-    </form>
-</section>
+        if (!inputVal || !passwordVal) {
+            alert("Please fill in both fields.");
+            return;
+        }
 
-<script>
-const ADMIN_EMAIL = "admin@example.com";
-const ADMIN_PASSWORD = "Admin123!";
+        if(step === "login") {
 
-let step = "login"; // track current step
+            if(inputVal === ADMIN_EMAIL && passwordVal === ADMIN_PASSWORD) {
 
-document.getElementById("show-admin").addEventListener("click", () => {
-    document.getElementById("main-continue").style.display = "none";
-    const adminBox = document.getElementById("admin-login");
-    adminBox.style.display = "block";
-    document.querySelector(".continue").style.height = "410px";
-    adminBox.scrollIntoView({ behavior: "smooth" });
-});
+                step = "set";
+                formTitle.innerText = "Set Your Credentials";
 
-document.getElementById("admin-form").addEventListener("submit", function(e){
-    e.preventDefault();
+                inputLabel.innerText = "Username";
+                inputField.value = "";
+                passwordField.value = "";
+                button.innerText = "Save Credentials";
 
-    const inputField = document.getElementById("email");
-    const passwordField = document.getElementById("password");
-    const button = document.getElementById("login-btn");
-    const inputLabel = document.getElementById("input-label");
-    const formTitle = document.getElementById("form-title");
-    const googleLogin = document.getElementById("google-login");
+                // makes the continue box taller
+                document.querySelector(".continue").style.height = "440px";
 
-    const inputVal = inputField.value.trim();
-    const passwordVal = passwordField.value.trim();
+                googleLogin.style.display = "none";
 
-    if (!inputVal || !passwordVal) {
-        alert("Please fill in both fields.");
-        return;
-    }
+                document.getElementById("name-label").style.display = "block";
+                document.getElementById("name").style.display = "block";
 
-if(step === "login") {
+            } else {
+                alert("Incorrect email or password.");
+            }
 
-    if(inputVal === ADMIN_EMAIL && passwordVal === ADMIN_PASSWORD) {
+        } else if(step === "set") {
 
-        step = "set";
-        formTitle.innerText = "Set Your Credentials";
+            const username = inputField.value.trim();
+            const password = passwordField.value.trim();
+            const nameVal = document.getElementById("name").value.trim();
 
-        inputLabel.innerText = "Username";
-        inputField.value = "";
-        passwordField.value = "";
-        button.innerText = "Save Credentials";
+            if(!username || !password || !nameVal) {
+                alert("Please fill in all fields: Name, Username, and Password.");
+                return;
+            }
 
-        // Make continue box taller for the Name field
-        document.querySelector(".continue").style.height = "440px";
-
-        googleLogin.style.display = "none";
-
-        // Show Name field
-        document.getElementById("name-label").style.display = "block";
-        document.getElementById("name").style.display = "block";
-
-    } else {
-        alert("Incorrect email or password.");
-    }
-
-} else if(step === "set") {
-
-    const username = inputField.value.trim();
-    const password = passwordField.value.trim();
-    const nameVal = document.getElementById("name").value.trim();
-
-    if(!username || !password || !nameVal) {
-        alert("Please fill in all fields: Name, Username, and Password.");
-        return;
-    }
-
-    alert(`Credentials Set:\nName: ${nameVal}\nUsername: ${username}`);
-    window.location.href = "admin-home.html";
-}
-
-});
-</script>
-
+            alert(`Credentials Set:\nName: ${nameVal}\nUsername: ${username}`);
+            window.location.href = "admin-home.html";
+        }
+    });
+    </script>
 </body>
 </html>

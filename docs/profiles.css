@@ -3,7 +3,6 @@ html, body {
     width: 100%;
 }
 
-/* Profiles */
 .header-profiles {
     background: url('images/profiles-main.png') center/cover no-repeat;
     height: 680px;
@@ -22,13 +21,12 @@ html, body {
     min-height: 250px;
 }
 
-/* DJ image */
 .dj-image {
     width: 425px;
     max-width: 100%;
     height: auto;
     display: block;
-    margin: 0 auto;                 /* centers image itself */
+    margin: 0 auto; /* centers image itself */
     padding-top: 10px;
 }
 
@@ -42,7 +40,6 @@ html, body {
     height: auto;
 }
 
-/* Mobile adjustments */
 @media (max-width: 600px) {
     .dj-section {
         flex-direction: column;
@@ -82,16 +79,15 @@ html, body {
 
 .description p {
     text-align: center;
-    padding: 30px 20px;       /* normal padding for all screens */
+    padding: 30px 20px;      
     font-weight: 350;
     font-size: 18px;
-    max-width: 900px;         /* keeps nice readable width on desktops */
-    margin: 0 auto;           /* centers horizontally */
+    max-width: 900px;         
+    margin: 0 auto;  /* centers horizontally */
 }
 
-
 .alldjs:hover {
-transform: scale(1.02);
+    transform: scale(1.02);
 }
 
 .alldjs {
@@ -100,20 +96,16 @@ transform: scale(1.02);
     width: 918.5px;
     height: auto;
     position: relative;
-    top: 50px; /* moves image down inside header */
+    top: 50px; 
     cursor: pointer;
 }
-
-/* .profiles-page section {
-    display: none;
-} */
 
 .profiles-page section:target {
     display: block;
 }
 
 .dj-section {
-    position: relative; /* make buttons relative to this section */
+    position: relative; 
     width: 100%;
     display: flex;
     justify-content: center;
@@ -123,7 +115,6 @@ transform: scale(1.02);
     text-align: center;
 }
 
-/* Left button */
 .left-button {
     position: absolute;
     top: 50%;
@@ -138,11 +129,10 @@ transform: scale(1.02);
     background: none;
 }
 
-/* Right button */
 .right-button {
     position: absolute;
     top: 50%;
-    right: calc(50% - 425px / 2 - 20px); /* 425px = image width, 20px = gap */
+    right: calc(50% - 425px / 2 - 20px); /* same with the left button  */
     transform: translateY(-50%);
     padding: 12px 25px;
     border: none;
@@ -152,10 +142,6 @@ transform: scale(1.02);
     z-index: 20;
     background: none;
 }
-
-/* .profiles-page:not(:has(section:target)) #main, #main-description {
-    display: block;
-} */
 
 .hosts-profile section a {
     text-decoration: none;
@@ -167,7 +153,7 @@ transform: scale(1.02);
     }
 
     .right-button {
-        right: calc(45% - 425px / 2 - 60px); /* bigger gap for large screens */
+        right: calc(45% - 425px / 2 - 60px);
     }
 }
 
@@ -223,10 +209,10 @@ transform: scale(1.02);
     background-color: #1C5186;
     margin-top: 75px;
     height: 75px;
-    position: fixed;     /* fixes it relative to viewport */
-    bottom: 0;           /* stick to bottom */
-    left: 0;             /* align left */
-    width: 100%;         /* full width */
+    position: fixed;    
+    bottom: 0;          
+    left: 0;            
+    width: 100%;    
     z-index: 100; 
 }
 
@@ -253,7 +239,7 @@ transform: scale(1.02);
 
 @media (max-width: 768px) {
     .intro-programs {
-        font-size: 0.95rem; /* smaller on tablets/phones */
+        font-size: 0.95rem; 
         padding-left: 30px;
         padding-right: 30px;
     }
@@ -261,7 +247,7 @@ transform: scale(1.02);
 
 @media (max-width: 480px) {
     .intro-programs {
-        font-size: 0.85rem; /* even smaller on mobile */
+        font-size: 0.85rem;
         padding-left: 15px;
         padding-right: 15px;
     }

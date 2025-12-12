@@ -65,7 +65,6 @@
                       creating a serene and dreamlike atmosphere as the city rests.</p>
                 </div>
             </div>
-
         </div>
     </section>
 
@@ -74,100 +73,94 @@
     </div>
 
     <script>
-      function formatToAMPM(time24) {
-        const [hour, minute] = time24.split(':');
-        const h = (hour % 12) || 12;
-        return `${h}:${minute} ${hour >= 12 ? 'PM' : 'AM'}`;
-      }
-
-      function isProgramOnline(days, startT, endT) {
-        const now = new Date();
-        const [startHour, startMinute] = startT.split(':').map(Number);
-        const [endHour, endMinute] = endT.split(':').map(Number);
-
-        const start = new Date(now); start.setHours(startHour, startMinute, 0);
-        const end = new Date(now);   end.setHours(endHour, endMinute, 0);
-        if (end < start) end.setDate(end.getDate() + 1); // spans midnight
-
-        const map = { WEEKDAYS:[1,2,3,4,5], SAT:[6], SUN:[0] };
-        const correctDay = days.some(d => map[d]?.includes(now.getDay()));
-
-        return now >= start && now <= end && correctDay;
-      }
-
-      Promise.all([
-        fetch('http://localhost:8000/backend/fetch.php?table=PROGRAM').then(r=>r.json()),
-        fetch('http://localhost:8000/backend/fetch.php?table=Program_Day_Type').then(r=>r.json()),
-        fetch('http://localhost:8000/backend/fetch.php?table=Day_Type').then(r=>r.json()),
-        fetch('http://localhost:8000/backend/fetch.php?table=Program_Anchor_Assignment').then(r=>r.json()),
-        fetch('http://localhost:8000/backend/fetch.php?table=DJ_Profile').then(r=>r.json())
-      ]).then(([programs, programDayTypes, dayTypes, assignments, djs]) => {
-
-        const list = document.querySelector('.program-list');
-
-        const timeToSec = t => {
-          const [h,m,s] = t.split(':').map(Number);
-          return (h||0)*3600 + (m||0)*60 + (s||0);
-        };
-
-        const getDays = id =>
-          programDayTypes
-            .filter(p=>p.PROGRAM_ID===id)
-            .map(p=>dayTypes.find(d=>d.ID===p.DAY_TYPE_ID)?.DAY_TYPE);
-
-        const getDJs = id =>
-          assignments.filter(a=>a.PROGRAM_ID===id)
-                    .map(a=>{
-                      const dj=djs.find(d=>d.ID===a.DJ_ID);
-                      return dj?.STAGE_NAME || dj?.REAL_NAME?.toUpperCase();
-                    }).join(', ');
-
-        function render(filter='title'){
-          list.innerHTML = '';
-          let data = [...programs];
-
-          //  Filtering (no more show all — default is A-Z)
-          if(['weekdays','sat','sun'].includes(filter)){
-            const map={weekdays:'WEEKDAYS',sat:'SAT',sun:'SUN'};
-            data = data.filter(p => getDays(p.ID).includes(map[filter]));
-          }
-
-          // Sorting
-          // Sorting
-if (filter === 'time' || ['weekdays', 'sat', 'sun'].includes(filter)) {
-    data.sort((a, b) => timeToSec(a.START_TIME) - timeToSec(b.START_TIME)); // sort by time
-} else {
-    data.sort((a,b)=> (a.TITLE||'').localeCompare(b.TITLE||'')); // A–Z
-}
-
-
-          data.forEach(p=>{
-            const days = getDays(p.ID);
-            const djsList = getDJs(p.ID);
-            const online = isProgramOnline(days,p.START_TIME,p.END_TIME);
-
-            list.innerHTML += `
-            <div class="program-card">
-              <div class="card-left">
-                <div class="title-status">
-                  <h3>${p.TITLE}</h3>
-                  <span class="status ${online?'online':'offline'}">${online?'ON AIR':'OFFLINE'}</span>
-                </div>
-                <p class="schedule">${formatToAMPM(p.START_TIME)}–${formatToAMPM(p.END_TIME)} | ${days.join(', ')}</p>
-                <p class="hosts">${djsList || p.TYPE}</p>
-              </div>
-              <div class="card-right">
-                <p>${p.DESCRIPTION || 'Program description here'}</p>
-              </div>
-            </div>`;
-          });
+        function formatToAMPM(time24) {
+          const [hour, minute] = time24.split(':');
+          const h = (hour % 12) || 12;
+          return `${h}:${minute} ${hour >= 12 ? 'PM' : 'AM'}`;
         }
 
-        render('title');
+        function isProgramOnline(days, startT, endT) {
+          const now = new Date();
+          const [startHour, startMinute] = startT.split(':').map(Number);
+          const [endHour, endMinute] = endT.split(':').map(Number);
 
-        document.getElementById('filter-select').addEventListener('change', e => render(e.target.value));
-    })
+          const start = new Date(now); start.setHours(startHour, startMinute, 0);
+          const end = new Date(now);   end.setHours(endHour, endMinute, 0);
+          if (end < start) end.setDate(end.getDate() + 1); // spans midnight
+
+          const map = { WEEKDAYS:[1,2,3,4,5], SAT:[6], SUN:[0] };
+          const correctDay = days.some(d => map[d]?.includes(now.getDay()));
+
+          return now >= start && now <= end && correctDay;
+        }
+
+        Promise.all([
+          fetch('http://localhost:8000/backend/fetch.php?table=PROGRAM').then(r=>r.json()),
+          fetch('http://localhost:8000/backend/fetch.php?table=Program_Day_Type').then(r=>r.json()),
+          fetch('http://localhost:8000/backend/fetch.php?table=Day_Type').then(r=>r.json()),
+          fetch('http://localhost:8000/backend/fetch.php?table=Program_Anchor_Assignment').then(r=>r.json()),
+          fetch('http://localhost:8000/backend/fetch.php?table=DJ_Profile').then(r=>r.json())
+        ]).then(([programs, programDayTypes, dayTypes, assignments, djs]) => {
+
+          const list = document.querySelector('.program-list');
+
+          const timeToSec = t => {const [h,m,s] = t.split(':').map(Number);
+            return (h||0)*3600 + (m||0)*60 + (s||0);
+          };
+
+          const getDays = id => programDayTypes
+              .filter(p=>p.PROGRAM_ID===id)
+              .map(p=>dayTypes.find(d=>d.ID===p.DAY_TYPE_ID)?.DAY_TYPE);
+
+          const getDJs = id => assignments.filter(a=>a.PROGRAM_ID===id)
+                      .map(a => {const dj=djs.find(d=>d.ID===a.DJ_ID);
+                        return dj?.STAGE_NAME || dj?.REAL_NAME?.toUpperCase();
+                      }).join(', ');
+
+          function render(filter='title') {
+            list.innerHTML = '';
+            let data = [...programs];
+
+            //  Filtering (no more show all — default is A-Z)
+            if(['weekdays','sat','sun'].includes(filter)) {
+              const map={weekdays:'WEEKDAYS',sat:'SAT',sun:'SUN'};
+              data = data.filter(p => getDays(p.ID).includes(map[filter]));
+            }
+
+            // Sorting
+            if (filter === 'time' || ['weekdays', 'sat', 'sun'].includes(filter)) {
+                data.sort((a, b) => timeToSec(a.START_TIME) - timeToSec(b.START_TIME)); // sort by time
+            } else {
+                data.sort((a,b)=> (a.TITLE||'').localeCompare(b.TITLE||'')); // A–Z
+            }
+
+            data.forEach(p=>{
+              const days = getDays(p.ID);
+              const djsList = getDJs(p.ID);
+              const online = isProgramOnline(days,p.START_TIME,p.END_TIME);
+
+                list.innerHTML += `
+                <div class="program-card">
+                  <div class="card-left">
+                    <div class="title-status">
+                      <h3>${p.TITLE}</h3>
+                      <span class="status ${online?'online':'offline'}">${online?'ON AIR':'OFFLINE'}</span>
+                    </div>
+                    <p class="schedule">${formatToAMPM(p.START_TIME)}–${formatToAMPM(p.END_TIME)} | ${days.join(', ')}</p>
+                    <p class="hosts">${djsList || p.TYPE}</p>
+                  </div>
+                  <div class="card-right">
+                    <p>${p.DESCRIPTION || 'Program description here'}</p>
+                  </div>
+                </div>`;
+                });
+            }
+            render('title');
+
+            document.getElementById('filter-select').addEventListener('change', e => render(e.target.value));
+        })
         .catch(err => console.error(err));
     </script>
+    
 </body>
 </html>

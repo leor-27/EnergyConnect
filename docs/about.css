@@ -1,5 +1,4 @@
 /* =>> LOCAL FONTS */
-    /* Poppins */
     @font-face {
         font-family: 'Poppins';
         src: url('fonts/poppins/Poppins-Light.woff2') format('woff2');
@@ -71,7 +70,6 @@
         font-style: normal;
         font-display: swap; }
 
-/* About Page */
 html, body {
     height: auto;
     overflow-x: hidden;
@@ -119,7 +117,7 @@ html, body {
 	background-color: #1C5186;
 	padding: 8px 13px; }
 
-/* About Page: Header */
+/* Header */
 .about .logo {
     position: absolute;   
     top: 15px;           
@@ -136,7 +134,7 @@ html, body {
 	font-weight: 500;
 	font-size: 24px; }
 
-/* About Page: Main */
+/* Main */
 .about main h2 {
 	font-weight: bolder;
 	font-size: 64px;
@@ -177,9 +175,9 @@ html, body {
 	padding: 20px;
 	flex: 1;
 	min-width: 0; 
-    max-width: 680px;      /* prevents the text block from growing too wide */
-    padding-right: 24px;   /* small inward padding so text doesn't touch the card edge */
-    margin: 0;             /* keep it aligned inside the card */
+    max-width: 680px;      
+    padding-right: 24px;
+    margin: 0;          
     box-sizing: border-box; }
 
 .about .article-card1 .iframe-container {
@@ -243,9 +241,8 @@ html, body {
 @font-face {
 	font-display: block;
 	font-family: "bootstrap-icons";
-	src:
-		url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/fonts/bootstrap-icons.woff2") format("woff2"),
-		url("fonts/icons/bootstrap-icons.woff2") format("woff2"); } 
+	src: url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/fonts/bootstrap-icons.woff2") format("woff2"),
+		 url("fonts/icons/bootstrap-icons.woff2") format("woff2"); } 
 
 .bi::before {
 	display: inline-block;
@@ -259,14 +256,19 @@ html, body {
 
 .bi-facebook::before {
 	content: "\f344"; }
+
 .bi-tiktok::before {
 	content: "\f7ae"; }
+
 .bi-youtube::before {
 	content: "\f62b"; }
+
 .bi-envelope::before {
 	content: "\f32f"; }
+
 .bi-telephone::before {
 	content: "\f5c1"; }
+	
 .bi-geo-alt-fill::before {
 	content: "\f3e8"; }
 
@@ -297,8 +299,7 @@ html, body {
 	flex: 1;
 	min-width: 300px; }
 
-.about .social-items,
-.about .contact-items {
+.about .social-items, .about .contact-items {
 	display: flex;
 	align-items: center;
 	gap: 15px;
@@ -306,72 +307,62 @@ html, body {
 	color: white;
 	text-decoration: none; }
 
-.about .social-items p,
-.about .contact-items p,
-.about .social-items i,
-.about .contact-items i {
+.about .social-items p, .about .contact-items p,
+.about .social-items i, .about .contact-items i {
 	pointer-events: auto;
 	cursor: pointer;
 	margin: 0, }
     
-.about .social-items:hover p,
-.about .contact-items:hover p,
-.about .social-items:hover i,
-.about .contact-items:hover i {
-	opacity: 0.8;}
+.about .social-items:hover p, .about .contact-items:hover p,
+.about .social-items:hover i, .about .contact-items:hover i {
+	opacity: 0.8; }
 
 .about .footer-icon .bi-facebook {
 	color: #FFFFFF;
-	font-size: 35px;}
+	font-size: 35px; }
 
 .about .footer-icon .tiktok-icon {
 	display: flex;
 	align-items: center;
 	justify-content: center;
 	width: 35px;
-	height: 35px;}
-
-.tiktok-svg {
-	width: 35px;
-	height: 35px;
-	filter: brightness(0) invert(1);
-	display: block;}
+	height: 35px; }
 
 .about .footer-icon .bi-youtube {
 	color: #FFFFFF;
-	font-size: 35px;}
+	font-size: 35px; }
 
 .about .footer-icon .bi-envelope {
 	color: #FFFFFF;
-	font-size: 35px;}
+	font-size: 35px; }
 
 .about .footer-icon .bi-telephone {
 	color: #FFFFFF;
-	font-size: 35px;}
+	font-size: 35px; }
 
 .about .footer-icon .bi-geo-alt-fill {
 	color: #FFFFFF;
-	font-size: 35px;}
+	font-size: 35px; }
 
 .about footer h2 {
 	font-size: 50px;
-	font-weight: bold;}
+	font-weight: bold; }
 
 .about footer p {
 	font-family: 'Kantumruy Pro', sans-serif;
 	font-weight: 450;
-	font-size: 14px;}
+	font-size: 14px; }
 
 .about footer a {
 	color: #FFFFFF;
-	text-decoration: none;}
+	text-decoration: none; }
 
 .about .footer-details {
 	display: flex;
 	justify-content: space-between;
 	gap: 100px;
 	margin-top: 13px;
-	padding: 0px 20px;}
+	padding: 0px 20px; }
     
 .about .social-items,
 .contact-items {
@@ -384,7 +375,7 @@ html, body {
 .contact-items p {
 	pointer-events: auto; }
 
-/* About Page: Footer */
+/* Footer */
 .about .footer {
 	background-color: #1C5186;
 	margin-top: 75px;
@@ -504,7 +495,7 @@ html, body {
 
 	.about .footer footer {
 		font-size: 12px;
-		padding-top: 25px;  }}
+		padding-top: 25px;  } }
 
 @media (max-width: 400px) {
 	.about main h2 {
@@ -524,10 +515,63 @@ html, body {
 
 	.about .footer footer {
 		font-size: 11px;
-		padding-top: 22px; }}
+		padding-top: 22px; } }
 
-    .footer-section {
-    padding-bottom: 40px; /* extra space so last line is visible */
-    padding-top: 40px;    /* optional, for clean spacing */
-    min-height: auto;     /* allow it to grow naturally */
-}
+.footer-section {
+	padding-bottom: 40px;
+	padding-top: 40px; 
+	min-height: auto; }
+
+#menu-toggle {
+    display: none; }
+
+.menu-icon {
+    font-size: 32px;
+    cursor: pointer;
+    user-select: none;
+    margin-right: 30px;
+    position: absolute;
+    right: 0%;
+    top: 20px;
+    color: white; }
+
+.dropdown-menu {
+    position: absolute;
+    top: 75px;
+    right: 20px;
+    width: 150px;
+    background: white;
+    border-radius: 5px;
+    padding: 10px 0;
+    display: none;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    z-index: 99; }
+
+.dropdown-menu a {
+    display: block;
+    padding: 12px 18px;
+    text-decoration: none;
+    color: black;
+    font-size: 17px;
+    text-align: center;
+    font-weight: 501; }
+
+.dropdown-menu a:hover {
+    background: #e0eefc; }
+
+#menu-toggle:checked~.dropdown-menu {
+    display: block; }
+
+.tiktok-svg {
+    width: 1em; /* scales with font-size like other icons */
+    height: 1em;
+    display: inline-block;
+    vertical-align: -0.125em; /* matches bootstrap icon alignment */
+    filter: brightness(0) invert(1); /* makes it white */
+    object-fit: contain; }
+
+.about .social-items p {
+    margin: 0;
+    line-height: 1;
+    display: flex;
+    align-items: center; }
