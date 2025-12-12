@@ -4,11 +4,11 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
-    <link rel="stylesheet" href="styles.css">
+    <link rel="stylesheet" href="home.css">
 </head>
 <body>
     <div class="header-home">
-        <a href = "home.html">
+        <a href = "index.html">
             <img src="images/logo.png" alt="Energy FM 106.3 Naga Logo" class="logo">
         </a>
 
@@ -111,10 +111,10 @@ const title = btn.querySelector(".listen-title");
 let isPlaying = false;
 
 function setPlayState() {
-    title.innerHTML = `<img src = "images/play_button.svg" class="play">    LISTEN LIVE HERE   <img src="images/listen_live.svg">`;
+    title.innerHTML = `<img src="images/play_button.svg" class="play"> LISTEN LIVE HERE <img src="images/listen_live.svg">`;
 }
 function setPauseState() {
-    title.innerHTML = `<img src = "images/pause_button.svg"  class="pause">    PAUSE LIVE STREAM   <img src="images/listen_live.svg">`;
+    title.innerHTML = `<img src="images/pause_button.svg" class="pause"> PAUSE LIVE STREAM <img src="images/listen_live.svg">`;
 }
 
 btn.addEventListener("click", () => {
@@ -123,19 +123,24 @@ btn.addEventListener("click", () => {
 });
 setPlayState();
 
-// ========================
+// ============================
 // FETCH PROGRAM DATA
-// ========================
+// ============================
 Promise.all([
-    fetch('http://localhost:8000/backend/fetch.php?table=PROGRAM').then(r=>r.json()),
+    fetch('http://localhost:8000/backend/fetch.php?table=PROGRAM').then(r => r.json()),
     fetch('http://localhost:8000/backend/fetch.php?table=Program_Day_Type').then(r => r.json()),
-    fetch('http://localhost:8000/backend/fetch.php?table=Day_Type').then(r => r.json())
-]).then(([programs, programDayTypes, dayTypes]) => {
+    fetch('http://localhost:8000/backend/fetch.php?table=Day_Type').then(r => r.json()),
+    fetch('http://localhost:8000/backend/fetch.php?table=Program_Anchor_Assignment').then(r => r.json()),
+    fetch('http://localhost:8000/backend/fetch.php?table=DJ_Profile').then(r => r.json())
+]).then(([programs, programDayTypes, dayTypes, assignments, djs]) => {
     const subtitle = document.querySelector(".listen-subtitle");
+    const container = document.querySelector(".programs");
+    container.innerHTML = ""; // clear cards
+
     const now = new Date();
     const day = now.getDay();
     const nowSec = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
-    const map = { WEEKDAYS:[1,2,3,4,5], SAT:[6], SUN:[0] };
+    const map = { WEEKDAYS: [1,2,3,4,5], SAT: [6], SUN: [0] };
 
     const formatToSec = t => {
         const [h,m,s] = t.split(':').map(Number);
@@ -145,8 +150,20 @@ Promise.all([
     const getDays = id =>
         programDayTypes
             .filter(p => p.PROGRAM_ID == id)
-            .map(p => dayTypes.find(d => d.ID == p.DAY_TYPE_ID)?.DAY_TYPE);
+            .map(p => dayTypes.find(d => d.ID == p.DAY_TYPE_ID)?.DAY_TYPE)
+            .filter(Boolean);
 
+    const getHosts = id =>
+        assignments
+            .filter(a => a.PROGRAM_ID == id)
+            .map(a => {
+                const dj = djs.find(d => d.ID == a.DJ_ID);
+                return dj?.STAGE_NAME || dj?.REAL_NAME?.toUpperCase();
+            })
+            .filter(Boolean)
+            .join(", ");
+
+    // ======= Currently On Air / Next Program =======
     const isNowOnAir = program => {
         const start = formatToSec(program.START_TIME);
         const end = formatToSec(program.END_TIME);
@@ -165,8 +182,36 @@ Promise.all([
             .find(p => formatToSec(p.START_TIME) > nowSec);
         subtitle.textContent = upcoming ? `Next: ${upcoming.TITLE} at ${upcoming.START_TIME}` : "No Active Program";
     }
-})
-.catch(err => console.error(err));
+
+    // ======= Featured Programs with Hosts =======
+    programs
+        .map(p => ({
+            ...p,
+            hosts: getHosts(p.ID)
+        }))
+        .filter(p => p.hosts.length > 0) // only programs with hosts
+        .slice(0, 6) // limit to 6 programs
+        .forEach(program => {
+            const card = document.createElement("div");
+            card.className = "program-card-home";
+
+            const days = getDays(program.ID).join(", ");
+
+            card.innerHTML = `
+                <div class="program-header">${program.TITLE} | ${days}</div>
+                <div>Time: ${program.START_TIME} – ${program.END_TIME}</div>
+                <div>Hosts: ${program.hosts}</div>
+            `;
+
+            card.addEventListener("click", () => {
+    window.location.href = "programs.html";
+});
+
+            container.appendChild(card);
+        });
+
+}).catch(err => console.error(err));
+
 </script>
 
     </body>
@@ -174,3 +219,4 @@ Promise.all([
         <footer>Privacy Policy | Energy FM © 2025</footer>
     </div>
 </html>
+

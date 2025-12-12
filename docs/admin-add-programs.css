@@ -249,6 +249,7 @@ hr {
 
 .card-actions span:hover {
     color: var(--energy-blue); 
+    cursor: pointer;
 }
 
 /* --- New Item Form Section (Bottom) --- */

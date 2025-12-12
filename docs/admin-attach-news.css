@@ -142,6 +142,7 @@ h1 {
     transition: background-color 0.2s, border-color 0.2s; 
     width: auto; 
 }
+
 /* Attach News Button */
 .attach-news-button {
     background-color: var(--energy-blue); 
@@ -175,7 +176,7 @@ hr {
 }
 
 /* Add Items */
-.add-item-form {
+/* .add-item-form {
     margin-top: 40px;
     padding: 20px 0;
 }
@@ -191,7 +192,7 @@ hr {
 }
 
 /* Base style for all form elements */
-.add-item-form input[type="text"], 
+/* .add-item-form input[type="text"], 
 .add-item-form textarea, 
 .add-item-form input[type="date"],
 .add-item-form input[type="time"],
@@ -206,31 +207,62 @@ hr {
 }
 
 /* Hover/Focus effect */
-.add-item-form input:focus, 
+/* .add-item-form input:focus, 
 .add-item-form textarea:focus,
 .add-item-form select:focus {
     border-color: var(--energy-blue); 
     outline: none; 
     box-shadow: 0 0 5px rgba(28, 81, 134, 0.2); 
+}  */
+
+.two-column-container {
+    display: flex;
+    gap: 20px;   
+    width: 100%;
+}
+
+.left-column, .right-column {
+    flex: 1; 
+    display: flex;
+    flex-direction: column; 
+}
+
+.left-column input,
+.right-column input {
+    width: 50%;
+    padding: 5px;
+    box-sizing: border-box; 
+}
+
+#image {
+    box-sizing: border-box;
+    width: 300px;
 }
 
 #description {
-    flex-grow: 1; 
+    /* flex-grow: 1; 
     resize: none;
-    height: 100px;
+    height: 100px; */
+    resize: none;
+    width: 500px;
+    height: 160px;
+    margin-top: 27%;
 }
 
 .add-button {
     background-color: var(--energy-blue); 
     color: white;
     border: none;
-    padding: 12px 25px; 
+    width: 25%;
+    padding: 12px; 
     border-radius: 5px; 
-    font-weight: bold;
+    font-weight: 600;
     cursor: pointer;
-    align-self: flex-start;
+    align-self: flex-end;
+    text-align: center;
     height: 44px; 
-    margin-top: 0; 
+    /* margin-top: 0; */
+    text-decoration: none;
 }
 
 /*ATTACH NEWS PART*/

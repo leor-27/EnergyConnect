@@ -1,4 +1,6 @@
-<!-- Rica -->
+<?php
+include '../backend/db.php';;
+?>
 
 <!DOCTYPE html>
 <html lang="en">
@@ -8,6 +10,7 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title> Energy News </title>
   <link rel="stylesheet" href="news.css">
+  <script src="news-behavior.js"></script>
 </head>
 
 <body>
@@ -89,6 +92,34 @@
 
     <!-- News Section -->
     <div class="news-section">
+
+<?php
+$sql = "SELECT * FROM News";
+$result = $conn->query($sql);
+
+if ($result->num_rows > 0) {
+    while($row = $result->fetch_assoc()) {
+        echo '
+        <div class="news-card">
+            <a href="' . $row["SOURCE_URL"] . '" target="_blank">
+                <img src="' . $row["HEADLINE_IMAGE_PATH"] . '" alt="news_image">
+            </a>
+            <h6>' . $row["HEADLINE"] . '</h6>
+            <div class="news-company">
+                <p><b>' . $row["ORGANIZATION"] . '</b></p>
+                <div class="ellipse"></div>
+                <p>' . $row["DATE_POSTED"] . '</p>
+            </div>
+            <p>' . $row["SUMMARY"] . '</p>
+            <div class="author-category-section">
+                <p>By: <a href="' . $row["SOURCE_URL"] . '" target="_blank">' . $row["AUTHOR"] . '</a></p>
+            </div>
+        </div>';
+    }
+} else {
+    echo "No news inserted yet.";
+}
+?>
 
       <div class="news-card">
         
@@ -216,59 +247,9 @@
 
   <!-- Footer -->
   <div class="footer">
-    <footer>Privacy Policy | Energy FM © 2025</footer>
+    <footer>Privacy Policy | Energy FM © 2010</footer>
   </div>
 
-  <script>
-document.addEventListener("DOMContentLoaded", () => {
-    const newsSection = document.querySelector(".news-section");
-
-    fetch('http://localhost:8000/backend/fetch.php?table=News')
-        .then(response => response.json())
-        .then(data => {
-            if (!Array.isArray(data) || data.length === 0) {
-                newsSection.innerHTML = "<p>No news inserted yet.</p>";
-                return;
-            }
-
-            data.forEach(row => {
-                const card = document.createElement("div");
-                card.classList.add("news-card");
-
-                card.innerHTML = `
-                    <a href="${row.SOURCE_URL}" target="_blank">
-                        <img src="${row.HEADLINE_IMAGE_PATH}" alt="news_image">
-                    </a>
-
-                    <h6>${row.HEADLINE}</h6>
-
-                    <div class="news-company">
-                        <p><b>${row.ORGANIZATION}</b></p>
-                        <div class="ellipse"></div>
-                        <p>${row.DATE_POSTED}</p>
-                    </div>
-
-                    <p>${row.SUMMARY}</p>
-
-                    <div class="author-category-section">
-                        <p>
-                            By: 
-                            <a href="${row.SOURCE_URL}" target="_blank">
-                                ${row.AUTHOR}
-                            </a>
-                        </p>
-                    </div>
-                `;
-
-                newsSection.appendChild(card);
-            });
-        })
-        .catch(error => {
-            console.error("Error fetching news:", error);
-            newsSection.innerHTML = "<p>Error loading news.</p>";
-        });
-});
-</script>
 </body>
 
 </html>
