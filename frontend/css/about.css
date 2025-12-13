@@ -455,8 +455,9 @@ html, body {
 		min-width: auto; }
 
 	.about .header-text h1 {
-		right: 60px;
-		font-size: 20px; }
+		right: 70px;
+		font-size: 22px; 
+		}
 
 	/* Limit image height on mobile */
 	.about .article-img img {
@@ -575,3 +576,4 @@ html, body {
     line-height: 1;
     display: flex;
     align-items: center; }
+	

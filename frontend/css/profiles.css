@@ -4,7 +4,7 @@ html, body {
 }
 
 .header-profiles {
-    background: url('images/profiles-main.png') center/cover no-repeat;
+    background: url('../images/profiles-main.png') center/cover no-repeat;
     height: 680px;
     position: relative;
     box-shadow: 0 10px 20px rgba(0, 0, 0, 4);

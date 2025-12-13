@@ -33,7 +33,7 @@ html, body {
 }
 
 .header {
-    background: url('images/header_photo.png') center/cover no-repeat;
+    background: url('../images/header_photo.png') center/cover no-repeat;
     min-height: 350px;      
     padding-bottom: 40px; 
     position: relative;
@@ -258,4 +258,10 @@ html, body {
 
 #menu-toggle:checked~.dropdown-menu {
     display: block;
+}
+
+.online {
+    background: #FFEC40; /* yellow */
+    color: #000;
+    font-weight: 700;
 }

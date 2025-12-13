@@ -14,7 +14,7 @@
 }
 
 .header {
-    background: url("images/header_photo.png") center/cover no-repeat;
+    background: url("../images/header_photo.png") center/cover no-repeat;
     height: auto;
     min-height: 350px;
     position: relative;

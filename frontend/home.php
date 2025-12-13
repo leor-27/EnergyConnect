@@ -1,3 +1,7 @@
+<?php
+include '../backend/db.php';;
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
@@ -52,16 +56,34 @@
             <div>Time: 12:00 AM – 5:00 AM</div>
             <div>Music Only 🎧</div>
         </div> -->
+
     </div>
 
     <div class="section-title-news">LATEST NEWS UPDATES</div>
     <div class="news">
-        <div class="news-card-home">
-            <img src = "images/typhoon_photo.png" width = "325" height = "300">
-            <div class="news-header">BAGYONG UWAN 2025</div>
-            <div>Inquirer News | November 8, 2025</div>
-            <div>By: Keith Clores</div>
-        </div>
+        <?php
+    $sql = "SELECT * FROM News ORDER BY DATE_POSTED DESC LIMIT 5";
+    $result = $conn->query($sql);
+
+    if ($result->num_rows > 0) {
+        // Output data of each row
+        while($row = $result->fetch_assoc()) {
+            echo '
+            <div class="news-card-home">
+                <a href="' . $row["SOURCE_URL"] . '" target="_blank">
+                    <img src="' . $row["HEADLINE_IMAGE_PATH"] . '" width="325" height="300" alt="news_image">
+                </a>
+                <div class="news-header">' . $row["HEADLINE"] . '</div>
+                <div>' . $row["ORGANIZATION"] . ' | ' . $row["DATE_POSTED"] . '</div>
+                <div>By: ' . $row["AUTHOR"] . '</div>
+            </div>';
+        }
+    } else {
+        echo "No news inserted yet.";
+    }
+
+    $conn->close();
+    ?>
 
         <div class="news-card-home">
             <img src = "images/typhoon_photo.png" width = "325" height = "300">
