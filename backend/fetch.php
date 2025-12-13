@@ -13,7 +13,8 @@ $table = $_GET['table'];
 $column = isset($_GET['column']) ? $_GET['column'] : '*';
 
 // Validate table and column names (optional but recommended!)
-$allowedTables = ['Day_Type', 'Program_Anchor_Assignment', 'PROGRAM', 'DJ_Profile', 'Program_Day_Type', 'Employee', 'News'];
+$allowedTables = ['Audio_Broadcast_Log', 'Audio_Broadcast_Song_Entry', 'Category', 'Day_Type', 'DJ_Profile', 'Employee', 'News', 
+                    'News_Category', 'PROGRAM', 'Program_Anchor_Assignment', 'Program_Day_Type'];
 if (!in_array($table, $allowedTables)) {
     echo json_encode(["error" => "Table not allowed"]);
     exit;
