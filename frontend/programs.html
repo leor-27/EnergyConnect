@@ -95,7 +95,7 @@
         }
 
         Promise.all([
-          fetch('http://localhost:8000/backend/fetch.php?table=PROGRAM').then(r=>r.json()),
+          fetch('http://localhost:8000/backend/fetch.php?table=Program').then(r=>r.json()),
           fetch('http://localhost:8000/backend/fetch.php?table=Program_Day_Type').then(r=>r.json()),
           fetch('http://localhost:8000/backend/fetch.php?table=Day_Type').then(r=>r.json()),
           fetch('http://localhost:8000/backend/fetch.php?table=Program_Anchor_Assignment').then(r=>r.json()),

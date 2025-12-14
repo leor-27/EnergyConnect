@@ -32,12 +32,12 @@ include '../backend/db.php';;
         <h2>BASTA ENERGY, NUMBER 1 PIRMI!</h2>
 
         <div class="hosts-home">
-            <img style="width: 850px; height: auto;" src="images/EFDJS.png">
+            <img style="width: 850px; height: auto;" src="images/EFDJS.png" alt="Main DJs Photo">
         </div>
 
         <div class="listen">
             <button id="liveBtn" class="listen-button">
-                <div class="listen-title"><img src = "images/play_button.svg" class = "play">LISTEN LIVE HERE   <img src = "images/listen_live.svg"></div>
+                <div class="listen-title"><img src = "images/play_button.svg" class = "play" alt="Play Button">LISTEN LIVE HERE   <img src = "images/listen_live.svg" alt="Listen Live Icon"></div>
                 <div class="listen-subtitle">On Air: Loading...</div>
             </button>
 
@@ -71,7 +71,7 @@ include '../backend/db.php';;
             echo '
             <div class="news-card-home">
                 <a href="' . $row["SOURCE_URL"] . '" target="_blank">
-                    <img src="' . $row["HEADLINE_IMAGE_PATH"] . '" width="325" height="300" alt="news_image">
+                    <img src="' . $row["HEADLINE_IMAGE_PATH"] . '" width="325" height="300" alt="News Image">
                 </a>
                 <div class="news-header">' . $row["HEADLINE"] . '</div>
                 <div>' . $row["ORGANIZATION"] . ' | ' . $row["DATE_POSTED"] . '</div>
@@ -86,21 +86,21 @@ include '../backend/db.php';;
     ?>
 
         <div class="news-card-home">
-            <img src = "images/typhoon_photo.png" width = "325" height = "300">
+            <img src = "images/typhoon_photo.png" width = "325" height = "300" alt="Bagyong Uwan">
             <div class="news-header">BAGYONG UWAN 2025</div>
             <div>Inquirer News | November 8, 2025</div>
             <div>By: Keith Clores</div>
         </div>
 
         <div class="news-card-home">
-            <img src = "images/typhoon_photo.png" width = "325" height = "300">
+            <img src = "images/typhoon_photo.png" width = "325" height = "300" alt="Bagyong Uwan">
             <div class="news-header">BAGYONG UWAN 2025</div>
             <div>Inquirer News | November 8, 2025</div>
             <div>By: Keith Clores</div>
         </div>
 
         <div class="news-card-home">
-            <img src = "images/typhoon_photo.png" width = "325" height = "300">
+            <img src = "images/typhoon_photo.png" width = "325" height = "300" alt="Bagyong Uwan">
             <div class="news-header">BAGYONG UWAN 2025</div>
             <div>Inquirer News | November 8, 2025</div>
             <div>By: Keith Clores</div>
@@ -114,10 +114,10 @@ include '../backend/db.php';;
         let isPlaying = false;
 
         function setPlayState() {
-            title.innerHTML = `<img src="images/play_button.svg" class="play"> LISTEN LIVE HERE <img src="images/listen_live.svg">`;
+            title.innerHTML = `<img src="images/play_button.svg" class="play" alt=""> LISTEN LIVE HERE <img src="images/listen_live.svg" alt="">`;
         }
         function setPauseState() {
-            title.innerHTML = `<img src="images/pause_button.svg" class="pause"> PAUSE LIVE STREAM <img src="images/listen_live.svg">`;
+            title.innerHTML = `<img src="images/pause_button.svg" class="pause" alt=""> PAUSE LIVE STREAM <img src="images/listen_live.svg" alt="">`;
         }
 
         btn.addEventListener("click", () => {
@@ -128,7 +128,7 @@ include '../backend/db.php';;
 
         /* fetches program data */
         Promise.all([
-            fetch('http://localhost:8000/backend/fetch.php?table=PROGRAM').then(r => r.json()),
+            fetch('http://localhost:8000/backend/fetch.php?table=Program').then(r => r.json()),
             fetch('http://localhost:8000/backend/fetch.php?table=Program_Day_Type').then(r => r.json()),
             fetch('http://localhost:8000/backend/fetch.php?table=Day_Type').then(r => r.json()),
             fetch('http://localhost:8000/backend/fetch.php?table=Program_Anchor_Assignment').then(r => r.json()),

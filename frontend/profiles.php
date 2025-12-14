@@ -48,7 +48,7 @@ if ($result->num_rows > 0) {
             <?php foreach ($djs as $index => $dj): ?>
             <section class="dj-section">
                 <button class="left-button">
-                    <img src="images/leftbutton.png">
+                    <img src="images/leftbutton.png" alt="Left Button">
                 </button>
 
                 <img class="dj-image"
@@ -57,7 +57,7 @@ if ($result->num_rows > 0) {
 
                 <?php if ($index < $total - 1): ?>
                     <button class="right-button">
-                        <img src="images/rightbutton.png">
+                        <img src="images/rightbutton.png" alt="Right Button">
                     </button>
                 <?php endif; ?>
             </section>
@@ -65,7 +65,7 @@ if ($result->num_rows > 0) {
 
             <!-- Main DJs image -->
             <section id="main">
-                <img style="width: 918.5px; height: auto;" src="images/djs_profiles.png" class="alldjs">
+                <img style="width: 918.5px; height: auto;" src="images/djs_profiles.png" class="alldjs" alt="Main DJs Photo">
             </section>
 
                 <!-- DJ sections -->

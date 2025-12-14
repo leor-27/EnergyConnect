@@ -44,7 +44,7 @@ function fetchTable(res, tableName, columnName) {
 
 app.get('/daytype', (req, res) => fetchTable(res, 'Day_Type', '*'));
 app.get('/program_anchor_assignment', (req, res) => fetchTable(res, 'Program_Anchor_Assignment', '*'));
-app.get('/programs', (req, res) => fetchTable(res, 'PROGRAM', '*'))
+app.get('/programs', (req, res) => fetchTable(res, 'Program', '*'))
 app.get('/djs', (req, res) => fetchTable(res, 'DJ_Profile', '*'))
 app.get('/program_day_type', (req, res) => fetchTable(res, 'Program_Day_Type', '*'))
 

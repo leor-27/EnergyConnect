@@ -17,7 +17,7 @@ include '../backend/db.php';;
   <!-- Header -->
   <div class="header">
       <a href = "home.html">
-        <img src="images/logo.png" alt="logo" class="logo">
+        <img src="images/logo.png" alt="Energy FM 106.3 Naga Logo" class="logo">
       </a>
 
       <!-- Menu Icon -->
@@ -51,7 +51,7 @@ include '../backend/db.php';;
     <!-- Featured News -->
     <div class="featurednews">
 
-      <img src="images/ahtisa_photo.jpg" alt="ahtisa_photo" class="featurednews-image">
+      <img src="images/ahtisa_photo.jpg" alt="Ahtisa Manalo" class="featurednews-image">
 
       <div class="news-content">
         <div class="featurednews-author">
@@ -81,7 +81,7 @@ include '../backend/db.php';;
     <div class="search-filter-section">
 
       <div class="search">
-        <img src="images/search_icon.png" alt="search_icon">
+        <img src="images/search_icon.png" alt="Search Icon">
         <input type="text" placeholder="Search">
       </div>
 
@@ -102,7 +102,7 @@ include '../backend/db.php';;
             echo '
             <div class="news-card">
                 <a href="' . $row["SOURCE_URL"] . '" target="_blank">
-                    <img src="' . $row["HEADLINE_IMAGE_PATH"] . '" alt="news_image">
+                    <img src="' . $row["HEADLINE_IMAGE_PATH"] . '" alt="News Image">
                 </a>
                 <h6>' . $row["HEADLINE"] . '</h6>
                 <div class="news-company">
@@ -124,7 +124,7 @@ include '../backend/db.php';;
     <div class="news-card">
         
       <a href = "https://newsinfo.inquirer.net/2145802/classes-suspended-shift-to-online-on-nov-25-due-to-inclement-weather" target="_blank">
-          <img src="images/suspension_photo.jpg" alt="suspension_photo">
+          <img src="images/suspension_photo.jpg" alt="Suspension Photo">
       </a>
       <h6> Classes suspended, shifted to alternate mode in parts of PH on Nov. 25 </h6>
       <div class="news-company">
@@ -149,7 +149,7 @@ include '../backend/db.php';;
       <div class="news-card">
         
         <a href = "https://newsinfo.inquirer.net/2145802/classes-suspended-shift-to-online-on-nov-25-due-to-inclement-weather" target="_blank">
-            <img src="images/suspension_photo.jpg" alt="suspension_photo">
+            <img src="images/suspension_photo.jpg" alt="Suspension Photo">
         </a>
         <h6> Classes suspended, shifted to alternate mode in parts of PH on Nov. 25 </h6>
         <div class="news-company">
@@ -173,7 +173,7 @@ include '../backend/db.php';;
       <div class="news-card">
         
         <a href = "https://newsinfo.inquirer.net/2145802/classes-suspended-shift-to-online-on-nov-25-due-to-inclement-weather" target="_blank">
-            <img src="images/suspension_photo.jpg" alt="suspension_photo">
+            <img src="images/suspension_photo.jpg" alt="Suspension Photo">
         </a>
         <h6> Classes suspended, shifted to alternate mode in parts of PH on Nov. 25 </h6>
         <div class="news-company">
@@ -198,7 +198,7 @@ include '../backend/db.php';;
             <div class="news-card">
         
         <a href = "https://newsinfo.inquirer.net/2145802/classes-suspended-shift-to-online-on-nov-25-due-to-inclement-weather" target="_blank">
-            <img src="images/suspension_photo.jpg" alt="suspension_photo">
+            <img src="images/suspension_photo.jpg" alt="Suspension Photo">
         </a>
         <h6> Classes suspended, shifted to alternate mode in parts of PH on Nov. 25 </h6>
         <div class="news-company">
