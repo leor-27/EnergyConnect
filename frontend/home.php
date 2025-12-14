@@ -1,5 +1,5 @@
 <?php
-include '../backend/db.php';;
+include '../backend/db.php';
 ?>
 
 <!DOCTYPE html>
@@ -21,10 +21,10 @@ include '../backend/db.php';;
 
         <div class="dropdown-menu">
             <a href="about.html">About</a>
-            <a href="profiles.html">Profiles</a>
+            <a href="profiles.php">Profiles</a>
             <a href="programs.html">Programs</a>
             <a href="stream.html">Stream</a>
-            <a href="news.html">News</a>
+            <a href="news.php">News</a>
         </div>
     </div>
 
@@ -49,48 +49,32 @@ include '../backend/db.php';;
 
     <div class = "break-box"></div>
     <div class="section-title">FEATURED PROGRAMS</div>
-    <div class="programs">
-
-        <!-- <div class="program-card-home">
-            <div class="program-header">GOOD MORNING ENERGY | WEEKDAYS, SAT</div>
-            <div>Time: 12:00 AM – 5:00 AM</div>
-            <div>Music Only 🎧</div>
-        </div> -->
-
-    </div>
+    <div class="programs"></div>
 
     <div class="section-title-news">LATEST NEWS UPDATES</div>
     <div class="news">
         <?php
-    $sql = "SELECT * FROM News ORDER BY DATE_POSTED DESC LIMIT 5";
-    $result = $conn->query($sql);
+        $sql = "SELECT * FROM News ORDER BY DATE_POSTED DESC LIMIT 5";
+        $result = $conn->query($sql);
 
-    if ($result->num_rows > 0) {
-        // Output data of each row
-        while($row = $result->fetch_assoc()) {
-            echo '
-            <div class="news-card-home">
-                <a href="' . $row["SOURCE_URL"] . '" target="_blank">
-                    <img src="' . $row["HEADLINE_IMAGE_PATH"] . '" width="325" height="300" alt="News Image">
-                </a>
-                <div class="news-header">' . $row["HEADLINE"] . '</div>
-                <div>' . $row["ORGANIZATION"] . ' | ' . $row["DATE_POSTED"] . '</div>
-                <div>By: ' . $row["AUTHOR"] . '</div>
-            </div>';
+        if ($result->num_rows > 0) {
+            while($row = $result->fetch_assoc()) {
+                echo '
+                <div class="news-card-home">
+                    <a href="' . $row["SOURCE_URL"] . '" target="_blank">
+                        <img src="' . $row["HEADLINE_IMAGE_PATH"] . '" width="325" height="300" alt="News Image">
+                    </a>
+                    <div class="news-header">' . $row["HEADLINE"] . '</div>
+                    <div>' . $row["ORGANIZATION"] . ' | ' . $row["DATE_POSTED"] . '</div>
+                    <div>By: ' . $row["AUTHOR"] . '</div>
+                </div>';
+            }
+        } else {
+            echo "No news inserted yet.";
         }
-    } else {
-        echo "No news inserted yet.";
-    }
 
-    $conn->close();
-    ?>
-
-        <div class="news-card-home">
-            <img src = "images/typhoon_photo.png" width = "325" height = "300" alt="Bagyong Uwan">
-            <div class="news-header">BAGYONG UWAN 2025</div>
-            <div>Inquirer News | November 8, 2025</div>
-            <div>By: Keith Clores</div>
-        </div>
+        $conn->close();
+        ?>
 
         <div class="news-card-home">
             <img src = "images/typhoon_photo.png" width = "325" height = "300" alt="Bagyong Uwan">
@@ -126,7 +110,7 @@ include '../backend/db.php';;
         });
         setPlayState();
 
-        /* fetches program data */
+        /* fetches data */
         Promise.all([
             fetch('http://localhost:8000/backend/fetch.php?table=Program').then(r => r.json()),
             fetch('http://localhost:8000/backend/fetch.php?table=Program_Day_Type').then(r => r.json()),
@@ -205,5 +189,6 @@ include '../backend/db.php';;
     <div class = "footer">
         <footer>Privacy Policy | Energy FM © 2025</footer>
     </div>
+
     </body>
 </html>

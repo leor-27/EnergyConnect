@@ -1,5 +1,5 @@
 <?php
-include '../backend/db.php';;
+include '../backend/db.php';
 ?>
 
 <?php
@@ -21,11 +21,12 @@ if ($result->num_rows > 0) {
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Energy Profiles</title>
     <link href="css/profiles.css" rel="stylesheet">
+    <script src = "js/profiles.js"></script>
 </head>
 <body class="profiles-page">
 
     <header class="header-profiles">
-        <a href="home.html">
+        <a href="home.php">
             <img src="images/logo.png" alt="Energy FM 106.3 Naga Logo" class="logo">
         </a>
 
@@ -34,75 +35,39 @@ if ($result->num_rows > 0) {
 
         <div class="dropdown-menu">
             <a href="about.html">About</a>
-            <a href="profiles.html">Profiles</a>
+            <a href="profiles.php">Profiles</a>
             <a href="programs.html">Programs</a>
             <a href="stream.html">Stream</a>
-            <a href="news.html">News</a>
+            <a href="news.php">News</a>
         </div>
 
         <div class="banner-profiles">
             <div class="hosts-profile">
 
-        <?php $total = count($djs); ?>
+            <?php $total = count($djs); ?>
 
-            <?php foreach ($djs as $index => $dj): ?>
-            <section class="dj-section">
-                <button class="left-button">
-                    <img src="images/leftbutton.png" alt="Left Button">
-                </button>
-
-                <img class="dj-image"
-                    src="<?= $dj['IMAGE_PATH']; ?>"
-                    alt="<?= $dj['STAGE_NAME'] ?: $dj['REAL_NAME']; ?>">
-
-                <?php if ($index < $total - 1): ?>
-                    <button class="right-button">
-                        <img src="images/rightbutton.png" alt="Right Button">
+                <?php foreach ($djs as $index => $dj): ?>
+                <section class="dj-section">
+                    <button class="left-button">
+                        <img src="images/leftbutton.png" alt="Left Button">
                     </button>
-                <?php endif; ?>
-            </section>
-            <?php endforeach; ?>
 
-            <!-- Main DJs image -->
-            <section id="main">
-                <img style="width: 918.5px; height: auto;" src="images/djs_profiles.png" class="alldjs" alt="Main DJs Photo">
-            </section>
+                    <img class="dj-image"
+                        src="<?= $dj['IMAGE_PATH']; ?>"
+                        alt="<?= htmlspecialchars($dj['STAGE_NAME'] ?: $dj['REAL_NAME']); ?>">
 
-                <!-- DJ sections -->
-                <!-- <section id="dj1" class="dj-section">
-                    <button class="left-button"><img src="images/leftbutton.png"></button>
-                    <img class="dj-image" src="images/dj_makisig.png">
-                    <button class="right-button"><img src="images/rightbutton.png"></button>
+                    <?php if ($index < $total - 1): ?>
+                        <button class="right-button">
+                            <img src="images/rightbutton.png" alt="Right Button">
+                        </button>
+                    <?php endif; ?>
                 </section>
+                <?php endforeach; ?>
 
-                <section id="dj2" class="dj-section">
-                    <button class="left-button"><img src="images/leftbutton.png"></button>
-                    <img class="dj-image" src="images/dj_apple.png">
-                    <button class="right-button"><img src="images/rightbutton.png"></button>
+                <!-- Main DJs image -->
+                <section id="main">
+                    <img style="width: 918.5px; height: auto;" src="images/djs_profiles.png" class="alldjs" alt="Main DJs Photo">
                 </section>
-
-                <section id="dj3" class="dj-section">
-                    <button class="left-button"><img src="images/leftbutton.png"></button>
-                    <img class="dj-image" src="images/dj_barbie.png">
-                    <button class="right-button"><img src="images/rightbutton.png"></button>
-                </section>
-
-                <section id="dj4" class="dj-section">
-                    <button class="left-button"><img src="images/leftbutton.png"></button>
-                    <img class="dj-image" src="images/papa_gats.png">
-                    <button class="right-button"><img src="images/rightbutton.png"></button>
-                </section>
-
-                <section id="dj5" class="dj-section">
-                    <button class="left-button"><img src="images/leftbutton.png"></button>
-                    <img class="dj-image" src="images/kuya_bok.png">
-                    <button class="right-button"><img src="images/rightbutton.png"></button>
-                </section>
-
-                <section id="dj6" class="dj-section">
-                    <button class="left-button"><img src="images/leftbutton.png"></button>
-                    <img class="dj-image" src="images/arnel_eclarinal.png">
-                </section> -->
 
             </div>
         </div>
@@ -110,7 +75,7 @@ if ($result->num_rows > 0) {
 
     <div class="break-box"></div>
 
-       <div class="description">
+    <div class="description">
 
         <!-- MAIN DESCRIPTION (must exist) -->
         <section id="main-description">
@@ -125,7 +90,7 @@ if ($result->num_rows > 0) {
         <?php foreach ($djs as $dj): ?>
             <section class="dj-description">
                 <h1 class="dj-name">
-                    <?= strtoupper($dj['STAGE_NAME'] ?: $dj['REAL_NAME']); ?>
+                    <?= strtoupper(htmlspecialchars($dj['STAGE_NAME'] ?: $dj['REAL_NAME'])); ?>
                 </h1>
 
                 <?php if (!empty($dj['STAGE_NAME'])): ?>
@@ -136,50 +101,12 @@ if ($result->num_rows > 0) {
 
     </div>
 
-<!-- 
-            <section id="main-description">
-                <h1>DJ PROFILES</h1>
-                <p>Meet our DJs and Anchors - the voices who bring out the energy, 
-                the vibe, and the fun to all your favorite shows. Check out their profiles and 
-                connect with the people that makes the Energy FM alive. Basta ENERGY, number 1 pirmi!!</p>
-            </section>
-
-            <section id="dj1-description">
-                <h1 class="dj-name">DJ MAKISIG</h1>
-                <h2>Ruel Viñas</h2>
-            </section>
-
-            <section id="dj2-description">
-                <h1 class="dj-name">DJ APPLE</h1>
-                <h2>Laarni Sandia</h2>
-            </section>
-
-            <section id="dj3-description">
-                <h1 class="dj-name">DJ BARBIE</h1>
-                <h2>NE-A Bongalbal</h2>
-            </section>
-
-            <section id="dj4-description">
-                <h1 class="dj-name">PAPA GATS</h1>
-                <h2>John Jordan Lanuzga</h2>
-            </section>
-
-            <section id="dj5-description">
-                <h1 class="dj-name">KUYA BOK</h1>
-                <h2>Bok Millare</h2>
-            </section>
-
-            <section id="dj6-description">
-                <h1 class="dj-name">ARNEL ECLARINAL</h1>
-            </section>
-        </div> -->
-
-        <div class="footer">
-            <footer>Privacy Policy | Energy FM © 2025</footer>
-        </div>
+    <div class="footer">
+        <footer>Privacy Policy | Energy FM © 2025</footer>
+    </div>
 
     <!-- updates image & descriptions -->
-    <script>
+    <!-- <script>
         const djSections = document.querySelectorAll(".dj-section");
         const mainImage = document.querySelector(".alldjs");
         const mainDescription = document.querySelector("#main-description");
@@ -231,6 +158,6 @@ if ($result->num_rows > 0) {
                 if (i < totalDJs - 1) showDJ(i + 1);
             });
         });
-    </script>
+    </script> -->
 </body>
 </html>
