@@ -1,5 +1,7 @@
 <?php
-include '../backend/db.php';;
+include '../backend/db.php';
+date_default_timezone_set('Asia/Manila');
+
 ?>
 
 <!DOCTYPE html>
@@ -10,7 +12,7 @@ include '../backend/db.php';;
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title> Energy News </title>
   <link rel="stylesheet" href="css/news.css">
-  <script src="news-behavior.js"></script>
+  <script src="news.js"></script>
 </head>
 
 <body>
@@ -25,10 +27,10 @@ include '../backend/db.php';;
     <label for="menu-toggle" class="menu-icon">&#9776;</label>
 
     <div class="dropdown-menu">
-        <a href="about.html">About</a>
+        <a href="about.php">About</a>
         <a href="profiles.php">Profiles</a>
-        <a href="programs.html">Programs</a>
-        <a href="stream.html">Stream</a>
+        <a href="programs.php">Programs</a>
+        <a href="stream.php">Stream</a>
         <a href="news.php">News</a>
     </div>
 
@@ -92,8 +94,34 @@ include '../backend/db.php';;
     <div class="news-section">
 
       <?php
-      $sql = "SELECT * FROM News";
+      $sql = "SELECT * FROM News ORDER BY DATE_POSTED DESC, ID DESC";
       $result = $conn->query($sql);
+
+      function formatNewsDate($datetimeString) {
+        $posted = new DateTime($datetimeString);
+        $now = new DateTime();
+
+        $diff = $now->getTimestamp() - $posted->getTimestamp();
+
+        // Future-proofing (if clock diff causes negative)
+        if ($diff < 60) {
+          return "Just now";
+        }
+
+        $minutes = floor($diff / 60);
+        $hours = floor($diff / 3600);
+
+        if ($minutes < 60) {
+          return $minutes . " minute" . ($minutes == 1 ? "" : "s") . " ago";
+        }
+
+        if ($hours < 24) {
+          return $hours . " hour" . ($hours == 1 ? "" : "s") . " ago";
+        }
+
+        // Otherwise show full date
+        return $posted->format("F j, Y");
+      }
 
       if ($result->num_rows > 0) {
           while($row = $result->fetch_assoc()) {
@@ -106,7 +134,7 @@ include '../backend/db.php';;
                   <div class="news-company">
                       <p><b>' . $row["ORGANIZATION"] . '</b></p>
                       <div class="ellipse"></div>
-                      <p>' . $row["DATE_POSTED"] . '</p>
+                      <p>' . formatNewsDate($row["DATE_POSTED"]) . '</p>
                   </div>
                   <p>' . $row["SUMMARY"] . '</p>
                   <div class="author-category-section">
@@ -119,7 +147,7 @@ include '../backend/db.php';;
       }
       ?>
 
-      <div class="news-card">
+      <div class="news-card"> <!-- REMOVE THIS IN FINAL -->
           
         <a href = "https://newsinfo.inquirer.net/2145802/classes-suspended-shift-to-online-on-nov-25-due-to-inclement-weather" target="_blank">
             <img src="images/suspension_photo.jpg" alt="Suspension Photo">
@@ -137,35 +165,6 @@ include '../backend/db.php';;
 
         <div class="author-category-section">
           <p> By: <a href="https://newsinfo.inquirer.net/byline/keith-clores" target="_blank"> Keith Clores </a> </p>
-          <div class="category-container">
-            <p> Weather </p>
-          </div>
-        </div>
-
-      </div>
-
-      <div class="news-card">
-        
-        <a href = "https://newsinfo.inquirer.net/2145802/classes-suspended-shift-to-online-on-nov-25-due-to-inclement-weather" target="_blank">
-            <img src="images/suspension_photo.jpg" alt="Suspension Photo">
-        </a>
-        <h6> Classes suspended, shifted to alternate mode in parts of PH on Nov. 25 </h6>
-        <div class="news-company">
-          <p><b>Inquirer Net</b></p>
-          <div class="ellipse"></div>
-          <p> 3 hours ago </p>
-        </div>
-
-        <p>
-          MANILA, Philippines - Numerous local government units have either suspended classes or shifted to alternative
-          delivery mode (ADM) / alternative learning modalities on Tuesday, due to the effects of Tropical Depression
-          Verbena.
-        </p>
-
-        <div class="author-category-section">
-          <p>
-            By: <a href="https://newsinfo.inquirer.net/byline/keith-clores" target="_blank"> Keith Clores </a>
-          </p>
           <div class="category-container">
             <p> Weather </p>
           </div>

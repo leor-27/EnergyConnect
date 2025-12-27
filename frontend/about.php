@@ -1,3 +1,7 @@
+<?php
+
+?>
+
 <!DOCTYPE html>
 <html lang="en" class="about">
    <head>
@@ -29,10 +33,10 @@
 					<label for="menu-toggle" class="menu-icon">&#9776;</label>
 
 					<div class="dropdown-menu">
-						<a href="about.html">About</a>
+						<a href="about.php">About</a>
 						<a href="profiles.php">Profiles</a>
-						<a href="programs.html">Programs</a>
-						<a href="stream.html">Stream</a>
+						<a href="programs.php">Programs</a>
+						<a href="stream.php">Stream</a>
 						<a href="news.php">News</a>
 					</div>
 				</nav>

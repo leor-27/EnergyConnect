@@ -1,5 +1,7 @@
 <?php
 include '../backend/db.php';
+date_default_timezone_set('Asia/Manila');
+
 ?>
 
 <!DOCTYPE html>
@@ -9,6 +11,7 @@ include '../backend/db.php';
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
     <link rel="stylesheet" href="css/home.css">
+    <script src = "js/home.js"></script>
 </head>
 <body>
     <div class="header-home">
@@ -20,10 +23,10 @@ include '../backend/db.php';
         <label for="menu-toggle" class="menu-icon">&#9776;</label>
 
         <div class="dropdown-menu">
-            <a href="about.html">About</a>
+            <a href="about.php">About</a>
             <a href="profiles.php">Profiles</a>
-            <a href="programs.html">Programs</a>
-            <a href="stream.html">Stream</a>
+            <a href="programs.php">Programs</a>
+            <a href="stream.php">Stream</a>
             <a href="news.php">News</a>
         </div>
     </div>
@@ -54,8 +57,34 @@ include '../backend/db.php';
     <div class="section-title-news">LATEST NEWS UPDATES</div>
     <div class="news">
         <?php
-        $sql = "SELECT * FROM News ORDER BY DATE_POSTED DESC LIMIT 5";
+        $sql = "SELECT * FROM News ORDER BY DATE_POSTED DESC, ID DESC LIMIT 5";
         $result = $conn->query($sql);
+
+        function formatNewsDate($datetimeString) {
+            $posted = new DateTime($datetimeString);
+            $now = new DateTime();
+
+            $diff = $now->getTimestamp() - $posted->getTimestamp();
+
+            // Future-proofing (if clock diff causes negative)
+            if ($diff < 60) {
+                return "Just Now";
+            }
+
+            $minutes = floor($diff / 60);
+            $hours = floor($diff / 3600);
+
+            if ($minutes < 60) {
+                return $minutes . " minute" . ($minutes == 1 ? "" : "s") . " ago";
+            }
+
+            if ($hours < 24) {
+                return $hours . " hour" . ($hours == 1 ? "" : "s") . " ago";
+            }
+
+            // Otherwise show full date
+            return $posted->format("F j, Y");
+        }
 
         if ($result->num_rows > 0) {
             while($row = $result->fetch_assoc()) {
@@ -65,7 +94,7 @@ include '../backend/db.php';
                         <img src="' . $row["HEADLINE_IMAGE_PATH"] . '" width="325" height="300" alt="News Image">
                     </a>
                     <div class="news-header">' . $row["HEADLINE"] . '</div>
-                    <div>' . $row["ORGANIZATION"] . ' | ' . $row["DATE_POSTED"] . '</div>
+                    <div>' . $row["ORGANIZATION"] . ' | ' . formatNewsDate($row["DATE_POSTED"]) . '</div>
                     <div>By: ' . $row["AUTHOR"] . '</div>
                 </div>';
             }
@@ -82,109 +111,7 @@ include '../backend/db.php';
             <div>Inquirer News | November 8, 2025</div>
             <div>By: Keith Clores</div>
         </div>
-
-        <div class="news-card-home">
-            <img src = "images/typhoon_photo.png" width = "325" height = "300" alt="Bagyong Uwan">
-            <div class="news-header">BAGYONG UWAN 2025</div>
-            <div>Inquirer News | November 8, 2025</div>
-            <div>By: Keith Clores</div>
-        </div>
     </div>
-
-    <script>
-        const audio = document.getElementById("liveAudio");
-        const btn   = document.getElementById("liveBtn");
-        const title = btn.querySelector(".listen-title");
-        let isPlaying = false;
-
-        function setPlayState() {
-            title.innerHTML = `<img src="images/play_button.svg" class="play" alt=""> LISTEN LIVE HERE <img src="images/listen_live.svg" alt="">`;
-        }
-        function setPauseState() {
-            title.innerHTML = `<img src="images/pause_button.svg" class="pause" alt=""> PAUSE LIVE STREAM <img src="images/listen_live.svg" alt="">`;
-        }
-
-        btn.addEventListener("click", () => {
-            if (!isPlaying) { audio.play(); isPlaying = true; setPauseState(); }
-            else { audio.pause(); isPlaying = false; setPlayState(); }
-        });
-        setPlayState();
-
-        /* fetches data */
-        Promise.all([
-            fetch('http://localhost:8000/backend/fetch.php?table=Program').then(r => r.json()),
-            fetch('http://localhost:8000/backend/fetch.php?table=Program_Day_Type').then(r => r.json()),
-            fetch('http://localhost:8000/backend/fetch.php?table=Day_Type').then(r => r.json()),
-            fetch('http://localhost:8000/backend/fetch.php?table=Program_Anchor_Assignment').then(r => r.json()),
-            fetch('http://localhost:8000/backend/fetch.php?table=DJ_Profile').then(r => r.json())
-        ]).then(([programs, programDayTypes, dayTypes, assignments, djs]) => {
-            const subtitle = document.querySelector(".listen-subtitle");
-            const container = document.querySelector(".programs");
-            container.innerHTML = "";
-
-            const now = new Date();
-            const day = now.getDay();
-            const nowSec = now.getHours() * 3600 + now.getMinutes() * 60 + now.getSeconds();
-            const map = { WEEKDAYS: [1,2,3,4,5], SAT: [6], SUN: [0] };
-
-            const formatToSec = t => { const [h,m,s] = t.split(':').map(Number);
-                return h*3600 + m*60 + (s||0);
-            };
-
-            const getDays = id => programDayTypes.filter(p => p.PROGRAM_ID == id)
-                    .map(p => dayTypes.find(d => d.ID == p.DAY_TYPE_ID)?.DAY_TYPE)
-                    .filter(Boolean);
-
-            const getHosts = id => assignments .filter(a => a.PROGRAM_ID == id)
-                    .map(a => {const dj = djs.find(d => d.ID == a.DJ_ID);
-                        return dj?.STAGE_NAME || dj?.REAL_NAME?.toUpperCase();
-                    })
-                    .filter(Boolean)
-                    .join(", ");
-
-            const isNowOnAir = program => {
-                const start = formatToSec(program.START_TIME);
-                const end = formatToSec(program.END_TIME);
-                const days = getDays(program.ID);
-                const fitsDay = days.some(d => map[d]?.includes(day));
-                const withinTime = start < end ? nowSec >= start && nowSec <= end : nowSec >= start || nowSec <= end;
-                return fitsDay && withinTime;
-            };
-
-            const onAir = programs.find(p => isNowOnAir(p));
-            if (onAir) subtitle.textContent = `On Air: ${onAir.TITLE}`;
-            else {
-                const upcoming = programs.filter(p => getDays(p.ID).some(d => map[d]?.includes(day)))
-                    .sort((a,b) => formatToSec(a.START_TIME) - formatToSec(b.START_TIME))
-                    .find(p => formatToSec(p.START_TIME) > nowSec);
-                subtitle.textContent = upcoming ? `Next: ${upcoming.TITLE} at ${upcoming.START_TIME}` : "No Active Program";
-            }
-
-            /* for feeatured programs */
-            programs.map(p => ({...p,
-                    hosts: getHosts(p.ID)
-                }))
-                .filter(p => p.hosts.length > 0) // only programs with hosts
-                .slice(0, 6) // limit to 6 programs
-                .forEach(program => {
-                    const card = document.createElement("div");
-                    card.className = "program-card-home";
-                    const days = getDays(program.ID).join(", ");
-
-                    card.innerHTML = `
-                        <div class="program-header">${program.TITLE} | ${days}</div>
-                        <div>Time: ${program.START_TIME} – ${program.END_TIME}</div>
-                        <div>Hosts: ${program.hosts}</div>
-                    `;
-
-                card.addEventListener("click", () => { window.location.href = "programs.html";
-            });
-
-                container.appendChild(card);
-            });
-
-        }).catch(err => console.error(err));
-    </script>
 
     <div class = "footer">
         <footer>Privacy Policy | Energy FM © 2025</footer>

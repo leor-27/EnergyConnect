@@ -34,10 +34,10 @@ if ($result->num_rows > 0) {
         <label for="menu-toggle" class="menu-icon">&#9776;</label>
 
         <div class="dropdown-menu">
-            <a href="about.html">About</a>
+            <a href="about.php">About</a>
             <a href="profiles.php">Profiles</a>
-            <a href="programs.html">Programs</a>
-            <a href="stream.html">Stream</a>
+            <a href="programs.php">Programs</a>
+            <a href="stream.php">Stream</a>
             <a href="news.php">News</a>
         </div>
 
@@ -104,60 +104,5 @@ if ($result->num_rows > 0) {
     <div class="footer">
         <footer>Privacy Policy | Energy FM © 2025</footer>
     </div>
-
-    <!-- updates image & descriptions -->
-    <!-- <script>
-        const djSections = document.querySelectorAll(".dj-section");
-        const mainImage = document.querySelector(".alldjs");
-        const mainDescription = document.querySelector("#main-description");
-        const descriptions = document.querySelectorAll(".dj-description");
-
-        const totalDJs = djSections.length;
-        let currentIndex = -1; // -1 = main view
-
-        // hide all DJ sections & descriptions initially
-        djSections.forEach(sec => sec.style.display = "none");
-        descriptions.forEach(d => d.style.display = "none");
-
-        // show main image and description by default
-        mainImage.style.display = "block";
-        mainDescription.style.display = "block";
-
-        function showDJ(index) {
-            mainImage.style.display = "none";
-            mainDescription.style.display = "none";
-            djSections.forEach(sec => sec.style.display = "none");
-            descriptions.forEach(d => d.style.display = "none");
-
-            djSections[index].style.display = "flex";
-            descriptions[index].style.display = "block";
-            currentIndex = index;
-        }
-
-        function showMain() {
-            mainImage.style.display = "block";
-            mainDescription.style.display = "block";
-            djSections.forEach(sec => sec.style.display = "none");
-            descriptions.forEach(d => d.style.display = "none");
-            currentIndex = -1;
-        }
-
-        // clicking main image goes to first DJ
-        mainImage.addEventListener("click", () => showDJ(0));
-
-        djSections.forEach((sec, i) => {
-            const left = sec.querySelector(".left-button");
-            const right = sec.querySelector(".right-button");
-
-            if (left) left.addEventListener("click", () => {
-                if (i === 0) showMain();
-                    else showDJ(i - 1);
-                });
-
-            if (right) right.addEventListener("click", () => {
-                if (i < totalDJs - 1) showDJ(i + 1);
-            });
-        });
-    </script> -->
 </body>
 </html>
