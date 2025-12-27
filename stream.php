@@ -1,5 +1,5 @@
 <?php
-include '../backend/db.php';
+include 'backend/db.php';
 ?>
 
 <!DOCTYPE html>
@@ -8,13 +8,13 @@ include '../backend/db.php';
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Energy Streams</title>
-    <link rel="stylesheet" href="css/stream.css">
+    <link rel="stylesheet" href="frontend/css/stream.css">
 </head>
 <body>
 
     <header class="header">
         <a href = "home.php">
-            <img src = "images/logo.png" alt = "Energy FM 106.3 Naga Logo" class = "logo">
+            <img src = "frontend/images/logo.png" alt = "Energy FM 106.3 Naga Logo" class = "logo">
         </a>
 
         <input type="checkbox" id="menu-toggle">

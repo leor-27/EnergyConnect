@@ -9,7 +9,7 @@
       <meta name="viewport" content="width=device-width, initial-scale=1.0">
       <title>About</title>
 
-      <link rel="stylesheet" href="css/about.css">
+      <link rel="stylesheet" href="frontend/css/about.css">
 
       <link rel="preconnect" href="https://fonts.googleapis.com">
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
@@ -23,7 +23,7 @@
 
     <header>
     	<a href="home.php" class="header-image">
-        	<img src="images/logo.png" alt="Energy FM 106.3 Naga Logo" class="logo">
+        	<img src="frontend/images/logo.png" alt="Energy FM 106.3 Naga Logo" class="logo">
       	</a>
 
 			<section class="header-textcontaner header-text">
@@ -71,7 +71,7 @@
 		<section class="article-card2">
 
 			<div class="article-img">
-				<img src="/frontend/images/djs_numberonephoto.jpg" alt="Energy FM Naga DJs Photo 1">
+				<img src="frontend/images/djs_numberonephoto.jpg" alt="Energy FM Naga DJs Photo 1">
 			</div>
 
 			<div class="article-text">
@@ -88,7 +88,7 @@
 		<section class="article-card3">
 
 			<div class="article-img">
-				<img src="/frontend/images/djs_profiles.png" alt="Energy FM Naga DJs Photo 2">
+				<img src="frontend/images/djs_profiles.png" alt="Energy FM Naga DJs Photo 2">
 			</div>
 
 			<div class="article-text">
@@ -118,7 +118,7 @@
 							<p>DJ Makisig</p>
 						</a>
 						<a href="https://www.tiktok.com/@djmakisig" class="social-items" target="_blank">
-							<p><img src = "images/tiktok.svg" class="tiktok-svg" alt="Tiktok Logo"></p>
+							<p><img src = "frontend/images/tiktok.svg" class="tiktok-svg" alt="Tiktok Logo"></p>
 							<p>DJ Makisig</p>
 						</a>
 						<a href="https://youtube.com/@djmakisig?si=i3tHyXQdtRPaq-Jj" class="social-items" target="_blank">

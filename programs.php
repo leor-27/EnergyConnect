@@ -1,5 +1,5 @@
 <?php
-include '../backend/db.php'; 
+include 'backend/db.php'; 
 
 $programs = $conn->query("SELECT * FROM Program")->fetch_all(MYSQLI_ASSOC);
 $programDayTypes = $conn->query("SELECT * FROM Program_Day_Type")->fetch_all(MYSQLI_ASSOC);
@@ -14,13 +14,13 @@ $djs = $conn->query("SELECT * FROM DJ_Profile")->fetch_all(MYSQLI_ASSOC);
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Energy Programs</title>
-    <link rel="stylesheet" href="css/programs.css">
-    <script src = "js/programs.js"></script>
+    <link rel="stylesheet" href="frontend/css/programs.css">
+    <script src = "frontend/js/programs.js"></script>
 </head>
 <body>
 
 <header class="header">
-    <a href="home.php"><img src="images/logo.png" alt="Energy FM 106.3 Naga Logo" class="logo"></a>
+    <a href="home.php"><img src="frontend/images/logo.png" alt="Energy FM 106.3 Naga Logo" class="logo"></a>
 
     <input type="checkbox" id="menu-toggle">
     <label for="menu-toggle" class="menu-icon">&#9776;</label>

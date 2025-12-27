@@ -67,7 +67,7 @@ document.addEventListener("DOMContentLoaded", () => {
             }
 
             alert(`Credentials Set:\nName: ${nameVal}\nUsername: ${username}`);
-            window.location.href = "admin-home.html";
+            window.location.href = "admin-home.php";
         }
     });
 });

@@ -6,11 +6,11 @@ document.addEventListener("DOMContentLoaded", () => {
     let isPlaying = false;
 
     function setPlayState() {
-        title.innerHTML = `<img src="images/play_button.svg" class="play" alt=""> LISTEN LIVE HERE <img src="images/listen_live.svg" alt="">`;
+        title.innerHTML = `<img src="frontend/images/play_button.svg" class="play" alt=""> LISTEN LIVE HERE <img src="frontend/images/listen_live.svg" alt="">`;
     }
         
     function setPauseState() {
-        title.innerHTML = `<img src="images/pause_button.svg" class="pause" alt=""> PAUSE LIVE STREAM <img src="images/listen_live.svg" alt="">`;
+        title.innerHTML = `<img src="frontend/images/pause_button.svg" class="pause" alt=""> PAUSE LIVE STREAM <img src="frontend/images/listen_live.svg" alt="">`;
     }
 
     btn.addEventListener("click", () => {

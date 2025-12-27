@@ -1,3 +1,7 @@
+<?php
+include 'backend/db.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en" class="admin-attach-news">
 <head>
@@ -5,14 +9,14 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Admin Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
-    <link href="css/admin-home.css" rel="stylesheet">
+    <link href="frontend/css/admin-home.css" rel="stylesheet">
 </head>
 <body class="admin-home">
     <header>
         <div class="header-content">
             <section class="header-image">
-                <a href="admin-home.html" class="logo-link">
-                    <img src="images/logo.png" class="logo" alt="Energy FM 106.3 Naga Logo">
+                <a href="admin-home.php" class="logo-link">
+                    <img src="frontend/images/logo.png" class="logo" alt="Energy FM 106.3 Naga Logo">
                 </a>
             </section>
         </div>
@@ -21,7 +25,7 @@
         <label for="menu-toggle" class="menu-icon">&#9776;</label>
 
         <div class="dropdown-menu">
-            <a href="index.html">Logout</a>
+            <a href="index.php">Logout</a>
         </div>
     </header>
 
@@ -29,10 +33,10 @@
         <h1>ADMIN DASHBOARD</h1>
 
         <div class="admin-buttons">
-            <a href="admin-attach-news.html" class="btn attach-news-button">
+            <a href="admin-attach-news.php" class="btn attach-news-button">
                 <i class="fas fa-paperclip"></i> Attach News
             </a>
-            <a href="admin-add-programs.html" class="btn add-programs-button">
+            <a href="admin-add-programs.php" class="btn add-programs-button">
                 <i class="fas fa-plus"></i> Add Programs
             </a>
         </div> 
@@ -50,7 +54,7 @@
                     </div>
                     
                     <a href = "https://newsinfo.inquirer.net/2151485/24-areas-under-signal-no-1-due-to-td-wilma" target="_blank">
-                        <img src="images/examplepic.jpg" alt="News Example Image" class="news-image">
+                        <img src="frontend/images/examplepic.jpg" alt="News Example Image" class="news-image">
                     </a>
                     
                     <div class="news-info">
@@ -81,7 +85,7 @@
                     </div>
                     
                     <a href = "https://newsinfo.inquirer.net/2151485/24-areas-under-signal-no-1-due-to-td-wilma"  target="_blank">
-                        <img src="images/examplepic.jpg" alt="News Example Image" class="news-image">
+                        <img src="frontend/images/examplepic.jpg" alt="News Example Image" class="news-image">
                     </a>
 
                     <div class="news-info">
@@ -113,7 +117,7 @@
                     </div>
                     
                     <a href = "https://newsinfo.inquirer.net/2151485/24-areas-under-signal-no-1-due-to-td-wilma"  target="_blank">
-                        <img src="images/examplepic.jpg" alt="News Example Image" class="news-image">
+                        <img src="frontend/images/examplepic.jpg" alt="News Example Image" class="news-image">
                     </a>
 
                     <div class="news-info">

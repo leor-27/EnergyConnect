@@ -1,5 +1,5 @@
 <?php
-include '../backend/db.php';
+include 'backend/db.php';
 ?>
 
 <?php
@@ -20,14 +20,14 @@ if ($result->num_rows > 0) {
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Energy Profiles</title>
-    <link href="css/profiles.css" rel="stylesheet">
-    <script src = "js/profiles.js"></script>
+    <link href="frontend/css/profiles.css" rel="stylesheet">
+    <script src = "frontend/js/profiles.js"></script>
 </head>
 <body class="profiles-page">
 
     <header class="header-profiles">
         <a href="home.php">
-            <img src="images/logo.png" alt="Energy FM 106.3 Naga Logo" class="logo">
+            <img src="frontend/images/logo.png" alt="Energy FM 106.3 Naga Logo" class="logo">
         </a>
 
         <input type="checkbox" id="menu-toggle">
@@ -49,7 +49,7 @@ if ($result->num_rows > 0) {
                 <?php foreach ($djs as $index => $dj): ?>
                 <section class="dj-section">
                     <button class="left-button">
-                        <img src="images/leftbutton.png" alt="Left Button">
+                        <img src="frontend/images/leftbutton.png" alt="Left Button">
                     </button>
 
                     <img class="dj-image"
@@ -58,7 +58,7 @@ if ($result->num_rows > 0) {
 
                     <?php if ($index < $total - 1): ?>
                         <button class="right-button">
-                            <img src="images/rightbutton.png" alt="Right Button">
+                            <img src="frontend/images/rightbutton.png" alt="Right Button">
                         </button>
                     <?php endif; ?>
                 </section>
@@ -66,7 +66,7 @@ if ($result->num_rows > 0) {
 
                 <!-- Main DJs image -->
                 <section id="main">
-                    <img style="width: 918.5px; height: auto;" src="images/djs_profiles.png" class="alldjs" alt="Main DJs Photo">
+                    <img style="width: 918.5px; height: auto;" src="frontend/images/djs_profiles.png" class="alldjs" alt="Main DJs Photo">
                 </section>
 
             </div>

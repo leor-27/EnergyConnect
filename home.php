@@ -1,5 +1,5 @@
 <?php
-include '../backend/db.php';
+include 'backend/db.php';
 date_default_timezone_set('Asia/Manila');
 
 ?>
@@ -10,13 +10,13 @@ date_default_timezone_set('Asia/Manila');
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Home</title>
-    <link rel="stylesheet" href="css/home.css">
-    <script src = "js/home.js"></script>
+    <link rel="stylesheet" href="frontend/css/home.css">
+    <script src = "frontend/js/home.js"></script>
 </head>
 <body>
     <div class="header-home">
-        <a href = "index.html">
-            <img src="images/logo.png" alt="Energy FM 106.3 Naga Logo" class="logo">
+        <a href = "index.php">
+            <img src="frontend/images/logo.png" alt="Energy FM 106.3 Naga Logo" class="logo">
         </a>
 
         <input type="checkbox" id="menu-toggle">
@@ -35,12 +35,12 @@ date_default_timezone_set('Asia/Manila');
         <h2>BASTA ENERGY, NUMBER 1 PIRMI!</h2>
 
         <div class="hosts-home">
-            <img style="width: 850px; height: auto;" src="images/EFDJS.png" alt="Main DJs Photo">
+            <img style="width: 850px; height: auto;" src="frontend/images/EFDJS.png" alt="Main DJs Photo">
         </div>
 
         <div class="listen">
             <button id="liveBtn" class="listen-button">
-                <div class="listen-title"><img src = "images/play_button.svg" class = "play" alt="Play Button">LISTEN LIVE HERE   <img src = "images/listen_live.svg" alt="Listen Live Icon"></div>
+                <div class="listen-title"><img src = "frontend/images/play_button.svg" class = "play" alt="Play Button">LISTEN LIVE HERE   <img src = "frontend/images/listen_live.svg" alt="Listen Live Icon"></div>
                 <div class="listen-subtitle">On Air: Loading...</div>
             </button>
 
@@ -106,7 +106,7 @@ date_default_timezone_set('Asia/Manila');
         ?>
 
         <div class="news-card-home">
-            <img src = "images/typhoon_photo.png" width = "325" height = "300" alt="Bagyong Uwan">
+            <img src = "frontend/images/typhoon_photo.png" width = "325" height = "300" alt="Bagyong Uwan">
             <div class="news-header">BAGYONG UWAN 2025</div>
             <div>Inquirer News | November 8, 2025</div>
             <div>By: Keith Clores</div>

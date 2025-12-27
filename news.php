@@ -1,5 +1,5 @@
 <?php
-include '../backend/db.php';
+include 'backend/db.php';
 date_default_timezone_set('Asia/Manila');
 
 ?>
@@ -11,15 +11,15 @@ date_default_timezone_set('Asia/Manila');
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <title> Energy News </title>
-  <link rel="stylesheet" href="css/news.css">
-  <script src="news.js"></script>
+  <link rel="stylesheet" href="frontend/css/news.css">
+  <script src="frontend/js/news.js"></script>
 </head>
 
 <body>
   <!-- Header -->
   <div class="header">
       <a href = "home.php">
-        <img src="images/logo.png" alt="Energy FM 106.3 Naga Logo" class="logo">
+        <img src="frontend/images/logo.png" alt="Energy FM 106.3 Naga Logo" class="logo">
       </a>
 
       <!-- Menu Icon -->
@@ -51,7 +51,7 @@ date_default_timezone_set('Asia/Manila');
     <!-- Featured News -->
     <div class="featurednews">
 
-      <img src="images/ahtisa_photo.jpg" alt="Ahtisa Manalo" class="featurednews-image">
+      <img src="frontend/images/ahtisa_photo.jpg" alt="Ahtisa Manalo" class="featurednews-image">
 
       <div class="news-content">
         <div class="featurednews-author">
@@ -81,7 +81,7 @@ date_default_timezone_set('Asia/Manila');
     <div class="search-filter-section">
 
       <div class="search">
-        <img src="images/search_icon.png" alt="Search Icon">
+        <img src="frontend/images/search_icon.png" alt="Search Icon">
         <input type="text" placeholder="Search">
       </div>
 
@@ -150,7 +150,7 @@ date_default_timezone_set('Asia/Manila');
       <div class="news-card"> <!-- REMOVE THIS IN FINAL -->
           
         <a href = "https://newsinfo.inquirer.net/2145802/classes-suspended-shift-to-online-on-nov-25-due-to-inclement-weather" target="_blank">
-            <img src="images/suspension_photo.jpg" alt="Suspension Photo">
+            <img src="frontend/images/suspension_photo.jpg" alt="Suspension Photo">
         </a>
         <h6> Classes suspended, shifted to alternate mode in parts of PH on Nov. 25 </h6>
         <div class="news-company">

@@ -1,18 +1,22 @@
+<?php
+include 'backend/db.php';
+?>
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Energy FM 106.3</title>
-    <link href="css/landing-page.css" rel="stylesheet">
-    <script src = "js/index.js"></script>
+    <link href="frontend/css/landing-page.css" rel="stylesheet">
+    <script src = "frontend/js/index.js"></script>
 </head>
 <body class="landing-page">
 
     <div class="landing-page-header">
         <div class="header-logo-row">
-            <a href="index.html">
-                <img src="images/logo.png" alt="Energy FM 106.3 Naga Logo" class="logo-landing-page">
+            <a href="index.php">
+                <img src="frontend/images/logo.png" alt="Energy FM 106.3 Naga Logo" class="logo-landing-page">
             </a>
             <h2 class="station-title">Energy FM Naga</h2>
         </div>
@@ -55,7 +59,7 @@
 
             <p class="google-login" id="google-login">Login using   
                 <a href="https://accounts.google.com/signin">
-                    <img src="images/google.png" class="google-icon" alt="Google Icon">
+                    <img src="frontend/images/google.png" class="google-icon" alt="Google Icon">
                 </a>
             </p>
         </form>
