@@ -2,6 +2,34 @@
 include 'backend/db.php';
 date_default_timezone_set('Asia/Manila');
 
+function formatNewsDate($datetimeString) {
+    $posted = new DateTime($datetimeString);
+    $now = new DateTime();
+
+    $diff = $now->getTimestamp() - $posted->getTimestamp();
+
+    if ($diff < 60) {
+        return "Just now";
+    }
+
+    $minutes = floor($diff / 60);
+    $hours = floor($diff / 3600);
+
+    if ($minutes < 60) {
+        return $minutes . " minute" . ($minutes == 1 ? "" : "s") . " ago";
+    }
+
+    if ($hours < 24) {
+        return $hours . " hour" . ($hours == 1 ? "" : "s") . " ago";
+    }
+
+    return $posted->format("F j, Y");
+}
+
+// Fetch latest news for featured section
+$featuredSql = "SELECT * FROM News ORDER BY DATE_POSTED DESC, ID DESC LIMIT 1";
+$featuredResult = $conn->query($featuredSql);
+$featuredNews = $featuredResult->fetch_assoc();
 ?>
 
 <!DOCTYPE html>
@@ -18,26 +46,26 @@ date_default_timezone_set('Asia/Manila');
 <body>
   <!-- Header -->
   <div class="header">
-      <a href = "home.php">
+      <a href="home.php">
         <img src="frontend/images/logo.png" alt="Energy FM 106.3 Naga Logo" class="logo">
       </a>
 
       <!-- Menu Icon -->
-    <input type="checkbox" id="menu-toggle">
-    <label for="menu-toggle" class="menu-icon">&#9776;</label>
+      <input type="checkbox" id="menu-toggle">
+      <label for="menu-toggle" class="menu-icon">&#9776;</label>
 
-    <div class="dropdown-menu">
+      <div class="dropdown-menu">
         <a href="about.php">About</a>
         <a href="profiles.php">Profiles</a>
         <a href="programs.php">Programs</a>
         <a href="stream.php">Stream</a>
         <a href="news.php">News</a>
-    </div>
+      </div>
 
       <!-- Overlay Texts -->
       <div class="header-overlay">
         <h1>ENERGY FEATURED NEWS</h1>
-        <p class = "intro-news">
+        <p class="intro-news">
           Pangga, updated ka na ba? Stay in the loop with ENERGY FM's featured news! From latest happenings to must-know
           updates, we've gathered the top stories right here. Check out what's making headlines and stay informed
           anytime.
@@ -50,28 +78,23 @@ date_default_timezone_set('Asia/Manila');
   <main>
     <!-- Featured News -->
     <div class="featurednews">
-
-      <img src="frontend/images/ahtisa_photo.jpg" alt="Ahtisa Manalo" class="featurednews-image">
+      <img src="<?= htmlspecialchars($featuredNews['HEADLINE_IMAGE_PATH']) ?>" 
+           alt="<?= htmlspecialchars($featuredNews['HEADLINE']) ?>" 
+           class="featurednews-image">
 
       <div class="news-content">
         <div class="featurednews-author">
           <div class="author-profile"></div>
-          <p><b> Hannah Mallorca </b></p>
+          <p><b><?= htmlspecialchars($featuredNews['AUTHOR']) ?></b></p>
           <div class="ellipse"></div>
-          <p> 20 minutes ago </p>
+          <p><?= formatNewsDate($featuredNews['DATE_POSTED']) ?></p>
         </div>
 
-        <h1> Ahtisa Manalo comes home to overwhelming support from fans </h1>
+        <h1><?= htmlspecialchars($featuredNews['HEADLINE']) ?></h1>
         <h5>
-          Despite not winning the Miss Universe crown, Ahtisa Manalo felt like a queen upon coming home to overwhelming
-          support from fans.
-          <br><br>
-          Manalo arrived in the Philippines via Terminal 1 of the Ninoy Aquino International Airport (NAIA) on Tuesday,
-          Nov. 25, at around dawn, and was greeted by a crowd of fans, members of the press, and pageant vloggers,
-          aiming to get a chance to see her up close.
+          <?= nl2br(htmlspecialchars($featuredNews['SUMMARY'])) ?>
         </h5>
       </div>
-
     </div>
 
     <!-- Latest News -->
@@ -79,7 +102,6 @@ date_default_timezone_set('Asia/Manila');
 
     <!-- Search & Filter Section -->
     <div class="search-filter-section">
-
       <div class="search">
         <img src="frontend/images/search_icon.png" alt="Search Icon">
         <input type="text" placeholder="Search">
@@ -94,37 +116,15 @@ date_default_timezone_set('Asia/Manila');
     <div class="news-section">
 
       <?php
+      // Fetch all news for latest news section
       $sql = "SELECT * FROM News ORDER BY DATE_POSTED DESC, ID DESC";
       $result = $conn->query($sql);
 
-      function formatNewsDate($datetimeString) {
-        $posted = new DateTime($datetimeString);
-        $now = new DateTime();
-
-        $diff = $now->getTimestamp() - $posted->getTimestamp();
-
-        // Future-proofing (if clock diff causes negative)
-        if ($diff < 60) {
-          return "Just now";
-        }
-
-        $minutes = floor($diff / 60);
-        $hours = floor($diff / 3600);
-
-        if ($minutes < 60) {
-          return $minutes . " minute" . ($minutes == 1 ? "" : "s") . " ago";
-        }
-
-        if ($hours < 24) {
-          return $hours . " hour" . ($hours == 1 ? "" : "s") . " ago";
-        }
-
-        // Otherwise show full date
-        return $posted->format("F j, Y");
-      }
-
       if ($result->num_rows > 0) {
           while($row = $result->fetch_assoc()) {
+              // Skip the featured news to avoid duplication
+              if ($row['ID'] == $featuredNews['ID']) continue;
+
               echo '
               <div class="news-card">
                   <a href="' . $row["SOURCE_URL"] . '" target="_blank">
@@ -174,9 +174,7 @@ date_default_timezone_set('Asia/Manila');
 
     </div>
 
-    <br>
-    <br>
-    <br>
+    <br><br><br>
 
   </main>
 

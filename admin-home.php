@@ -1,5 +1,24 @@
 <?php
 include 'backend/db.php';
+$sql = "
+SELECT 
+    n.ID,
+    n.HEADLINE,
+    n.DATE_POSTED,
+    n.AUTHOR,
+    n.ORGANIZATION,
+    n.SOURCE_URL,
+    n.HEADLINE_IMAGE_PATH,
+    n.EMPLOYEE_ID,
+    n.SUMMARY,
+    GROUP_CONCAT(c.NAME SEPARATOR ', ') AS CATEGORIES
+FROM News n
+LEFT JOIN News_Category nc ON n.ID = nc.NEWS_ID
+LEFT JOIN Category c ON nc.CATEGORY_ID = c.ID
+GROUP BY n.ID
+ORDER BY n.DATE_POSTED DESC
+";
+$result = $conn->query($sql);
 ?>
 
 <!DOCTYPE html>
@@ -12,6 +31,14 @@ include 'backend/db.php';
     <link href="frontend/css/admin-home.css" rel="stylesheet">
 </head>
 <body class="admin-home">
+
+    <?php if (isset($_GET['deleted'])): ?>
+        <script>
+            alert("News article deleted successfully.");
+            window.history.replaceState({}, document.title, window.location.pathname);
+        </script>
+    <?php endif; ?>
+
     <header>
         <div class="header-content">
             <section class="header-image">
@@ -43,105 +70,79 @@ include 'backend/db.php';
 
         <hr>
         
-        <div class="news-card-grid">
-            <h3>Attached News</h3>
-            
-            <div class="program-card-admin"> 
+<div class="news-card-grid">
+    <h3>Attached News</h3>
+
+    <?php if ($result && $result->num_rows > 0): ?>
+        <?php while ($row = $result->fetch_assoc()): ?>
+
+            <div class="program-card-admin">
                 <div class="card-details-wrapper">
 
                     <div class="card-header-news">
-                        <span class="program-title">Inquirer News</span>
+                        <span class="program-title">
+                            <?= htmlspecialchars($row['ORGANIZATION']) ?>
+                        </span>
                     </div>
-                    
-                    <a href = "https://newsinfo.inquirer.net/2151485/24-areas-under-signal-no-1-due-to-td-wilma" target="_blank">
-                        <img src="frontend/images/examplepic.jpg" alt="News Example Image" class="news-image">
+
+                    <a href="<?= htmlspecialchars($row['SOURCE_URL']) ?>" target="_blank">
+                        <img 
+                            src="<?= htmlspecialchars($row['HEADLINE_IMAGE_PATH']) ?>" 
+                            alt="News Image" 
+                            class="news-image"
+                        >
                     </a>
-                    
+
                     <div class="news-info">
                         <p class="card-description">
-                            MANILA, Philippines — Tropical Depression Wilma slightly decelerated as it continued to approach the country’s landmass on Friday afternoon, according to the Philippine Atmospheric, Geophysical and Astronomical Services Administration (Pagasa).
+                            <?= htmlspecialchars($row['SUMMARY']) ?>
                         </p>
-                        <p class="hosts">By: 
-                            <a href = "https://newsinfo.inquirer.net/byline/jason-sigales" target="_blank">
-                                <b>Jason Sigales</b>
-                            </a>
+
+                        <p class="hosts">
+                            By:
+                            <?php if (!empty($row['SOURCE_URL'])): ?>
+                                <a href="<?= htmlspecialchars($row['SOURCE_URL']) ?>" target="_blank">
+                                    <b><?= htmlspecialchars($row['AUTHOR']) ?></b>
+                                </a>
+                            <?php else: ?>
+                                <b><?= htmlspecialchars($row['AUTHOR']) ?></b>
+                            <?php endif; ?>
                         </p>
-                        <p class="published-date">Published On: <b>December 10, 2025</b></p>
+
+                        <div class="news-info">
+                            <p class="published-date">
+                                Attached On:
+                                <b><?= date("F d, Y", strtotime($row['DATE_POSTED'])) ?></b>
+                                &nbsp; | &nbsp;
+                                Category/s:
+                                <b><?= $row['CATEGORIES'] ? htmlspecialchars($row['CATEGORIES']) : 'Uncategorized' ?></b>
+                            </p>
+
+                        </div>
                     </div>
 
                     <div class="card-actions card-actions-news">
-                    <a href="/edit/123" class="edit-icon"><i class="fas fa-pencil-alt"></i></a>
-                
-                    <a href="/delete/123" class="delete-icon"><i class="fas fa-trash-alt"></i></a>
+                        <a href="admin-edit-news.php?id=<?= $row['ID'] ?>" class="edit-icon">
+                            <i class="fas fa-pencil-alt"></i>
+                        </a>
+
+                        <a 
+                            href="admin-delete-news.php?id=<?= $row['ID'] ?>" 
+                            class="delete-icon"
+                            onclick="return confirm('Are you sure you want to delete this news?');"
+                        >
+                            <i class="fas fa-trash-alt"></i>
+                        </a>
+                    </div>
+
                 </div>
-                </div>
-                
             </div>
 
-            <div class="program-card-admin">
-                <div class="card-details-wrapper">
-                    <div class="card-header-news">
-                        <span class="program-title">Inquirer Net</span>
-                    </div>
-                    
-                    <a href = "https://newsinfo.inquirer.net/2151485/24-areas-under-signal-no-1-due-to-td-wilma"  target="_blank">
-                        <img src="frontend/images/examplepic.jpg" alt="News Example Image" class="news-image">
-                    </a>
-
-                    <div class="news-info">
-                        <p class="card-description">
-                            MANILA, Philippines — Tropical Depression Wilma slightly decelerated as it continued to approach the country’s landmass on Friday afternoon, according to the Philippine Atmospheric, Geophysical and Astronomical Services Administration (Pagasa).
-                        </p>
-                        <p class="hosts">By: 
-                            <a href = "https://newsinfo.inquirer.net/byline/jason-sigales" target="_blank">
-                                <b>Jason Sigales</b>
-                            </a>
-                        </p>
-                        <p class="published-date">Published On: <b>December 10, 2025</b></p>
-                    </div>
-
-                      <div class="card-actions card-actions-news">
-                    <a href="/edit/123" class="edit-icon"><i class="fas fa-pencil-alt"></i></a>
-                
-                    <a href="/delete/123" class="delete-icon"><i class="fas fa-trash-alt"></i></a>
-                </div>
-                    
-                </div>
-
-            </div> 
-
-            <div class="program-card-admin">
-                <div class="card-details-wrapper">
-                    <div class="card-header-news">
-                        <span class="program-title">Inquirer News</span>
-                    </div>
-                    
-                    <a href = "https://newsinfo.inquirer.net/2151485/24-areas-under-signal-no-1-due-to-td-wilma"  target="_blank">
-                        <img src="frontend/images/examplepic.jpg" alt="News Example Image" class="news-image">
-                    </a>
-
-                    <div class="news-info">
-                        <p class="card-description">
-                            MANILA, Philippines — Tropical Depression Wilma slightly decelerated as it continued to approach the country’s landmass on Friday afternoon, according to the Philippine Atmospheric, Geophysical and Astronomical Services Administration (Pagasa).
-                        </p>
-                        <p class = "hosts">
-                            By: <a href="https://newsinfo.inquirer.net/byline/keith-clores" target="_blank"><b>Keith Clores</b></a>
-                        </p>
-                        <p class="published-date">Published On: <b>December 10, 2025</b></p>
-                    </div>
-
-                      <div class="card-actions card-actions-news">
-                    <a href="/edit/123" class="edit-icon"><i class="fas fa-pencil-alt"></i></a>
-                
-                    <a href="/delete/123" class="delete-icon"><i class="fas fa-trash-alt"></i></a>
-                </div>
-                    
-                </div>
-                
-    
-            </div>
-            
-        </div>
+        <?php endwhile; ?>
+    <?php else: ?>
+        <p>No news articles found.</p>
+    <?php endif; ?>
+</div>
     </div>
     
     <footer>

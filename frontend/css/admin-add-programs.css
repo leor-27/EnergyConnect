@@ -26,7 +26,7 @@ body {
     padding: 20px;
     background-color: var(--main-content-bg);
     box-shadow: 0 0 10px rgba(0, 0, 0, 0.1); 
-    margin-bottom: 50px;
+    margin-bottom: 120px;
 }
 
 /* Header */
@@ -236,12 +236,16 @@ hr {
 .card-actions {
     display: flex;
     gap: 10px;
-    color: #999; 
     font-size: 1.1em;
     padding-top: 5px; 
 }
 
-.card-actions span:hover {
+.card-actions a {
+    color: #999;              /* same gray as before */
+    text-decoration: none;    /* remove link underline */
+}
+
+.card-actions a:hover {
     color: var(--energy-blue); 
     cursor: pointer;
 }
@@ -311,16 +315,16 @@ hr {
 }
 
 footer {
-    background-color:#1C5186;
-    padding: 30px;
-    position: relative;
-    text-align: right;
+    position: fixed;
+    bottom: 0;
+    left: 0;
     width: 100%;
-    margin: 20px auto 10px auto;
+    background-color: #1C5186;
+    padding: 25px;
+    text-align: right;
     font-size: 16px;
     color: white;
-    margin-top: 0px;
-    margin-bottom: 0px;
+    z-index: 1000; /* ensures it’s on top of other elements */
 }
 
 .input-group-left {

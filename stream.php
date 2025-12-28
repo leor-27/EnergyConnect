@@ -1,5 +1,23 @@
 <?php
 include 'backend/db.php';
+include 'backend/auto_ingest.php';
+
+$sql = "
+    SELECT 
+        abl.ID,
+        abl.DATE,
+        abl.START_TIME,
+        abl.END_TIME,
+        abl.AUDIO_FILE_PATH,
+        p.TITLE
+    FROM Audio_Broadcast_Log abl
+    LEFT JOIN Program p ON abl.PROGRAM_ID = p.id
+    ORDER BY abl.DATE DESC, abl.START_TIME DESC
+";
+
+$result = $conn->query($sql);
+
+$baseUrl = "http://localhost:8000/";
 ?>
 
 <!DOCTYPE html>
@@ -56,7 +74,7 @@ include 'backend/db.php';
 
     <!--stream section-->
     <div class="stream-section">
-        <h2 class="section-heading">STREAM HERE!</h2>
+        <h2 class="section-heading">STREAM THE LATEST VIDEO LIVESTREAMS!</h2>
         <div class="carousel">
             <div class="player-card"></div>
             <div class="player-card"></div>
@@ -73,7 +91,7 @@ include 'backend/db.php';
 
     <!--audio broadcast section-->
     <div class="stream-section">
-        <h2 class="section-heading">AUDIO BROADCAST</h2>
+        <h2 class="section-heading">AUDIO BROADCASTS</h2>
         <div class="table-container">
             <div class="search-box">
                 <span class="search-icon">🔍︎</span>
@@ -84,64 +102,51 @@ include 'backend/db.php';
                     <thead>
                         <tr>
                             <th class="col-name">Name <span class="sort-icon">▼</span></th>
-                            <th class="col-date">Date <span class="sort-icon">▼</span></th>
+                            <th class="col-date">Broadcast Date <span class="sort-icon">▼</span></th>
                             <th class="col-time">Time <span class="sort-icon">▼</span></th>
                             <th class="col-action"></th>
                         </tr>
                     </thead>
                     <tbody>
+                    <?php if ($result && $result->num_rows > 0): ?>
+                        <?php while ($row = $result->fetch_assoc()): ?>
+                            <tr>
+                                <td>
+                                    <audio id="audio-<?= $row['ID'] ?>" preload="none">
+                                        <source src="<?= $baseUrl . htmlspecialchars($row['AUDIO_FILE_PATH']) ?>" type="audio/mpeg">
+                                    </audio>
+
+                                    <span class="broadcast-icon"
+                                        id="icon-<?= $row['ID'] ?>"
+                                        onclick="togglePlay(<?= $row['ID'] ?>)">
+                                        ▶
+                                    </span>
+
+                                    <?= htmlspecialchars($row['TITLE'] ?? 'No Specific Program') ?>
+                                </td>
+
+                                <td class="center-align">
+                                    <?= date("M d, Y", strtotime($row['DATE'])) ?>
+                                </td>
+
+                                <td class="center-align">
+                                    <?= date("g:i A", strtotime($row['START_TIME'])) ?>
+                                    –
+                                    <?= date("g:i A", strtotime($row['END_TIME'])) ?>
+                                </td>
+
+                                <td>
+                                    <span class="heart-icon">♡</span>
+                                </td>
+                            </tr>
+                        <?php endwhile; ?>
+                    <?php else: ?>
                         <tr>
-                            <td><span class="broadcast-icon">▶</span>Audio Broadcast Name</td>
-                            <td class="center-align">Date Played</td>
-                            <td class="center-align">Start - End Time</td>
-                            <td><span class="heart-icon">♡</span></td>
+                            <td colspan="4" class="center-align">
+                                No audio broadcasts available.
+                            </td>
                         </tr>
-                        <tr>
-                            <td><span class="broadcast-icon">▶︎</span> Audio Broadcast Name</td>
-                            <td class="center-align">Date Played</td>
-                            <td class="center-align">Start - End Time</td>
-                            <td><span class="heart-icon">♡</span></td>
-                        </tr>
-                        <tr>
-                            <td><span class="broadcast-icon">▶</span> Audio Broadcast Name</td>
-                            <td class="center-align">Date Played</td>
-                            <td class="center-align">Start - End Time</td>
-                            <td><span class="heart-icon">♡</span></td>
-                        </tr>
-                        <tr>
-                            <td><span class="broadcast-icon">▶</span> Audio Broadcast Name</td>
-                            <td class="center-align">Date Played</td>
-                            <td class="center-align">Start - End Time</td>
-                            <td><span class="heart-icon">♡</span></td>
-                        </tr>
-                        <tr>
-                            <td><span class="broadcast-icon">▶</span> Audio Broadcast Name</td>
-                            <td class="center-align">Date Played</td>
-                            <td class="center-align">Start - End Time</td>
-                            <td><span class="heart-icon">♡</span></td>
-                        </tr>
-                        <tr>
-                            <td><span class="broadcast-icon">▶</span> Audio Broadcast Name</td>
-                            <td class="center-align">Date Played</td>
-                            <td class="center-align">Start - End Time</td>
-                            <td><span class="heart-icon">♡</span></td>
-                        </tr><tr>
-                            <td><span class="broadcast-icon">▶</span> Audio Broadcast Name</td>
-                            <td class="center-align">Date Played</td>
-                            <td class="center-align">Start - End Time</td>
-                            <td><span class="heart-icon">♡</span></td>
-                        </tr><tr>
-                            <td><span class="broadcast-icon">▶</span> Audio Broadcast Name</td>
-                            <td class="center-align">Date Played</td>
-                            <td class="center-align">Start - End Time</td>
-                            <td><span class="heart-icon">♡</span></td>
-                        </tr><tr>
-                            <td><span class="broadcast-icon">▶</span> Audio Broadcast Name</td>
-                            <td class="center-align">Date Played</td>
-                            <td class="center-align">Start - End Time</td>
-                            <td><span class="heart-icon">♡</span></td>
-                        </tr>
-                        </tr>
+                    <?php endif; ?>
                     </tbody>
                 </table>
             </div>
@@ -295,6 +300,42 @@ include 'backend/db.php';
     <div class = "footer">
         <footer>Privacy Policy | Energy FM © 2025</footer>
     </div>
+
+    <script>
+        let currentAudio = null;
+        let currentIcon = null;
+
+        function togglePlay(id) {
+            const audio = document.getElementById('audio-' + id);
+            const icon = document.getElementById('icon-' + id);
+
+            // If another audio is playing, stop it and reset icon
+            if (currentAudio && currentAudio !== audio) {
+                currentAudio.pause();
+                currentAudio.currentTime = 0;
+                if (currentIcon) currentIcon.textContent = '▶';
+            }
+
+            if (audio.paused) {
+                audio.play();
+                icon.textContent = '❚❚';
+                currentAudio = audio;
+                currentIcon = icon;
+            } else {
+                audio.pause();
+                icon.textContent = '▶';
+                currentAudio = null;
+                currentIcon = null;
+            }
+
+            // When audio finishes, reset icon
+            audio.onended = () => {
+                icon.textContent = '▶';
+                currentAudio = null;
+                currentIcon = null;
+            };
+        }
+    </script>
 
 </body>
 </html>
