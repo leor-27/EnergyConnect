@@ -1,5 +1,5 @@
 <?php
-
+// currently just a static about page but can have a backend/interactivity in the future
 ?>
 
 <!DOCTYPE html>

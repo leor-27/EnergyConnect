@@ -24,7 +24,7 @@ $programs = $conn->query("
     LEFT JOIN Day_Type dt
         ON pdt.DAY_TYPE_ID = dt.ID
     GROUP BY p.ID
-    ORDER BY p.START_TIME ASC
+    ORDER BY p.TITLE ASC
 ");
 
 $dj_list = $conn->query("SELECT * FROM DJ_Profile ORDER BY STAGE_NAME ASC");
@@ -35,31 +35,64 @@ if (!$dj_list) {
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    $title       = $_POST['title'];
+    $title = mb_strtoupper(trim($_POST['title']), 'UTF-8');
     $type        = $_POST['type'];
     $start_time  = $_POST['start_time'];
     $end_time    = $_POST['end_time'];
     $description = $_POST['description'];
 
+    $day_types = $_POST['day_types'] ?? [];
+    $djs       = $_POST['djs'] ?? [];
+
+    if ($type === "WITH DJ/HOST" && empty($djs)) {
+        die("Please select at least one DJ/Host.");
+    }
+
+    // 1️⃣ Insert Program
     $sql = "INSERT INTO Program (TITLE, TYPE, START_TIME, END_TIME, DESCRIPTION)
             VALUES (?, ?, ?, ?, ?)";
 
     $stmt = $conn->prepare($sql);
-    $stmt->bind_param(
-        "sssss",
-        $title,
-        $type,
-        $start_time,
-        $end_time,
-        $description
-    );
+    $stmt->bind_param("sssss", $title, $type, $start_time, $end_time, $description);
 
-    if ($stmt->execute()) {
-        header("Location: admin-add-programs.php?added=1");
-        exit;
-    } else {
-        echo "Error adding program.";
+    if (!$stmt->execute()) {
+        die("Error adding program.");
     }
+
+    // Get the new program ID
+    $program_id = $stmt->insert_id;
+    $stmt->close();
+
+    // 2️⃣ Insert Day Types
+    if (!empty($day_types)) {
+        $stmtDay = $conn->prepare(
+            "INSERT INTO Program_Day_Type (PROGRAM_ID, DAY_TYPE_ID) VALUES (?, ?)"
+        );
+
+        foreach ($day_types as $day_type_id) {
+            $stmtDay->bind_param("ii", $program_id, $day_type_id);
+            $stmtDay->execute();
+        }
+        $stmtDay->close();
+    }
+
+    // 3️⃣ Insert DJs (only if WITH DJ/HOST)
+    if ($type === "WITH DJ/HOST" && !empty($djs)) {
+        $stmtDJ = $conn->prepare(
+            "INSERT INTO Program_Anchor_Assignment (PROGRAM_ID, DJ_ID)
+             VALUES (?, ?)"
+        );
+
+        foreach ($djs as $dj_id) {
+            $stmtDJ->bind_param("ii", $program_id, $dj_id);
+            $stmtDJ->execute();
+        }
+        $stmtDJ->close();
+    }
+
+    // 4️⃣ Redirect
+    header("Location: admin-add-programs.php?added=1");
+    exit;
 }
 ?>
 
@@ -71,8 +104,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <title>Admin Dashboard</title>
     <link href="frontend/css/admin-add-programs.css" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+    <script src = "frontend/js/admin-add-programs.js"></script>
 </head>
-    </head>
+
 <body class="admin-home">
 
     <?php if (isset($_GET['added'])): ?>
@@ -164,74 +198,55 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             </div>
         </section>
 
-<section class="add-item-form">
-    <form method="POST">
-        <div class="form-row form-top-row">
+        <section class="add-item-form">
+            <form method="POST">
+                <div class="form-row form-top-row">
 
-        <input type="text" id="description" name="description" placeholder="Title" required>
-            
-            <div class="input-group-left">
-                <div class="horizontal-align-row">
-                    <textarea id="headline" name="title" placeholder="Description" required></textarea>
-                    <div class="checkbox-container">
-                        <div class="checkbox-group">
-                            <label><input type="checkbox" name="day_types[]" value="1"> WEEKDAYS</label>
-                            <label><input type="checkbox" name="day_types[]" value="2"> SAT</label>
-                            <label><input type="checkbox" name="day_types[]" value="3"> SUN</label>
+                <input type="text" id="description" name="description" placeholder="Title" required>
+                    
+                    <div class="input-group-left">
+                        <div class="horizontal-align-row">
+                            <textarea id="headline" name="title" placeholder="Description" required></textarea>
+                            <div class="checkbox-container">
+                                <div class="checkbox-group">
+                                    <label><input type="checkbox" name="day_types[]" value="1"> WEEKDAYS</label>
+                                    <label><input type="checkbox" name="day_types[]" value="2"> SAT</label>
+                                    <label><input type="checkbox" name="day_types[]" value="3"> SUN</label>
+                                </div>
+                            </div>
+                        </div>
+
+                        <div class="horizontal-align-row">
+                            <div class="form-bottom-row">
+                                <input type="time" name="start_time" required>
+                                <p class="to">-</p>
+                                <input type="time" name="end_time" required>
+                                <select id="type-selector" name="type" onchange="toggleDJFields()">
+                                    <option value="" disabled selected hidden>Type</option>
+                                    <option value="MUSIC ONLY">MUSIC ONLY</option>
+                                    <option value="WITH DJ/HOST">WITH DJ/HOST</option>
+                                </select>
+                            </div>
+
+                            <div id="dj-selection-container" class="checkbox-container disabled-dj">
+                                <div class="checkbox-group dj-list-scroll">
+                                    <?php while($dj = $dj_list->fetch_assoc()): ?>
+                                        <label>
+                                            <input type="checkbox" class="dj-checkbox" name="djs[]" value="<?= $dj['ID'] ?>" disabled> 
+                                            <?= htmlspecialchars($dj['STAGE_NAME'] ?: strtoupper($dj['REAL_NAME'])) ?>
+                                        </label>
+                                    <?php endwhile; ?>
+                                </div>
+                            </div>
                         </div>
                     </div>
+
+                    <button type="submit" class="add-button">
+                        <i class="fas fa-plus"></i> Add
+                    </button>
                 </div>
-
-                <div class="horizontal-align-row">
-                    <div class="form-bottom-row">
-                        <input type="time" name="start_time" required>
-                        <p class="to">-</p>
-                        <input type="time" name="end_time" required>
-                        <select id="type-selector" name="type" onchange="toggleDJFields()">
-                            <option value="" disabled selected hidden>Type</option>
-                            <option value="MUSIC ONLY">MUSIC ONLY</option>
-                            <option value="WITH DJ/HOST">WITH DJ/HOST</option>
-                        </select>
-                    </div>
-
-                    <div id="dj-selection-container" class="checkbox-container disabled-dj">
-                        <div class="checkbox-group dj-list-scroll">
-                            <?php while($dj = $dj_list->fetch_assoc()): ?>
-                                <label>
-                                    <input type="checkbox" class="dj-checkbox" name="djs[]" value="<?= $dj['ID'] ?>" disabled> 
-                                    <?= htmlspecialchars($dj['STAGE_NAME'] ?: strtoupper($dj['REAL_NAME'])) ?>
-                                </label>
-                            <?php endwhile; ?>
-                        </div>
-                    </div>
-                </div>
-            </div>
-
-            <button type="submit" class="add-button">
-                <i class="fas fa-plus"></i> Add
-            </button>
-        </div>
-    </form>
-</section>
-
-<script>
-function toggleDJFields() {
-    const typeSelect = document.getElementById('type-selector');
-    const djContainer = document.getElementById('dj-selection-container');
-    const checkboxes = document.querySelectorAll('.dj-checkbox');
-    
-    if (typeSelect.value === "WITH DJ/HOST") {
-        djContainer.classList.remove('disabled-dj');
-        checkboxes.forEach(cb => cb.disabled = false);
-    } else {
-        djContainer.classList.add('disabled-dj');
-        checkboxes.forEach(cb => {
-            cb.disabled = true;
-            cb.checked = false; // Clear selection if switched back
-        });
-    }
-}
-</script>
+            </form>
+        </section>
 
     </main>
     

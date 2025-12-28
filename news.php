@@ -44,13 +44,11 @@ $featuredNews = $featuredResult->fetch_assoc();
 </head>
 
 <body>
-  <!-- Header -->
   <div class="header">
       <a href="home.php">
         <img src="frontend/images/logo.png" alt="Energy FM 106.3 Naga Logo" class="logo">
       </a>
 
-      <!-- Menu Icon -->
       <input type="checkbox" id="menu-toggle">
       <label for="menu-toggle" class="menu-icon">&#9776;</label>
 
@@ -62,7 +60,6 @@ $featuredNews = $featuredResult->fetch_assoc();
         <a href="news.php">News</a>
       </div>
 
-      <!-- Overlay Texts -->
       <div class="header-overlay">
         <h1>ENERGY FEATURED NEWS</h1>
         <p class="intro-news">
@@ -76,7 +73,6 @@ $featuredNews = $featuredResult->fetch_assoc();
   <div class="break-box"></div>
 
   <main>
-    <!-- Featured News -->
     <div class="featurednews">
       <img src="<?= htmlspecialchars($featuredNews['HEADLINE_IMAGE_PATH']) ?>" 
            alt="<?= htmlspecialchars($featuredNews['HEADLINE']) ?>" 
@@ -97,10 +93,8 @@ $featuredNews = $featuredResult->fetch_assoc();
       </div>
     </div>
 
-    <!-- Latest News -->
     <h4> Latest News </h4>
 
-    <!-- Search & Filter Section -->
     <div class="search-filter-section">
       <div class="search">
         <img src="frontend/images/search_icon.png" alt="Search Icon">
@@ -112,7 +106,6 @@ $featuredNews = $featuredResult->fetch_assoc();
       </button>
     </div>
 
-    <!-- News Section -->
     <div class="news-section">
 
       <?php

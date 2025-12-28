@@ -6,14 +6,13 @@ if (!isset($_GET['id'])) {
     exit;
 }
 
-$id = intval($_GET['id']); // basic sanitization
+$id = intval($_GET['id']);
 
 $sql = "DELETE FROM News WHERE ID = ?";
 $stmt = $conn->prepare($sql);
 $stmt->bind_param("i", $id);
 
 if ($stmt->execute()) {
-    // success
     header("Location: admin-home.php?deleted=1");
     exit;
 } else {

@@ -85,7 +85,7 @@ document.addEventListener("DOMContentLoaded", () => {
                     <div>Time: ${program.START_TIME} – ${program.END_TIME}</div>                        
                     <div>Hosts: ${program.hosts}</div> `;
 
-            card.addEventListener("click", () => { window.location.href = "programs.html";
+            card.addEventListener("click", () => { window.location.href = "programs.php";
         });
 
             container.appendChild(card);

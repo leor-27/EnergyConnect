@@ -333,3 +333,10 @@ html, body {
     color: #FFFFFF;
     background-color: #1C5186;
 }
+
+.news-image {
+    width: 325px;
+    height: 300px;
+    object-fit: cover; /* no distortion */
+    border-radius: 6px;
+}

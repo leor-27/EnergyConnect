@@ -66,7 +66,6 @@ date_default_timezone_set('Asia/Manila');
 
             $diff = $now->getTimestamp() - $posted->getTimestamp();
 
-            // Future-proofing (if clock diff causes negative)
             if ($diff < 60) {
                 return "Just Now";
             }
@@ -81,8 +80,6 @@ date_default_timezone_set('Asia/Manila');
             if ($hours < 24) {
                 return $hours . " hour" . ($hours == 1 ? "" : "s") . " ago";
             }
-
-            // Otherwise show full date
             return $posted->format("F j, Y");
         }
 
@@ -91,7 +88,7 @@ date_default_timezone_set('Asia/Manila');
                 echo '
                 <div class="news-card-home">
                     <a href="' . $row["SOURCE_URL"] . '" target="_blank">
-                        <img src="' . $row["HEADLINE_IMAGE_PATH"] . '" width="325" height="300" alt="News Image">
+                        <img src="' . $row["HEADLINE_IMAGE_PATH"] . '" width="325" height="300" alt="News Image" class="news-image">
                     </a>
                     <div class="news-header">' . $row["HEADLINE"] . '</div>
                     <div>' . $row["ORGANIZATION"] . ' | ' . formatNewsDate($row["DATE_POSTED"]) . '</div>
@@ -104,13 +101,6 @@ date_default_timezone_set('Asia/Manila');
 
         $conn->close();
         ?>
-
-        <div class="news-card-home">
-            <img src = "frontend/images/typhoon_photo.png" width = "325" height = "300" alt="Bagyong Uwan">
-            <div class="news-header">BAGYONG UWAN 2025</div>
-            <div>Inquirer News | November 8, 2025</div>
-            <div>By: Keith Clores</div>
-        </div>
     </div>
 
     <div class = "footer">

@@ -77,7 +77,6 @@ if ($result->num_rows > 0) {
 
     <div class="description">
 
-        <!-- MAIN DESCRIPTION (must exist) -->
         <section id="main-description">
             <h1>DJ PROFILES</h1>
             <p>
@@ -86,7 +85,7 @@ if ($result->num_rows > 0) {
             </p>
         </section>
 
-        <!-- DJ DESCRIPTIONS FROM DB -->
+        <!-- dj descriptions -->
         <?php foreach ($djs as $dj): ?>
             <section class="dj-description">
                 <h1 class="dj-name">

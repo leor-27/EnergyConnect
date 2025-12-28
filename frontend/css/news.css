@@ -84,6 +84,7 @@
     min-height: 350px;
     margin-left: 30px;
     border-radius: 10px;
+    object-fit: cover; /* no distortion */
 }
 
 .featurednews-author {
