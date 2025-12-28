@@ -110,7 +110,17 @@ $featuredNews = $featuredResult->fetch_assoc();
 
       <?php
       // Fetch all news for latest news section
-      $sql = "SELECT * FROM News ORDER BY DATE_POSTED DESC, ID DESC";
+      $sql = "
+          SELECT 
+              n.*,
+              GROUP_CONCAT(c.NAME ORDER BY c.NAME SEPARATOR ', ') AS CATEGORIES
+          FROM News n
+          LEFT JOIN News_Category nc ON n.ID = nc.NEWS_ID
+          LEFT JOIN Category c ON nc.CATEGORY_ID = c.ID
+          GROUP BY n.ID
+          ORDER BY n.DATE_POSTED DESC, n.ID DESC
+      ";
+
       $result = $conn->query($sql);
 
       if ($result->num_rows > 0) {
@@ -130,9 +140,24 @@ $featuredNews = $featuredResult->fetch_assoc();
                       <p>' . formatNewsDate($row["DATE_POSTED"]) . '</p>
                   </div>
                   <p>' . $row["SUMMARY"] . '</p>
-                  <div class="author-category-section">
-                      <p>By: <a href="' . $row["SOURCE_URL"] . '" target="_blank">' . $row["AUTHOR"] . '</a></p>
-                  </div>
+<div class="author-category-section">
+    <p>
+        By: <a href="' . $row["SOURCE_URL"] . '" target="_blank">
+            ' . htmlspecialchars($row["AUTHOR"]) . '
+        </a>
+    </p>
+
+<div class="category-container">
+    ' . (
+        $row["CATEGORIES"]
+        ? implode('', array_map(
+            fn($cat) => '<span class="category-pill">' . htmlspecialchars(trim($cat)) . '</span>',
+            explode(',', $row["CATEGORIES"])
+        ))
+        : ''
+    ) . '
+</div>
+</div>
               </div>';
           }
       } else {

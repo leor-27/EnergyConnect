@@ -271,13 +271,21 @@ h4 {
 }
 
 .category-container {
+    display: flex;
+    gap: 6px;
+    flex-wrap: wrap;
+    justify-content: flex-end;
+}
+
+.category-pill {
     background-color: rgba(116, 114, 114, 1);
-    padding: 5px 15px;
-    width: auto;
-    height: 15px;
+    padding: 4px 12px;
     border-radius: 50px;
     color: white;
+    font-size: 11px;
+    white-space: nowrap;
 }
+
 
 .footer {
     background-color: #1C5186;
