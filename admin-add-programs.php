@@ -8,18 +8,30 @@ $programs = $conn->query("
         p.START_TIME,
         p.END_TIME,
         p.DESCRIPTION,
+        p.TYPE,
         GROUP_CONCAT(
-            COALESCE(d.STAGE_NAME, UPPER(d.REAL_NAME))
+            DISTINCT COALESCE(d.STAGE_NAME, UPPER(d.REAL_NAME))
             SEPARATOR ', '
-        ) AS HOSTS
+        ) AS HOSTS,
+        GROUP_CONCAT(DISTINCT dt.DAY_TYPE ORDER BY dt.ID SEPARATOR ', ') AS DAY_TYPES
     FROM Program p
     LEFT JOIN Program_Anchor_Assignment paa
         ON p.ID = paa.PROGRAM_ID
     LEFT JOIN DJ_Profile d
         ON paa.DJ_ID = d.ID
+    LEFT JOIN Program_Day_Type pdt
+        ON p.ID = pdt.PROGRAM_ID
+    LEFT JOIN Day_Type dt
+        ON pdt.DAY_TYPE_ID = dt.ID
     GROUP BY p.ID
     ORDER BY p.START_TIME ASC
 ");
+
+$dj_list = $conn->query("SELECT * FROM DJ_Profile ORDER BY STAGE_NAME ASC");
+
+if (!$dj_list) {
+    die("Query failed: " . $conn->error);
+}
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
@@ -124,6 +136,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                                 <p class="hosts">
                                     <?= $row['HOSTS'] ? htmlspecialchars($row['HOSTS']) : 'MUSIC ONLY' ?>
                                 </p>
+                                <?php if (!empty($row['DAY_TYPES'])): ?>
+                                    <p class="day-type"><?= htmlspecialchars($row['DAY_TYPES']) ?></p>
+                                <?php endif; ?>
                         </div>
 
                         <div class="card-description">
@@ -149,36 +164,74 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             </div>
         </section>
 
-        <section class="add-item-form">
-        <form method="POST">
+<section class="add-item-form">
+    <form method="POST">
+        <div class="form-row form-top-row">
 
-            <div class="form-row form-top-row">
+        <input type="text" id="description" name="description" placeholder="Title" required>
+            
+            <div class="input-group-left">
+                <div class="horizontal-align-row">
+                    <textarea id="headline" name="title" placeholder="Description" required></textarea>
+                    <div class="checkbox-container">
+                        <div class="checkbox-group">
+                            <label><input type="checkbox" name="day_types[]" value="1"> WEEKDAYS</label>
+                            <label><input type="checkbox" name="day_types[]" value="2"> SAT</label>
+                            <label><input type="checkbox" name="day_types[]" value="3"> SUN</label>
+                        </div>
+                    </div>
+                </div>
 
-                <div class="input-group-left">
-                    <input type="text" id="headline" name="title" placeholder="Headline" required>
-
-                    <div class="form-row form-bottom-row">
-                        <input type="time" id="time" name="start_time" required>
+                <div class="horizontal-align-row">
+                    <div class="form-bottom-row">
+                        <input type="time" name="start_time" required>
                         <p class="to">-</p>
-                        <input type="time" id="time" name="end_time" required>
-
-                        <select id="type" name="type">
+                        <input type="time" name="end_time" required>
+                        <select id="type-selector" name="type" onchange="toggleDJFields()">
                             <option value="" disabled selected hidden>Type</option>
                             <option value="MUSIC ONLY">MUSIC ONLY</option>
                             <option value="WITH DJ/HOST">WITH DJ/HOST</option>
                         </select>
                     </div>
+
+                    <div id="dj-selection-container" class="checkbox-container disabled-dj">
+                        <div class="checkbox-group dj-list-scroll">
+                            <?php while($dj = $dj_list->fetch_assoc()): ?>
+                                <label>
+                                    <input type="checkbox" class="dj-checkbox" name="djs[]" value="<?= $dj['ID'] ?>" disabled> 
+                                    <?= htmlspecialchars($dj['STAGE_NAME'] ?: strtoupper($dj['REAL_NAME'])) ?>
+                                </label>
+                            <?php endwhile; ?>
+                        </div>
+                    </div>
                 </div>
-
-                <textarea id="description" name="description" placeholder="Description" required></textarea>
-
-                <button type="submit" class="add-button">
-                    <i class="fas fa-plus"></i> Add
-                </button>
-
             </div>
-        </form>
-        </section>
+
+            <button type="submit" class="add-button">
+                <i class="fas fa-plus"></i> Add
+            </button>
+        </div>
+    </form>
+</section>
+
+<script>
+function toggleDJFields() {
+    const typeSelect = document.getElementById('type-selector');
+    const djContainer = document.getElementById('dj-selection-container');
+    const checkboxes = document.querySelectorAll('.dj-checkbox');
+    
+    if (typeSelect.value === "WITH DJ/HOST") {
+        djContainer.classList.remove('disabled-dj');
+        checkboxes.forEach(cb => cb.disabled = false);
+    } else {
+        djContainer.classList.add('disabled-dj');
+        checkboxes.forEach(cb => {
+            cb.disabled = true;
+            cb.checked = false; // Clear selection if switched back
+        });
+    }
+}
+</script>
 
     </main>
     
