@@ -1,6 +1,34 @@
 <?php
 include 'backend/db.php';
 
+$edit_mode = false;
+$edit_news = null;
+$selected_categories = [];
+
+if (isset($_GET['edit'])) {
+    $edit_mode = true;
+    $newsId = (int)$_GET['edit'];
+
+    $stmt = $conn->prepare("SELECT * FROM News WHERE ID = ?");
+    $stmt->bind_param("i", $newsId);
+    $stmt->execute();
+    $edit_news = $stmt->get_result()->fetch_assoc();
+    $stmt->close();
+
+    // fetch selected categories
+    $catStmt = $conn->prepare(
+        "SELECT CATEGORY_ID FROM News_Category WHERE NEWS_ID = ?"
+    );
+    $catStmt->bind_param("i", $newsId);
+    $catStmt->execute();
+    $res = $catStmt->get_result();
+
+    while ($row = $res->fetch_assoc()) {
+        $selected_categories[] = $row['CATEGORY_ID'];
+    }
+    $catStmt->close();
+}
+
 /* Fetch categories */
 $categories = [];
 $catSql = "SELECT ID, NAME FROM Category ORDER BY NAME ASC";
@@ -14,62 +42,81 @@ if ($catResult && $catResult->num_rows > 0) {
 
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
-    $source_url   = trim($_POST['news-link'] ?? '');
-    $headline     = trim($_POST['headline'] ?? '');
-    $author       = trim($_POST['author'] ?? '');
-    $organization = trim($_POST['newsorg'] ?? '');
-    $summary      = trim($_POST['description'] ?? '');
-    $imagePath    = trim($_POST['image_url'] ?? '');
+    $source_url   = trim($_POST['news-link']);
+    $headline     = trim($_POST['headline']);
+    $author       = trim($_POST['author']);
+    $organization = trim($_POST['newsorg']);
+    $summary      = trim($_POST['description']);
+    $imagePath    = trim($_POST['image_url']);
     $categoryIds  = $_POST['categories'] ?? [];
 
-    /* Backend validation */
-    if (
-        empty($source_url) ||
-        empty($author) ||
-        empty($organization) ||
-        empty($summary)
-    ) {
-        die("Required fields are missing.");
-    }
+    if ($edit_mode) {
 
-    $sql = "INSERT INTO News 
-        (SOURCE_URL, HEADLINE_IMAGE_PATH, HEADLINE, AUTHOR, ORGANIZATION, SUMMARY, DATE_POSTED)
-        VALUES (?, ?, ?, ?, ?, ?, NOW())";
+        // UPDATE
+        $stmt = $conn->prepare("
+            UPDATE News SET
+                SOURCE_URL = ?,
+                HEADLINE_IMAGE_PATH = ?,
+                HEADLINE = ?,
+                AUTHOR = ?,
+                ORGANIZATION = ?,
+                SUMMARY = ?
+            WHERE ID = ?
+        ");
 
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param(
-        "ssssss",
-        $source_url,
-        $imagePath,
-        $headline,
-        $author,
-        $organization,
-        $summary
-    );
+        $stmt->bind_param(
+            "ssssssi",
+            $source_url,
+            $imagePath,
+            $headline,
+            $author,
+            $organization,
+            $summary,
+            $newsId
+        );
+        $stmt->execute();
+        $stmt->close();
 
-    if ($stmt->execute()) {
-        $newsId = $conn->insert_id;
+        // reset categories
+        $conn->query("DELETE FROM News_Category WHERE NEWS_ID = $newsId");
 
-        if (!empty($categoryIds)) {
-
-    $catStmt = $conn->prepare(
-        "INSERT INTO News_Category (NEWS_ID, CATEGORY_ID) VALUES (?, ?)"
-    );
-
-    foreach ($categoryIds as $categoryId) {
-        $categoryId = (int)$categoryId; // safety
-        $catStmt->bind_param("ii", $newsId, $categoryId);
-        $catStmt->execute();
-    }
-
-    $catStmt->close();
-}
-
-        header("Location: admin-home.php?added=1");
-        exit;
     } else {
-        echo "Error adding news.";
+
+        // INSERT
+        $stmt = $conn->prepare("
+            INSERT INTO News
+            (SOURCE_URL, HEADLINE_IMAGE_PATH, HEADLINE, AUTHOR, ORGANIZATION, SUMMARY, DATE_POSTED)
+            VALUES (?, ?, ?, ?, ?, ?, NOW())
+        ");
+
+        $stmt->bind_param(
+            "ssssss",
+            $source_url,
+            $imagePath,
+            $headline,
+            $author,
+            $organization,
+            $summary
+        );
+        $stmt->execute();
+        $newsId = $conn->insert_id;
+        $stmt->close();
     }
+
+    // insert categories
+    if (!empty($categoryIds)) {
+        $catStmt = $conn->prepare(
+            "INSERT INTO News_Category (NEWS_ID, CATEGORY_ID) VALUES (?, ?)"
+        );
+        foreach ($categoryIds as $catId) {
+            $catStmt->bind_param("ii", $newsId, $catId);
+            $catStmt->execute();
+        }
+        $catStmt->close();
+    }
+
+    header("Location: admin-home.php?updated=1");
+    exit;
 }
 ?>
 
@@ -128,7 +175,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <div class="form-container">
             <form method="POST">
 <div class="news-link-container">
-    <input type="text" id="news-link" name="news-link" placeholder="Attach News Link Here" required>
+    <input type="text" id="news-link" name="news-link"
+       value="<?= $edit_mode ? htmlspecialchars($edit_news['SOURCE_URL']) : '' ?>"
+       placeholder="Attach News Link Here" required>
 </div>
 
 <div class="two-column-container">
@@ -138,22 +187,37 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <div class="categories-checkboxes">
         <?php foreach ($categories as $category): ?>
             <label class="category-item">
-                <input type="checkbox" name="categories[]" value="<?= $category['ID'] ?>">
+                <input type="checkbox"
+       name="categories[]"
+       value="<?= $category['ID'] ?>"
+       <?= in_array($category['ID'], $selected_categories) ? 'checked' : '' ?>>
                 <?= htmlspecialchars($category['NAME']) ?>
             </label>
         <?php endforeach; ?>
     </div>
     
-    <input type="text" id="image_url" name="image_url" placeholder="Image URL (https://...)">
+    <input type="text" id="image_url" name="image_url"
+       value="<?= $edit_mode ? htmlspecialchars($edit_news['HEADLINE_IMAGE_PATH']) : '' ?>"
+       placeholder="Image URL (https://...)">
 </div>
 
     <div class="right-column">
-        <input type="text" id="headline" name="headline" placeholder="Headline">
-        <input type="text" id="author" name="author" placeholder="Author/s Name">
-        <input type="text" id="newsorg" name="newsorg" placeholder="News Organization/Company" required>
-        <textarea id="description" name="description" placeholder="Description" required></textarea>
+        <input type="text" id="headline" name="headline"
+       value="<?= $edit_mode ? htmlspecialchars($edit_news['HEADLINE']) : '' ?>"
+       placeholder="Headline">
+        <input type="text" id="author" name="author"
+       value="<?= $edit_mode ? htmlspecialchars($edit_news['AUTHOR']) : '' ?>"
+       placeholder="Author/s Name">
+        <input type="text" id="newsorg" name="newsorg"
+       value="<?= $edit_mode ? htmlspecialchars($edit_news['ORGANIZATION']) : '' ?>"
+       placeholder="News Organization/Company" required>
+<textarea id="description" name="description" placeholder="Description" required><?= $edit_mode ? htmlspecialchars($edit_news['SUMMARY']) : '' ?></textarea>
 
-        <button type="submit" class="add-button"> <i class="fas fa-plus"></i> Add</button>
+
+        <button type="submit" class="add-button">
+            <i class="fas <?= $edit_mode ? 'fa-pen' : 'fa-plus' ?>"></i>
+            <?= $edit_mode ? 'Update' : 'Add' ?>
+        </button>
     </div>
 </div>
             </form>

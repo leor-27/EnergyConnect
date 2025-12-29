@@ -36,63 +36,98 @@ if (!$dj_list) {
 if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     $title = mb_strtoupper(trim($_POST['title']), 'UTF-8');
-    $type        = $_POST['type'];
-    $start_time  = $_POST['start_time'];
-    $end_time    = $_POST['end_time'];
-    $description = $_POST['description'];
-
+    $type  = $_POST['type'];
+    $start = $_POST['start_time'];
+    $end   = $_POST['end_time'];
+    $desc  = $_POST['description'];
     $day_types = $_POST['day_types'] ?? [];
-    $djs       = $_POST['djs'] ?? [];
+    $djs = $_POST['djs'] ?? [];
 
     if ($type === "WITH DJ/HOST" && empty($djs)) {
         die("Please select at least one DJ/Host.");
     }
 
-    // 1️⃣ Insert Program
-    $sql = "INSERT INTO Program (TITLE, TYPE, START_TIME, END_TIME, DESCRIPTION)
-            VALUES (?, ?, ?, ?, ?)";
+    if (!empty($_POST['program_id'])) {
+        // 🔄 UPDATE
+        $program_id = (int)$_POST['program_id'];
 
-    $stmt = $conn->prepare($sql);
-    $stmt->bind_param("sssss", $title, $type, $start_time, $end_time, $description);
+        $stmt = $conn->prepare("
+            UPDATE Program
+            SET TITLE=?, TYPE=?, START_TIME=?, END_TIME=?, DESCRIPTION=?
+            WHERE ID=?
+        ");
+        $stmt->bind_param("sssssi", $title, $type, $start, $end, $desc, $program_id);
+        $stmt->execute();
+        $stmt->close();
 
-    if (!$stmt->execute()) {
-        die("Error adding program.");
+        $conn->query("DELETE FROM Program_Day_Type WHERE PROGRAM_ID=$program_id");
+        $conn->query("DELETE FROM Program_Anchor_Assignment WHERE PROGRAM_ID=$program_id");
+
+    } else {
+        // ➕ INSERT
+        $stmt = $conn->prepare("
+            INSERT INTO Program (TITLE, TYPE, START_TIME, END_TIME, DESCRIPTION)
+            VALUES (?, ?, ?, ?, ?)
+        ");
+        $stmt->bind_param("sssss", $title, $type, $start, $end, $desc);
+        $stmt->execute();
+        $program_id = $stmt->insert_id;
+        $stmt->close();
     }
 
-    // Get the new program ID
-    $program_id = $stmt->insert_id;
-    $stmt->close();
-
-    // 2️⃣ Insert Day Types
-    if (!empty($day_types)) {
-        $stmtDay = $conn->prepare(
-            "INSERT INTO Program_Day_Type (PROGRAM_ID, DAY_TYPE_ID) VALUES (?, ?)"
-        );
-
-        foreach ($day_types as $day_type_id) {
-            $stmtDay->bind_param("ii", $program_id, $day_type_id);
-            $stmtDay->execute();
-        }
-        $stmtDay->close();
+    // Reinsert day types
+    foreach ($day_types as $day_id) {
+        $conn->query("
+            INSERT INTO Program_Day_Type (PROGRAM_ID, DAY_TYPE_ID)
+            VALUES ($program_id, $day_id)
+        ");
     }
 
-    // 3️⃣ Insert DJs (only if WITH DJ/HOST)
-    if ($type === "WITH DJ/HOST" && !empty($djs)) {
-        $stmtDJ = $conn->prepare(
-            "INSERT INTO Program_Anchor_Assignment (PROGRAM_ID, DJ_ID)
-             VALUES (?, ?)"
-        );
-
-        foreach ($djs as $dj_id) {
-            $stmtDJ->bind_param("ii", $program_id, $dj_id);
-            $stmtDJ->execute();
-        }
-        $stmtDJ->close();
+    // Reinsert DJs
+    foreach ($djs as $dj_id) {
+        $conn->query("
+            INSERT INTO Program_Anchor_Assignment (PROGRAM_ID, DJ_ID)
+            VALUES ($program_id, $dj_id)
+        ");
     }
 
-    // 4️⃣ Redirect
-    header("Location: admin-add-programs.php?added=1");
+    header("Location: admin-add-programs.php?" . (isset($_POST['program_id']) ? "updated=1" : "added=1"));
     exit;
+}
+
+$edit_mode = false;
+$edit_program = null;
+$assigned_djs = [];
+$assigned_days = [];
+
+if (isset($_GET['edit'])) {
+    $edit_mode = true;
+    $edit_id = (int)$_GET['edit'];
+
+    $edit_program = $conn->query("
+        SELECT * FROM Program WHERE ID = $edit_id
+    ")->fetch_assoc();
+
+    if ($edit_program) {
+
+        // DJs
+        $res = $conn->query("
+            SELECT DJ_ID FROM Program_Anchor_Assignment
+            WHERE PROGRAM_ID = $edit_id
+        ");
+        while ($r = $res->fetch_assoc()) {
+            $assigned_djs[] = $r['DJ_ID'];
+        }
+
+        // Day types
+        $res = $conn->query("
+            SELECT DAY_TYPE_ID FROM Program_Day_Type
+            WHERE PROGRAM_ID = $edit_id
+        ");
+        while ($r = $res->fetch_assoc()) {
+            $assigned_days[] = $r['DAY_TYPE_ID'];
+        }
+    }
 }
 ?>
 
@@ -119,6 +154,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <?php if (isset($_GET['deleted'])): ?>
     <script>
         alert("Program deleted successfully.");
+        window.history.replaceState({}, document.title, window.location.pathname);
+    </script>
+    <?php endif; ?>
+
+    <?php if (isset($_GET['updated'])): ?>
+    <script>
+        alert("Program updated successfully.");
         window.history.replaceState({}, document.title, window.location.pathname);
     </script>
     <?php endif; ?>
@@ -181,7 +223,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                     </div>
 
                     <div class="card-actions card-actions-news">
-                        <a href="admin-edit-program.php?id=<?= $row['ID'] ?>" class="edit-icon">
+                        <a href="admin-add-programs.php?edit=<?= $row['ID'] ?>" class="edit-icon">
                             <i class="fas fa-pencil-alt"></i>
                         </a>
 
@@ -200,39 +242,81 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         <section class="add-item-form">
             <form method="POST">
+                <?php if ($edit_mode): ?>
+    <input type="hidden" name="program_id" value="<?= $edit_program['ID'] ?>">
+<?php endif; ?>
+
                 <div class="form-row form-top-row">
 
-                <input type="text" id="description" name="description" placeholder="Title" required>
+                <input type="text"
+       id="headline"
+       name="title"
+       placeholder="Title"
+       value="<?= $edit_mode ? htmlspecialchars($edit_program['TITLE']) : '' ?>"
+       required>
                     
                     <div class="input-group-left">
                         <div class="horizontal-align-row">
-                            <textarea id="headline" name="title" placeholder="Description" required></textarea>
+                            <textarea id="description"
+          name="description"
+          placeholder="Description"
+          required><?= $edit_mode ? htmlspecialchars($edit_program['DESCRIPTION']) : '' ?></textarea>
                             <div class="checkbox-container">
                                 <div class="checkbox-group">
-                                    <label><input type="checkbox" name="day_types[]" value="1"> WEEKDAYS</label>
-                                    <label><input type="checkbox" name="day_types[]" value="2"> SAT</label>
-                                    <label><input type="checkbox" name="day_types[]" value="3"> SUN</label>
+                                    <label>
+    <input type="checkbox" name="day_types[]" value="1"
+        <?= in_array(1, $assigned_days) ? 'checked' : '' ?>>
+    WEEKDAYS
+</label>
+
+<label>
+    <input type="checkbox" name="day_types[]" value="2"
+        <?= in_array(2, $assigned_days) ? 'checked' : '' ?>>
+    SAT
+</label>
+
+<label>
+    <input type="checkbox" name="day_types[]" value="3"
+        <?= in_array(3, $assigned_days) ? 'checked' : '' ?>>
+    SUN
+</label>
+
                                 </div>
                             </div>
                         </div>
 
                         <div class="horizontal-align-row">
                             <div class="form-bottom-row">
-                                <input type="time" name="start_time" required>
+                                <input type="time" name="start_time"
+       value="<?= $edit_mode ? $edit_program['START_TIME'] : '' ?>" required>
+
                                 <p class="to">-</p>
-                                <input type="time" name="end_time" required>
-                                <select id="type-selector" name="type" onchange="toggleDJFields()">
-                                    <option value="" disabled selected hidden>Type</option>
-                                    <option value="MUSIC ONLY">MUSIC ONLY</option>
-                                    <option value="WITH DJ/HOST">WITH DJ/HOST</option>
-                                </select>
+                                <input type="time" name="end_time"
+       value="<?= $edit_mode ? $edit_program['END_TIME'] : '' ?>" required>
+<select id="type-selector" name="type" onchange="toggleDJFields()" required>
+    <option value="" disabled hidden>Type</option>
+    <option value="MUSIC ONLY"
+        <?= $edit_mode && $edit_program['TYPE'] === 'MUSIC ONLY' ? 'selected' : '' ?>>
+        MUSIC ONLY
+    </option>
+    <option value="WITH DJ/HOST"
+        <?= $edit_mode && $edit_program['TYPE'] === 'WITH DJ/HOST' ? 'selected' : '' ?>>
+        WITH DJ/HOST
+    </option>
+</select>
+
                             </div>
 
                             <div id="dj-selection-container" class="checkbox-container disabled-dj">
                                 <div class="checkbox-group dj-list-scroll">
                                     <?php while($dj = $dj_list->fetch_assoc()): ?>
                                         <label>
-                                            <input type="checkbox" class="dj-checkbox" name="djs[]" value="<?= $dj['ID'] ?>" disabled> 
+                                            <input type="checkbox"
+       class="dj-checkbox"
+       name="djs[]"
+       value="<?= $dj['ID'] ?>"
+       <?= in_array($dj['ID'], $assigned_djs) ? 'checked' : '' ?>>
+
                                             <?= htmlspecialchars($dj['STAGE_NAME'] ?: strtoupper($dj['REAL_NAME'])) ?>
                                         </label>
                                     <?php endwhile; ?>
@@ -241,9 +325,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                         </div>
                     </div>
 
-                    <button type="submit" class="add-button">
-                        <i class="fas fa-plus"></i> Add
-                    </button>
+<button type="submit" class="add-button">
+    <i class="fas <?= $edit_mode ? 'fa-save' : 'fa-plus' ?>"></i>
+    <?= $edit_mode ? 'Update' : 'Add' ?>
+</button>
+
                 </div>
             </form>
         </section>
@@ -253,6 +339,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <footer>
         Privacy Policy | Energy FM © 2025
     </footer>
+
+    <script>
+document.addEventListener("DOMContentLoaded", () => {
+    toggleDJFields();
+});
+</script>
 
 </body>
 </html> 

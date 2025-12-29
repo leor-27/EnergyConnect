@@ -122,7 +122,7 @@ $result = $conn->query($sql);
                     </div>
 
                     <div class="card-actions card-actions-news">
-                        <a href="admin-edit-news.php?id=<?= $row['ID'] ?>" class="edit-icon">
+                        <a href="admin-attach-news.php?edit=<?= $row['ID'] ?>" class="edit-icon">
                             <i class="fas fa-pencil-alt"></i>
                         </a>
 
