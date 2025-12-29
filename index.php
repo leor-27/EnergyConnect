@@ -1,4 +1,5 @@
 <?php
+session_start();
 include 'backend/db.php';
 ?>
 
@@ -42,27 +43,33 @@ include 'backend/db.php';
         <section id="admin-login" class="admin-section" style="display:none;">
             <h1 id="form-title">Sign In</h1>
 
-            <form id="admin-form" class="admin-form">
+            <form id="admin-form" class="admin-form" method="POST" action="backend/admin-auth.php">
+                <input type="hidden" name="step" id="step" value="login">
 
-            <label id="name-label" style="display: none;">Name</label> <!-- hidden at first also -->
-            <input type="text" id="name" style="display:none;">
+                <label id="input-label">Email / Username</label>
+                <input type="text" id="email" name="email">
 
-            <label id="input-label">Email / Username</label>
-            <input type="text" id="email">
+                <label id="password-label">Password</label>
+                <input type="password" id="password" name="password">
 
-            <label id="password-label">Password</label>
-            <input type="password" id="password">
+                <div class="login">
+                    <button type="submit" class="login-button" id="login-btn">Login</button>
+                </div>
 
-            <div class="login">
-                <button type="submit" class="login-button" id="login-btn">Login</button>
-            </div>
+                <p class="forgot-password" id="forgot-wrapper">
+                    <a href="#" id="forgot-password">Forgot password?</a>
+                </p>
+            </form>
+        </section>
 
-            <p class="google-login" id="google-login">Login using   
-                <a href="https://accounts.google.com/signin">
-                    <img src="frontend/images/google.png" class="google-icon" alt="Google Icon">
-                </a>
-            </p>
-        </form>
-    </section>
+        <?php if (!empty($_SESSION['show_set_credentials'])): ?>
+<script>
+document.addEventListener("DOMContentLoaded", () => {
+    document.getElementById("show-admin").click();
+    showSetCredentials();
+});
+</script>
+<?php unset($_SESSION['show_set_credentials']); endif; ?>
+
 </body>
 </html>

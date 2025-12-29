@@ -1,5 +1,16 @@
 <?php
+session_start();
+
+if (
+    empty($_SESSION['logged_in']) ||
+    empty($_SESSION['admin_id'])
+) {
+    header("Location: index.php");
+    exit;
+}
+
 include 'backend/db.php';
+
 $sql = "
 SELECT 
     n.ID,
@@ -52,7 +63,7 @@ $result = $conn->query($sql);
         <label for="menu-toggle" class="menu-icon">&#9776;</label>
 
         <div class="dropdown-menu">
-            <a href="index.php">Logout</a>
+            <a href="backend/logout.php">Logout</a>
         </div>
     </header>
 
@@ -70,79 +81,79 @@ $result = $conn->query($sql);
 
         <hr>
         
-<div class="news-card-grid">
-    <h3>Attached News</h3>
+        <div class="news-card-grid">
+            <h3>Attached News</h3>
 
-    <?php if ($result && $result->num_rows > 0): ?>
-        <?php while ($row = $result->fetch_assoc()): ?>
+            <?php if ($result && $result->num_rows > 0): ?>
+                <?php while ($row = $result->fetch_assoc()): ?>
 
-            <div class="program-card-admin">
-                <div class="card-details-wrapper">
+                    <div class="program-card-admin">
+                        <div class="card-details-wrapper">
 
-                    <div class="card-header-news">
-                        <span class="program-title">
-                            <?= htmlspecialchars($row['ORGANIZATION']) ?>
-                        </span>
-                    </div>
+                            <div class="card-header-news">
+                                <span class="program-title">
+                                    <?= htmlspecialchars($row['ORGANIZATION']) ?>
+                                </span>
+                            </div>
 
-                    <a href="<?= htmlspecialchars($row['SOURCE_URL']) ?>" target="_blank">
-                        <img 
-                            src="<?= htmlspecialchars($row['HEADLINE_IMAGE_PATH']) ?>" 
-                            alt="News Image" 
-                            class="news-image"
-                        >
-                    </a>
+                            <a href="<?= htmlspecialchars($row['SOURCE_URL']) ?>" target="_blank">
+                                <img 
+                                    src="<?= htmlspecialchars($row['HEADLINE_IMAGE_PATH']) ?>" 
+                                    alt="News Image" 
+                                    class="news-image"
+                                >
+                            </a>
 
-                    <div class="news-info">
-                        <p class="card-description">
-                            <?= htmlspecialchars($row['SUMMARY']) ?>
-                        </p>
+                            <div class="news-info">
+                                <p class="card-description">
+                                    <?= htmlspecialchars($row['SUMMARY']) ?>
+                                </p>
 
-                        <p class="hosts">
-                            By:
-                            <?php if (!empty($row['SOURCE_URL'])): ?>
-                                <a href="<?= htmlspecialchars($row['SOURCE_URL']) ?>" target="_blank">
-                                    <b><?= htmlspecialchars($row['AUTHOR']) ?></b>
+                                <p class="hosts">
+                                    By:
+                                    <?php if (!empty($row['SOURCE_URL'])): ?>
+                                        <a href="<?= htmlspecialchars($row['SOURCE_URL']) ?>" target="_blank">
+                                            <b><?= htmlspecialchars($row['AUTHOR']) ?></b>
+                                        </a>
+                                    <?php else: ?>
+                                        <b><?= htmlspecialchars($row['AUTHOR']) ?></b>
+                                    <?php endif; ?>
+                                </p>
+
+                                <div class="news-info">
+                                    <p class="published-date">
+                                        Attached On:
+                                        <b><?= date("F d, Y", strtotime($row['DATE_POSTED'])) ?></b>
+                                        &nbsp; | &nbsp;
+                                        Category/s:
+                                        <b><?= $row['CATEGORIES'] ? htmlspecialchars($row['CATEGORIES']) : 'Uncategorized' ?></b>
+                                    </p>
+
+                                </div>
+                            </div>
+
+                            <div class="card-actions card-actions-news">
+                                <a href="admin-attach-news.php?edit=<?= $row['ID'] ?>" class="edit-icon">
+                                    <i class="fas fa-pencil-alt"></i>
                                 </a>
-                            <?php else: ?>
-                                <b><?= htmlspecialchars($row['AUTHOR']) ?></b>
-                            <?php endif; ?>
-                        </p>
 
-                        <div class="news-info">
-                            <p class="published-date">
-                                Attached On:
-                                <b><?= date("F d, Y", strtotime($row['DATE_POSTED'])) ?></b>
-                                &nbsp; | &nbsp;
-                                Category/s:
-                                <b><?= $row['CATEGORIES'] ? htmlspecialchars($row['CATEGORIES']) : 'Uncategorized' ?></b>
-                            </p>
+                                <a 
+                                    href="admin-delete-news.php?id=<?= $row['ID'] ?>" 
+                                    class="delete-icon"
+                                    onclick="return confirm('Are you sure you want to delete this news?');"
+                                >
+                                    <i class="fas fa-trash-alt"></i>
+                                </a>
+                            </div>
 
                         </div>
                     </div>
 
-                    <div class="card-actions card-actions-news">
-                        <a href="admin-attach-news.php?edit=<?= $row['ID'] ?>" class="edit-icon">
-                            <i class="fas fa-pencil-alt"></i>
-                        </a>
-
-                        <a 
-                            href="admin-delete-news.php?id=<?= $row['ID'] ?>" 
-                            class="delete-icon"
-                            onclick="return confirm('Are you sure you want to delete this news?');"
-                        >
-                            <i class="fas fa-trash-alt"></i>
-                        </a>
-                    </div>
-
-                </div>
-            </div>
-
-        <?php endwhile; ?>
-    <?php else: ?>
-        <p>No news articles found.</p>
-    <?php endif; ?>
-</div>
+                <?php endwhile; ?>
+            <?php else: ?>
+                <p>No news articles found.</p>
+            <?php endif; ?>
+        </div>
     </div>
     
     <footer>

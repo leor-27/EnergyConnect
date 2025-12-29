@@ -1,4 +1,14 @@
 <?php
+session_start();
+
+if (
+    empty($_SESSION['logged_in']) ||
+    empty($_SESSION['admin_id'])
+) {
+    header("Location: index.php");
+    exit;
+}
+
 include 'backend/db.php';
 
 if (!isset($_GET['id'])) {

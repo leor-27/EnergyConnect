@@ -1,4 +1,14 @@
 <?php
+session_start();
+
+if (
+    empty($_SESSION['logged_in']) ||
+    empty($_SESSION['admin_id'])
+) {
+    header("Location: index.php");
+    exit;
+}
+
 include 'backend/db.php';
 
 $programs = $conn->query("
@@ -48,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     if (!empty($_POST['program_id'])) {
-        // 🔄 UPDATE
+        // UPDATE
         $program_id = (int)$_POST['program_id'];
 
         $stmt = $conn->prepare("
@@ -64,7 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $conn->query("DELETE FROM Program_Anchor_Assignment WHERE PROGRAM_ID=$program_id");
 
     } else {
-        // ➕ INSERT
+        // INSERT
         $stmt = $conn->prepare("
             INSERT INTO Program (TITLE, TYPE, START_TIME, END_TIME, DESCRIPTION)
             VALUES (?, ?, ?, ?, ?)
@@ -110,7 +120,6 @@ if (isset($_GET['edit'])) {
 
     if ($edit_program) {
 
-        // DJs
         $res = $conn->query("
             SELECT DJ_ID FROM Program_Anchor_Assignment
             WHERE PROGRAM_ID = $edit_id
@@ -119,7 +128,6 @@ if (isset($_GET['edit'])) {
             $assigned_djs[] = $r['DJ_ID'];
         }
 
-        // Day types
         $res = $conn->query("
             SELECT DAY_TYPE_ID FROM Program_Day_Type
             WHERE PROGRAM_ID = $edit_id
@@ -243,43 +251,43 @@ if (isset($_GET['edit'])) {
         <section class="add-item-form">
             <form method="POST">
                 <?php if ($edit_mode): ?>
-    <input type="hidden" name="program_id" value="<?= $edit_program['ID'] ?>">
-<?php endif; ?>
+                    <input type="hidden" name="program_id" value="<?= $edit_program['ID'] ?>">
+                <?php endif; ?>
 
                 <div class="form-row form-top-row">
 
                 <input type="text"
-       id="headline"
-       name="title"
-       placeholder="Title"
-       value="<?= $edit_mode ? htmlspecialchars($edit_program['TITLE']) : '' ?>"
-       required>
+                    id="headline"
+                    name="title"
+                    placeholder="Title"
+                    value="<?= $edit_mode ? htmlspecialchars($edit_program['TITLE']) : '' ?>"
+                    required>
                     
                     <div class="input-group-left">
                         <div class="horizontal-align-row">
                             <textarea id="description"
-          name="description"
-          placeholder="Description"
-          required><?= $edit_mode ? htmlspecialchars($edit_program['DESCRIPTION']) : '' ?></textarea>
+                                      name="description"
+                                      placeholder="Description"
+                                      required><?= $edit_mode ? htmlspecialchars($edit_program['DESCRIPTION']) : '' ?></textarea>
                             <div class="checkbox-container">
                                 <div class="checkbox-group">
                                     <label>
-    <input type="checkbox" name="day_types[]" value="1"
-        <?= in_array(1, $assigned_days) ? 'checked' : '' ?>>
-    WEEKDAYS
-</label>
+                                        <input type="checkbox" name="day_types[]" value="1"
+                                            <?= in_array(1, $assigned_days) ? 'checked' : '' ?>>
+                                        WEEKDAYS
+                                    </label>
 
-<label>
-    <input type="checkbox" name="day_types[]" value="2"
-        <?= in_array(2, $assigned_days) ? 'checked' : '' ?>>
-    SAT
-</label>
+                                    <label>
+                                        <input type="checkbox" name="day_types[]" value="2"
+                                            <?= in_array(2, $assigned_days) ? 'checked' : '' ?>>
+                                        SAT
+                                    </label>
 
-<label>
-    <input type="checkbox" name="day_types[]" value="3"
-        <?= in_array(3, $assigned_days) ? 'checked' : '' ?>>
-    SUN
-</label>
+                                    <label>
+                                        <input type="checkbox" name="day_types[]" value="3"
+                                            <?= in_array(3, $assigned_days) ? 'checked' : '' ?>>
+                                        SUN
+                                    </label>
 
                                 </div>
                             </div>
@@ -288,22 +296,22 @@ if (isset($_GET['edit'])) {
                         <div class="horizontal-align-row">
                             <div class="form-bottom-row">
                                 <input type="time" name="start_time"
-       value="<?= $edit_mode ? $edit_program['START_TIME'] : '' ?>" required>
+                                    value="<?= $edit_mode ? $edit_program['START_TIME'] : '' ?>" required>
 
                                 <p class="to">-</p>
                                 <input type="time" name="end_time"
-       value="<?= $edit_mode ? $edit_program['END_TIME'] : '' ?>" required>
-<select id="type-selector" name="type" onchange="toggleDJFields()" required>
-    <option value="" disabled hidden>Type</option>
-    <option value="MUSIC ONLY"
-        <?= $edit_mode && $edit_program['TYPE'] === 'MUSIC ONLY' ? 'selected' : '' ?>>
-        MUSIC ONLY
-    </option>
-    <option value="WITH DJ/HOST"
-        <?= $edit_mode && $edit_program['TYPE'] === 'WITH DJ/HOST' ? 'selected' : '' ?>>
-        WITH DJ/HOST
-    </option>
-</select>
+                                    value="<?= $edit_mode ? $edit_program['END_TIME'] : '' ?>" required>
+                                <select id="type-selector" name="type" onchange="toggleDJFields()" required>
+                                    <option value="" disabled hidden>Type</option>
+                                    <option value="MUSIC ONLY"
+                                        <?= $edit_mode && $edit_program['TYPE'] === 'MUSIC ONLY' ? 'selected' : '' ?>>
+                                        MUSIC ONLY
+                                    </option>
+                                    <option value="WITH DJ/HOST"
+                                        <?= $edit_mode && $edit_program['TYPE'] === 'WITH DJ/HOST' ? 'selected' : '' ?>>
+                                        WITH DJ/HOST
+                                    </option>
+                                </select>
 
                             </div>
 
@@ -312,10 +320,10 @@ if (isset($_GET['edit'])) {
                                     <?php while($dj = $dj_list->fetch_assoc()): ?>
                                         <label>
                                             <input type="checkbox"
-       class="dj-checkbox"
-       name="djs[]"
-       value="<?= $dj['ID'] ?>"
-       <?= in_array($dj['ID'], $assigned_djs) ? 'checked' : '' ?>>
+                                                class="dj-checkbox"
+                                                name="djs[]"
+                                                value="<?= $dj['ID'] ?>"
+                                                <?= in_array($dj['ID'], $assigned_djs) ? 'checked' : '' ?>>
 
                                             <?= htmlspecialchars($dj['STAGE_NAME'] ?: strtoupper($dj['REAL_NAME'])) ?>
                                         </label>
@@ -325,10 +333,10 @@ if (isset($_GET['edit'])) {
                         </div>
                     </div>
 
-<button type="submit" class="add-button">
-    <i class="fas <?= $edit_mode ? 'fa-save' : 'fa-plus' ?>"></i>
-    <?= $edit_mode ? 'Update' : 'Add' ?>
-</button>
+                    <button type="submit" class="add-button">
+                        <i class="fas <?= $edit_mode ? 'fa-save' : 'fa-plus' ?>"></i>
+                        <?= $edit_mode ? 'Update' : 'Add' ?>
+                    </button>
 
                 </div>
             </form>
@@ -341,10 +349,10 @@ if (isset($_GET['edit'])) {
     </footer>
 
     <script>
-document.addEventListener("DOMContentLoaded", () => {
-    toggleDJFields();
-});
-</script>
+    document.addEventListener("DOMContentLoaded", () => {
+        toggleDJFields();
+    });
+    </script>
 
 </body>
 </html> 

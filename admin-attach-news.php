@@ -1,4 +1,14 @@
 <?php
+session_start();
+
+if (
+    empty($_SESSION['logged_in']) ||
+    empty($_SESSION['admin_id'])
+) {
+    header("Location: index.php");
+    exit;
+}
+
 include 'backend/db.php';
 
 $edit_mode = false;
@@ -174,52 +184,52 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
         <div class="form-container">
             <form method="POST">
-<div class="news-link-container">
-    <input type="text" id="news-link" name="news-link"
-       value="<?= $edit_mode ? htmlspecialchars($edit_news['SOURCE_URL']) : '' ?>"
-       placeholder="Attach News Link Here" required>
-</div>
+                <div class="news-link-container">
+                    <input type="text" id="news-link" name="news-link"
+                    value="<?= $edit_mode ? htmlspecialchars($edit_news['SOURCE_URL']) : '' ?>"
+                    placeholder="Attach News Link Here" required>
+                </div>
 
-<div class="two-column-container">
-<div class="left-column">
-    <span class="category-placeholder">Category/s:</span>
+                <div class="two-column-container">
+                <div class="left-column">
+                    <span class="category-placeholder">Category/s:</span>
     
-    <div class="categories-checkboxes">
-        <?php foreach ($categories as $category): ?>
-            <label class="category-item">
-                <input type="checkbox"
-       name="categories[]"
-       value="<?= $category['ID'] ?>"
-       <?= in_array($category['ID'], $selected_categories) ? 'checked' : '' ?>>
-                <?= htmlspecialchars($category['NAME']) ?>
-            </label>
-        <?php endforeach; ?>
-    </div>
+                    <div class="categories-checkboxes">
+                        <?php foreach ($categories as $category): ?>
+                            <label class="category-item">
+                                <input type="checkbox"
+                    name="categories[]"
+                    value="<?= $category['ID'] ?>"
+                    <?= in_array($category['ID'], $selected_categories) ? 'checked' : '' ?>>
+                                <?= htmlspecialchars($category['NAME']) ?>
+                            </label>
+                        <?php endforeach; ?>
+                    </div>
     
-    <input type="text" id="image_url" name="image_url"
-       value="<?= $edit_mode ? htmlspecialchars($edit_news['HEADLINE_IMAGE_PATH']) : '' ?>"
-       placeholder="Image URL (https://...)">
-</div>
+                        <input type="text" id="image_url" name="image_url"
+                        value="<?= $edit_mode ? htmlspecialchars($edit_news['HEADLINE_IMAGE_PATH']) : '' ?>"
+                        placeholder="Image URL (https://...)">
+                    </div>
 
-    <div class="right-column">
-        <input type="text" id="headline" name="headline"
-       value="<?= $edit_mode ? htmlspecialchars($edit_news['HEADLINE']) : '' ?>"
-       placeholder="Headline">
-        <input type="text" id="author" name="author"
-       value="<?= $edit_mode ? htmlspecialchars($edit_news['AUTHOR']) : '' ?>"
-       placeholder="Author/s Name">
-        <input type="text" id="newsorg" name="newsorg"
-       value="<?= $edit_mode ? htmlspecialchars($edit_news['ORGANIZATION']) : '' ?>"
-       placeholder="News Organization/Company" required>
-<textarea id="description" name="description" placeholder="Description" required><?= $edit_mode ? htmlspecialchars($edit_news['SUMMARY']) : '' ?></textarea>
+                    <div class="right-column">
+                        <input type="text" id="headline" name="headline"
+                            value="<?= $edit_mode ? htmlspecialchars($edit_news['HEADLINE']) : '' ?>"
+                            placeholder="Headline">
+                        <input type="text" id="author" name="author"
+                            value="<?= $edit_mode ? htmlspecialchars($edit_news['AUTHOR']) : '' ?>"
+                            placeholder="Author/s Name">
+                        <input type="text" id="newsorg" name="newsorg"
+                            value="<?= $edit_mode ? htmlspecialchars($edit_news['ORGANIZATION']) : '' ?>"
+                            placeholder="News Organization/Company" required>
+                        <textarea id="description" name="description" placeholder="Description" required><?= $edit_mode ? htmlspecialchars($edit_news['SUMMARY']) : '' ?></textarea>
 
 
-        <button type="submit" class="add-button">
-            <i class="fas <?= $edit_mode ? 'fa-pen' : 'fa-plus' ?>"></i>
-            <?= $edit_mode ? 'Update' : 'Add' ?>
-        </button>
-    </div>
-</div>
+                        <button type="submit" class="add-button">
+                            <i class="fas <?= $edit_mode ? 'fa-pen' : 'fa-plus' ?>"></i>
+                            <?= $edit_mode ? 'Update' : 'Add' ?>
+                        </button>
+                    </div>
+                </div>
             </form>
         </div>
 

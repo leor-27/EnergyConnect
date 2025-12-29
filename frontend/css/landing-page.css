@@ -158,13 +158,13 @@ body.landing-page {
     text-align: center;
 }
 
-.google-login {
+.forgot-password {
     margin-top: 25px;
     text-align: center;
     font-size: 14px;
 }
 
-.google-icon {
+#forgot-password {
     width: 20px;
     vertical-align: middle;
 }
