@@ -59,7 +59,19 @@ include 'backend/db.php';
                 <p class="forgot-password" id="forgot-wrapper">
                     <a href="#" id="forgot-password">Forgot password?</a>
                 </p>
+
+                <p class="request-access">
+                    <a href="request-invite-form.php" id="request-access">First-time admin? Request access link.</a>
+                </p>
+
             </form>
+
+            <?php if (!empty($_SESSION['login_error'])): ?>
+            <script>
+                alert("<?= addslashes($_SESSION['login_error']) ?>");
+            </script>
+            <?php unset($_SESSION['login_error']); endif; ?>
+
         </section>
 
         <?php if (!empty($_SESSION['show_set_credentials'])): ?>

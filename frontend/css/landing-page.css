@@ -161,12 +161,23 @@ body.landing-page {
 .forgot-password {
     margin-top: 25px;
     text-align: center;
-    font-size: 14px;
+    font-size: 13px;
 }
 
-#forgot-password {
+#forgot-password, #request-access {
     width: 20px;
     vertical-align: middle;
+    text-decoration: none;
+}
+
+.request-access {
+    padding-top: 5px;
+    text-align: center;
+    font-size: 13px;
+}
+
+#forgot-password:hover, #request-access:hover {
+    font-weight: bold;
 }
 
 .continue {

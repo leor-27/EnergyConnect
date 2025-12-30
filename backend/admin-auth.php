@@ -4,13 +4,15 @@ include 'db.php';
 
 $step = $_POST['step'] ?? 'login';
 
+/* ---------- LOGIN ---------- */
 if ($step === 'login') {
 
     $input = trim($_POST['email'] ?? '');
     $inputPassword = $_POST['password'] ?? '';
 
     if (!$input || !$inputPassword) {
-        die("Missing credentials.");
+        echo "Missing credentials.";
+        exit;
     }
 
     $stmt = $conn->prepare("
@@ -24,56 +26,88 @@ if ($step === 'login') {
     $result = $stmt->get_result();
 
     if (!$admin = $result->fetch_assoc()) {
-        die("Invalid login.");
-    }
-
-    /* FIRST TIME LOGIN */
-    if ($admin['IS_INITIALIZED'] == 0) {
-
-        if (!password_verify($inputPassword, $admin['TEMP_PASSWORD_HASH'])) {
-            die("Invalid temporary password.");
-        }
-
-        $_SESSION['setup_admin_id'] = $admin['ID'];
-        $_SESSION['show_set_credentials'] = true;
-
-        header("Location: ../index.php");
+        echo "Invalid login.";
         exit;
     }
 
-    /* NORMAL LOGIN */
+    /* ---------- FIRST TIME LOGIN ---------- */
+/* ---------- FIRST TIME LOGIN ---------- */
+if ($admin['IS_INITIALIZED'] == 0) {
+    echo "Please use your email invite link to set up your account.";
+    exit;
+}   
+
+    // // If there is no temp hash yet, auto-generate one and save it
+    // if (empty($admin['TEMP_PASSWORD_HASH'])) {
+
+    //     // 1) generate random temp password (8–10 characters)
+    //     $tempPlain = bin2hex(random_bytes(4));
+
+    //     // 2) hash it
+    //     $tempHash = password_hash($tempPlain, PASSWORD_DEFAULT);
+
+    //     // 3) save hash in DB
+    //     $save = $conn->prepare("
+    //         UPDATE Admin
+    //         SET TEMP_PASSWORD_HASH = ?
+    //         WHERE ID = ?
+    //     ");
+    //     $save->bind_param("si", $tempHash, $admin['ID']);
+    //     $save->execute();
+
+    //     // 4) show the generated password ONCE
+    //     echo "Temporary password generated: " . $tempPlain;
+    //     exit;
+    // }
+
+    // // If temp hash already exists, verify normally
+    // if (!password_verify($inputPassword, $admin['TEMP_PASSWORD_HASH'])) {
+    //     echo "Invalid temporary password.";
+    //     exit;
+    // }
+
+    // $_SESSION['setup_admin_id'] = $admin['ID'];
+    // echo "setup";
+    // exit;}
+
+    /* ---------- NORMAL LOGIN ---------- */
     if (!password_verify($inputPassword, $admin['PASSWORD_HASH'])) {
-        die("Invalid username/email or password.");
+        echo "Invalid username/email or password.";
+        exit;
     }
 
     $_SESSION['logged_in'] = true;
     $_SESSION['admin_id'] = $admin['ID'];
 
-    header("Location: ../admin-home.php");
+    echo "success"; // <-- JS redirects to admin-home.php
     exit;
 }
 
+/* ---------- SET CREDENTIALS (FIRST LOGIN) ---------- */
 if ($step === 'set') {
 
     if (empty($_SESSION['setup_admin_id'])) {
-        die("Unauthorized.");
+        echo "Unauthorized action.";
+        exit;
     }
 
     $username = trim($_POST['email'] ?? '');
     $password = $_POST['password'] ?? '';
 
     if (!$username || !$password) {
-        die("All fields are required.");
+        echo "All fields are required.";
+        exit;
     }
 
-    // check username uniqueness
+    // username must be unique
     $check = $conn->prepare("SELECT ID FROM Admin WHERE USERNAME = ?");
     $check->bind_param("s", $username);
     $check->execute();
     $check->store_result();
 
     if ($check->num_rows > 0) {
-        die("Username already taken.");
+        echo "Username already taken.";
+        exit;
     }
 
     $passwordHash = password_hash($password, PASSWORD_DEFAULT);
@@ -89,11 +123,14 @@ if ($step === 'set') {
     $update->bind_param("ssi", $username, $passwordHash, $_SESSION['setup_admin_id']);
     $update->execute();
 
-    // auto login
+    // auto-login
     $_SESSION['logged_in'] = true;
     $_SESSION['admin_id'] = $_SESSION['setup_admin_id'];
     unset($_SESSION['setup_admin_id']);
 
-    header("Location: ../admin-home.php");
+    echo "success";
     exit;
 }
+
+echo "Invalid step.";
+exit;

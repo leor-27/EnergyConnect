@@ -1,16 +1,14 @@
-/* UI handling for admin login & set credentials (NO AUTH HERE) */
 document.addEventListener("DOMContentLoaded", () => {
     const forgotWrapper = document.getElementById("forgot-wrapper");
-    forgotWrapper.style.display = "none";
-
     const form = document.getElementById("admin-form");
     const stepField = document.getElementById("step");
-
     const inputField = document.getElementById("email");
     const passwordField = document.getElementById("password");
     const button = document.getElementById("login-btn");
     const inputLabel = document.getElementById("input-label");
     const formTitle = document.getElementById("form-title");
+
+    forgotWrapper.style.display = "none";
 
     let step = "login";
 
@@ -20,7 +18,7 @@ document.addEventListener("DOMContentLoaded", () => {
         const adminBox = document.getElementById("admin-login");
         adminBox.style.display = "block";
 
-        document.querySelector(".continue").style.height = "410px";
+        document.querySelector(".continue").style.height = "450px";
         adminBox.scrollIntoView({ behavior: "smooth" });
 
         step = "login";
@@ -29,10 +27,28 @@ document.addEventListener("DOMContentLoaded", () => {
         forgotWrapper.style.display = "block";
     });
 
-    /* Form submission (backend decides what happens) */
-    form.addEventListener("submit", function () {
+    /* Form submission (AJAX) */
+    form.addEventListener("submit", function (e) {
+        e.preventDefault(); // prevent normal form submission
         stepField.value = step;
-        // DO NOT preventDefault — let PHP handle auth
+
+        const formData = new FormData(form);
+
+        fetch("backend/admin-auth.php", {
+            method: "POST",
+            body: formData
+        })
+        .then(res => res.text())
+        .then(response => {
+            if (response === "success") {
+                window.location.href = "admin-home.php"; // redirect on success
+            } else if (response === "setup") {
+                showSetCredentials(); // first-time login UI
+            } else {
+                alert(response); // show error messages
+            }
+        })
+        .catch(err => console.error(err));
     });
 
     /* This function is called AFTER backend confirms temp login */
@@ -47,7 +63,7 @@ document.addEventListener("DOMContentLoaded", () => {
         passwordField.value = "";
         button.innerText = "Save Credentials";
 
-        document.querySelector(".continue").style.height = "440px";
+        document.querySelector(".continue").style.height = "400px";
 
         forgotWrapper.style.display = "none";
     };

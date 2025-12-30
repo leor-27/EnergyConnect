@@ -140,56 +140,31 @@ $featuredNews = $featuredResult->fetch_assoc();
                       <p>' . formatNewsDate($row["DATE_POSTED"]) . '</p>
                   </div>
                   <p>' . $row["SUMMARY"] . '</p>
-<div class="author-category-section">
-    <p>
-        By: <a href="' . $row["SOURCE_URL"] . '" target="_blank">
-            ' . htmlspecialchars($row["AUTHOR"]) . '
-        </a>
-    </p>
+                  <div class="author-category-section">
+                      <p>
+                          By: <a href="' . $row["SOURCE_URL"] . '" target="_blank">
+                              ' . htmlspecialchars($row["AUTHOR"]) . '
+                          </a>
+                      </p>
 
-<div class="category-container">
-    ' . (
-        $row["CATEGORIES"]
-        ? implode('', array_map(
-            fn($cat) => '<span class="category-pill">' . htmlspecialchars(trim($cat)) . '</span>',
-            explode(',', $row["CATEGORIES"])
-        ))
-        : ''
-    ) . '
-</div>
-</div>
+                  <div class="category-container">
+                      ' . (
+                          $row["CATEGORIES"]
+                          ? implode('', array_map(
+                              fn($cat) => '<span class="category-pill">' . htmlspecialchars(trim($cat)) . '</span>',
+                              explode(',', $row["CATEGORIES"])
+                          ))
+                          : ''
+                      ) . '
+                  </div>
+                  </div>
               </div>';
           }
       } else {
           echo "No news inserted yet.";
       }
       ?>
-
-      <div class="news-card"> <!-- REMOVE THIS IN FINAL -->
-          
-        <a href = "https://newsinfo.inquirer.net/2145802/classes-suspended-shift-to-online-on-nov-25-due-to-inclement-weather" target="_blank">
-            <img src="frontend/images/suspension_photo.jpg" alt="Suspension Photo">
-        </a>
-        <h6> Classes suspended, shifted to alternate mode in parts of PH on Nov. 25 </h6>
-        <div class="news-company">
-          <p><b>Inquirer Net</b></p>
-          <div class="ellipse"></div>
-          <p> 3 hours ago </p>
-        </div>
-
-        <p> MANILA, Philippines - Numerous local government units have either suspended classes or shifted to alternative
-            delivery mode (ADM) / alternative learning modalities on Tuesday, due to the effects of Tropical Depression
-            Verbena. </p>
-
-        <div class="author-category-section">
-          <p> By: <a href="https://newsinfo.inquirer.net/byline/keith-clores" target="_blank"> Keith Clores </a> </p>
-          <div class="category-container">
-            <p> Weather </p>
-          </div>
-        </div>
-
-      </div>
-
+      
     </div>
 
     <br><br><br>
