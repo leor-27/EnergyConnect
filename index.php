@@ -41,7 +41,7 @@ include 'backend/db.php';
 
         <!-- admin login (hidden at first) -->
         <section id="admin-login" class="admin-section" style="display:none;">
-            <h1 id="form-title">Sign In</h1>
+            <h1 id="form-title">Login</h1>
 
             <form id="admin-form" class="admin-form" method="POST" action="backend/admin-auth.php">
                 <input type="hidden" name="step" id="step" value="login">
@@ -53,7 +53,7 @@ include 'backend/db.php';
                 <input type="password" id="password" name="password">
 
                 <div class="login">
-                    <button type="submit" class="login-button" id="login-btn">Login</button>
+                    <button type="submit" class="login-button" id="login-btn">Continue</button>
                 </div>
 
                 <p class="forgot-password" id="forgot-wrapper">
@@ -61,7 +61,7 @@ include 'backend/db.php';
                 </p>
 
                 <p class="request-access">
-                    <a href="request-invite-form.php" id="request-access">First-time admin? Request access link.</a>
+                    <a href="#" id="request-access">First-time admin? Request access link.</a>
                 </p>
 
             </form>

@@ -1,6 +1,8 @@
 <?php
 include 'backend/db.php';
 
+define('DEV_MODE', true);
+
 $email = trim($_POST['email'] ?? '');
 
 if (!$email) {
@@ -8,14 +10,30 @@ if (!$email) {
 }
 
 // Check email exists in Admin table and not yet initialized
-$stmt = $conn->prepare("SELECT ID FROM Admin WHERE EMAIL = ? AND IS_INITIALIZED = 0");
+$stmt = $conn->prepare("
+    SELECT ID, INVITE_TOKEN_EXPIRES
+    FROM Admin
+    WHERE EMAIL = ? AND IS_INITIALIZED = 0
+");
 $stmt->bind_param("s", $email);
 $stmt->execute();
 $result = $stmt->get_result();
 
-if (!$row = $result->fetch_assoc()) {
-    // Do not reveal whether the email exists
+$row = $result->fetch_assoc();
+
+// Do not reveal whether the email exists
+if (!$row) {
     echo "If this email exists, an invite will be sent.";
+    exit;
+}
+
+// Prevent spamming if token is still valid
+if (!empty($row['INVITE_TOKEN_EXPIRES']) &&
+    strtotime($row['INVITE_TOKEN_EXPIRES']) > time()) {
+
+    echo DEV_MODE
+        ? "Invite already sent. Check your email."
+        : "If this email exists, an invite will be sent.";
     exit;
 }
 
@@ -38,10 +56,14 @@ $update->execute();
 // Build invite link (token included once)
 $inviteLink = "http://localhost:8000/setup.php?token=" . urlencode($token);
 
-// For dev/testing purposes
-echo "DEV TOKEN: " . $inviteLink;
+// DEV vs PROD behavior
+if (DEV_MODE) {
+    echo $inviteLink;
+} else {
+    echo "If this email exists, an invite will be sent.";
+}
 
-// In production, send email instead
-// mail($email, "Your EnergyConnect Admin Invite", "Click here: $inviteLink");
+// In production, send email instead (PHPMailer recommended)
+// sendInviteEmail($email, $inviteLink);
 
 exit;
