@@ -1,7 +1,7 @@
 <?php
 $host = "localhost";
 $user = "root";
-$password = "cscpeboy12";
+$password = "";
 $dbname = "energyfm_cms";
 
 // Create connection

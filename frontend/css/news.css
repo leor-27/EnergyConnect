@@ -356,3 +356,8 @@ h4 {
     padding-bottom: 20px;
     padding-left: 30px;
 }
+
+.category-pill.active {
+  background-color: #000;
+  color: #fff;
+}

@@ -98,12 +98,15 @@ $featuredNews = $featuredResult->fetch_assoc();
     <div class="search-filter-section">
       <div class="search">
         <img src="frontend/images/search_icon.png" alt="Search Icon">
-        <input type="text" placeholder="Search">
+        <input type="text" id="newsSearch" placeholder="Search news here...">
       </div>
 
-      <button class="news-filter">
-        Name ▼
-      </button>
+      <select id="sortSelect" class="news-filter">
+        <option value="newest"> Newest - Oldest </option>
+        <option value="oldest"> Oldest - Newest </option>
+        <option value="title-az"> Title (A-Z) </option>
+        <option value="org-az"> Organization (A-Z) </option>
+      </select>
     </div>
 
     <div class="news-section">
@@ -128,8 +131,14 @@ $featuredNews = $featuredResult->fetch_assoc();
               // Skip the featured news to avoid duplication
               if ($row['ID'] == $featuredNews['ID']) continue;
 
-              echo '
-              <div class="news-card">
+              $categories = $row['CATEGORIES'] ? strtolower($row['CATEGORIES']) : '';
+
+          echo '
+          <div class="news-card"
+              data-date="' . htmlspecialchars($row['DATE_POSTED'], ENT_QUOTES, 'UTF-8') . '"
+              data-title="' . htmlspecialchars($row['HEADLINE'], ENT_QUOTES, 'UTF-8') . '"
+              data-org="' . htmlspecialchars($row['ORGANIZATION'], ENT_QUOTES, 'UTF-8') . '"
+              data-categories="' . htmlspecialchars($categories, ENT_QUOTES, 'UTF-8') . '">
                   <a href="' . $row["SOURCE_URL"] . '" target="_blank">
                       <img src="' . $row["HEADLINE_IMAGE_PATH"] . '" alt="News Image">
                   </a>
