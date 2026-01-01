@@ -35,116 +35,110 @@ document.addEventListener("DOMContentLoaded", () => {
     });
 
     /* Form submission */
-    form.addEventListener("submit", function (e) {
-        e.preventDefault();
+form.addEventListener("submit", function (e) {
+    e.preventDefault();
 
-        const formData = new FormData(form);
+    const formData = new FormData(form);
 
-        /* ---------- REQUEST ACCESS ---------- */
-if (step === "request") {
+    // 🔑 open tab synchronously (IMPORTANT)
+    let emailTab = null;
+    if (step === "request" || step === "forgot") {
+        emailTab = window.open("", "_blank");
+    }
 
-    fetch("request-invite.php", {
-        method: "POST",
-        body: formData
-    })
-    .then(res => res.text())
-    .then(response => {
+    /* ---------- REQUEST ACCESS ---------- */
+    if (step === "request") {
 
-        // ❌ NOT A VALID LINK → NO TAB
-        if (!response.startsWith("http")) {
-            alert(response);
-            return;
-        }
-
-        // ✅ VALID LINK → OPEN TAB
-        const emailTab = window.open("", "_blank");
-
-        emailTab.document.write(`
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Admin Invite – EnergyConnect</title>
-<style>
-body {
-    font-family: Arial, sans-serif;
-    background: #f4f4f4;
-    padding: 40px;
-}
-.email {
-    max-width: 600px;
-    background: #ffffff;
-    margin: auto;
-    padding: 30px;
-    border-radius: 8px;
-    box-shadow: 0 0 10px rgba(0,0,0,0.1);
-}
-h2 { color: #4e1e86; }
-a.button {
-    display: inline-block;
-    margin-top: 20px;
-    padding: 12px 20px;
-    background: #4e1e86;
-    color: #fff;
-    text-decoration: none;
-    border-radius: 5px;
-    font-weight: bold;
-}
-.footer {
-    margin-top: 30px;
-    font-size: 12px;
-    color: #777;
-}
-</style>
-</head>
-<body>
-<div class="email">
-    <h2>You're invited as an Admin</h2>
-    <p>You have been invited to set up your admin account for <strong>EnergyConnect</strong>.</p>
-    <p>Click the button below to set your credentials:</p>
-
-    <a class="button" href="${response}">
-        Set Up Admin Account
-    </a>
-
-    <p style="margin-top:20px;">
-        Or copy and paste this link into your browser:<br>
-        <small>${response}</small>
-    </p>
-
-    <div class="footer">
-        This is a development email preview.<br>
-        In production, this will be sent via email.
-    </div>
-</div>
-</body>
-</html>
-        `);
-
-        emailTab.document.close();
-    })
-    .catch(err => console.error(err));
-
-    return;
-}
-
-        /* ---------- LOGIN / SET ---------- */
-        fetch("backend/admin-auth.php", {
+        fetch("request-invite.php", {
             method: "POST",
             body: formData
         })
         .then(res => res.text())
         .then(response => {
-            if (response === "success") {
-                window.location.href = "admin-home.php";
-            } else if (response === "setup") {
-                showSetCredentials();
-            } else {
+
+            if (!response.startsWith("http")) {
+                if (emailTab) emailTab.close();
                 alert(response);
+                return;
             }
+
+            emailTab.document.write(`
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<title>Admin Invite</title>
+</head>
+<body style="font-family:Arial;padding:40px;">
+    <h2>Admin Invite</h2>
+    <p>Click below:</p>
+    <a href="${response}">${response}</a>
+</body>
+</html>
+            `);
+
+            emailTab.document.close();
+        });
+
+        return;
+    }
+
+    /* ---------- FORGOT PASSWORD ---------- */
+    if (step === "forgot") {
+
+        fetch("request-reset.php", {
+            method: "POST",
+            body: formData
         })
-        .catch(err => console.error(err));
-    });
+        .then(res => res.text())
+        .then(response => {
+
+            if (!response.startsWith("http")) {
+                if (emailTab) emailTab.close();
+                alert(response);
+                return;
+            }
+
+            emailTab.document.write(`
+<!DOCTYPE html>
+<html>
+<head><title>Password Reset</title></head>
+<body style="font-family:Arial;padding:40px;">
+    <h2>Password Reset</h2>
+    <p>Click below:</p>
+    <a href="${response}">${response}</a>
+</body>
+</html>
+            `);
+
+            emailTab.document.close();
+        });
+
+        return;
+    }
+
+    /* ---------- LOGIN / SET ---------- */
+    fetch("backend/admin-auth.php", {
+        method: "POST",
+        body: formData
+    })
+    .then(res => res.text())
+.then(response => {
+    if (response === "success") {
+        window.location.href = "admin-home.php";
+    }
+    else if (response === "reset_success") {
+        alert("Password reset successful.") 
+        window.location.replace("index.php");
+    }
+    else if (response === "setup") {
+        showSetCredentials();
+    }
+    else {
+        alert(response);
+    }
+});
+});
 
     /* ---------- SET CREDENTIALS UI ---------- */
     window.showSetCredentials = function () {
@@ -187,4 +181,54 @@ a.button {
 
         document.querySelector(".continue").style.height = "330px";
     });
+
+    window.showResetPassword = function () {
+        step = "reset";
+        stepField.value = "reset";
+
+        formTitle.innerText = "Reset Password";
+
+        // hide username/email field completely
+        inputField.value = "";
+        inputField.disabled = true;
+        inputField.style.display = "none";
+        inputLabel.style.display = "none";
+
+        passwordField.value = "";
+        passwordField.disabled = false;
+        passwordField.style.display = "block";
+        document.getElementById("password-label").style.display = "block";
+
+        button.innerText = "Save New Password";
+
+        forgotWrapper.style.display = "none";
+        requestAccessWrapper.style.display = "none";
+
+        document.querySelector(".continue").style.height = "330px";
+    };
+
+    document.getElementById("forgot-password").addEventListener("click", (e) => {
+        e.preventDefault();
+
+        step = "forgot";
+        stepField.value = "forgot";
+
+        formTitle.innerText = "Reset Password";
+        inputLabel.innerText = "Email / Username";
+
+        inputField.value = "";
+        passwordField.value = "";
+
+        passwordField.style.display = "none";
+        passwordField.disabled = true;
+        document.getElementById("password-label").style.display = "none";
+
+        button.innerText = "Send Reset Link";
+
+        forgotWrapper.style.display = "none";
+        requestAccessWrapper.style.display = "none";
+
+        document.querySelector(".continue").style.height = "330px";
+    });
+
 });

@@ -60,6 +60,15 @@ include 'backend/db.php';
                     <a href="#" id="forgot-password">Forgot password?</a>
                 </p>
 
+                <?php if (!empty($_SESSION['show_reset_password'])): ?>
+                <script>
+                document.addEventListener("DOMContentLoaded", () => {
+                    document.getElementById("show-admin").click();
+                    showResetPassword();
+                });
+                </script>
+                <?php unset($_SESSION['show_reset_password']); endif; ?>
+
                 <p class="request-access">
                     <a href="#" id="request-access">First-time admin? Request access link.</a>
                 </p>

@@ -26,7 +26,7 @@ if ($step === 'login') {
     $result = $stmt->get_result();
 
     if (!$admin = $result->fetch_assoc()) {
-        echo "Invalid login.";
+        echo "Invalid username/email or password.";
         exit;
     }
 
@@ -130,6 +130,43 @@ if ($step === 'set') {
 
     echo "success";
     exit;
+}
+
+/* ---------- RESET PASSWORD ---------- */
+if ($step === 'reset') {
+
+    if (empty($_SESSION['reset_admin_id'])) {
+        echo "Unauthorized action.";
+        exit;
+    }
+
+    $newPassword = $_POST['password'] ?? '';
+
+    if (!$newPassword) {
+        echo "Password is required.";
+        exit;
+    }
+
+    $passwordHash = password_hash($newPassword, PASSWORD_DEFAULT);
+
+    $update = $conn->prepare("
+        UPDATE Admin
+        SET PASSWORD_HASH = ?,
+            RESET_TOKEN_HASH = NULL,
+            RESET_TOKEN_EXPIRES = NULL
+        WHERE ID = ?
+    ");
+    $update->bind_param("si", $passwordHash, $_SESSION['reset_admin_id']);
+    $update->execute();
+
+// cleanup token
+unset($_SESSION['reset_admin_id']);
+
+// show success message once
+$_SESSION['password_reset_success'] = true;
+
+echo "reset_success";
+exit;
 }
 
 echo "Invalid step.";
