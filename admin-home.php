@@ -129,15 +129,18 @@ $result = $conn->query($sql);
                             </div>
 
                             <div class="card-actions card-actions-news">
-                                <a href="admin-attach-news.php?edit=<?= $row['ID'] ?>" class="edit-icon">
-                                    <i class="fas fa-pencil-alt"></i>
-                                </a>
+                                <?php if ($row['ADMIN_ID'] == $_SESSION['admin_id']): ?>
+                                    <a href="admin-attach-news.php?edit=<?= $row['ID'] ?>" class="edit-icon">
+                                        <i class="fas fa-pencil-alt"></i>
+                                    </a>
 
-                                <a href="admin-delete-news.php?id=<?= $row['ID'] ?>" 
+                                    <a href="admin-delete-news.php?id=<?= $row['ID'] ?>"
                                     class="delete-icon"
                                     onclick="return confirm('Are you sure you want to delete this news?');">
-                                    <i class="fas fa-trash-alt"></i>
-                                </a>
+                                        <i class="fas fa-trash-alt"></i>
+                                    </a>
+                                 <?php endif; ?>
+
                             </div>
 
                         </div>
@@ -146,6 +149,13 @@ $result = $conn->query($sql);
             <?php endwhile; ?>
             <?php else: ?>
                 <p>No news articles found.</p>
+            <?php endif; ?>
+
+            <?php if (isset($_GET['error']) && $_GET['error'] === 'unauthorized'): ?>
+            <script>
+                alert("You are not allowed to edit/delete this news item because you did not publish it.");
+                window.history.replaceState({}, document.title, window.location.pathname);
+            </script>
             <?php endif; ?>
         </div>
     </div>

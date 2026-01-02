@@ -100,7 +100,7 @@ $baseUrl = "http://localhost:8000/";
                     <thead>
                         <tr>
                             <th class="col-name">Name <span class="sort-icon">▼</span></th>
-                            <th class="col-date">Broadcast Date <span class="sort-icon">▼</span></th>
+                            <th class="col-date">Date <span class="sort-icon">▼</span></th>
                             <th class="col-time">Time <span class="sort-icon">▼</span></th>
                             <th class="col-action"></th>
                         </tr>
@@ -114,13 +114,17 @@ $baseUrl = "http://localhost:8000/";
                                         <source src="<?= $baseUrl . htmlspecialchars($row['AUDIO_FILE_PATH']) ?>" type="audio/mpeg">
                                     </audio>
 
-                                    <span class="broadcast-icon"
-                                        id="icon-<?= $row['ID'] ?>"
-                                        onclick="togglePlay(<?= $row['ID'] ?>)">
-                                        ▶
-                                    </span>
+                                    <div class="broadcast-title">
+                                        <span class="broadcast-icon"
+                                            id="icon-<?= $row['ID'] ?>"
+                                            onclick="togglePlay(<?= $row['ID'] ?>)">
+                                            ▶
+                                        </span>
 
-                                    <?= htmlspecialchars($row['TITLE'] ?? 'No Specific Program') ?>
+                                        <span class="broadcast-text">
+                                            <?= htmlspecialchars($row['TITLE'] ?? 'No Specific Program') ?>
+                                        </span>
+                                    </div>
                                 </td>
 
                                 <td class="center-align">
@@ -148,148 +152,6 @@ $baseUrl = "http://localhost:8000/";
                     </tbody>
                 </table>
             </div>
-        </div>
-    </div>
-
-    <div class="stream-section">
-        <h2 class="section-heading">PLAYED SONGS</h2>
-        <div class="table-container">
-            <div class="search-box">
-                <span class="search-icon">🔍︎</span>
-                <input type="text" placeholder="Search">
-            </div>
-            <div class="table-wrapper">
-                <table class="stream-table">
-                    <thead>
-                        <tr>
-                            <th class="col-name">Name <span class="sort-icon">▼</span></th>
-                            <th class="col-date">Date <span class="sort-icon">▼</span></th>
-                            <th class="col-time">Time <span class="sort-icon">▼</span></th>
-                            <th class="col-action"></th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr>
-                            <td>Song Name</td>
-                            <td class="center-align">Date Played</td>
-                            <td class="center-align">Start - End Time</td>
-                            <td><span class="heart-icon">♡</span></td>
-                        </tr>
-                        <tr>
-                            <td>Song Name</td>
-                            <td class="center-align">Date Played</td>
-                            <td class="center-align">Start - End Time</td>
-                            <td><span class="heart-icon">♡</span></td>
-                        </tr>
-                        <tr>
-                            <td>Song Name</td>
-                            <td class="center-align">Date Played</td>
-                            <td class="center-align">Start - End Time</td>
-                            <td><span class="heart-icon">♡</span></td>
-                        </tr>
-                        <tr>
-                            <td>Song Name</td>
-                            <td class="center-align">Date Played</td>
-                            <td class="center-align">Start - End Time</td>
-                            <td><span class="heart-icon">♡</span></td>
-                        </tr>
-                        <tr>
-                            <td>Song Name</td>
-                            <td class="center-align">Date Played</td>
-                            <td class="center-align">Start - End Time</td>
-                            <td><span class="heart-icon">♡</span></td>
-                        </tr>
-                        <tr>
-                            <td>Song Name</td>
-                            <td class="center-align">Date Played</td>
-                            <td class="center-align">Start - End Time</td>
-                            <td><span class="heart-icon">♡</span></td>
-                        </tr>
-                        <tr>
-                            <td>Song Name</td>
-                            <td class="center-align">Date Played</td>
-                            <td class="center-align">Start - End Time</td>
-                            <td><span class="heart-icon">♡</span></td>
-                        </tr>
-                        <tr>
-                            <td>Song Name</td>
-                            <td class="center-align">Date Played</td>
-                            <td class="center-align">Start - End Time</td>
-                            <td><span class="heart-icon">♡</span></td>
-                        </tr>
-                    </tbody>
-                </table>
-            </div>
-        </div>
-    </div>
-
-    <div class="stream-section">
-        <h2 class="section-heading">FAVORITES</h2>
-        <div class="favorites-container">
-            <table class="favorites-table">
-                <tbody>
-                    <tr>
-                        <td>Song Name</td>
-                        <td>Date Played</td>
-                        <td>Start - End Time</td>
-                        <td class="fav-icons">
-                            <span class="fav-icon-white">▶</span>
-                            <span class="fav-icon-white">♡</span>
-                            <span class="fav-icon-menu">⋮</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Audio Broadcast Name</td>
-                        <td>Date Played</td>
-                        <td>Start - End Time</td>
-                        <td class="fav-icons">
-                            <span class="fav-icon-white">▶</span>
-                            <span class="fav-icon-white">♡</span>
-                            <span class="fav-icon-menu">⋮</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Audio Broadcast Name</td>
-                        <td>Date Played</td>
-                        <td>Start - End Time</td>
-                        <td class="fav-icons">
-                            <span class="fav-icon-white">▶</span>
-                            <span class="fav-icon-white">♡</span>
-                            <span class="fav-icon-menu">⋮</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Song Name</td>
-                        <td>Date Played</td>
-                        <td>Start - End Time</td>
-                        <td class="fav-icons">
-                            <span class="fav-icon-white">▶</span>
-                            <span class="fav-icon-white">♡</span>
-                            <span class="fav-icon-menu">⋮</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Audio Broadcast Name</td>
-                        <td>Date Played</td>
-                        <td>Start - End Time</td>
-                        <td class="fav-icons">
-                            <span class="fav-icon-white">▶</span>
-                            <span class="fav-icon-white">♡</span>
-                            <span class="fav-icon-menu">⋮</span>
-                        </td>
-                    </tr>
-                    <tr>
-                        <td>Audio Broadcast Name</td>
-                        <td>Date Played</td>
-                        <td>Start - End Time</td>
-                        <td class="fav-icons">
-                            <span class="fav-icon-white">▶</span>
-                            <span class="fav-icon-white">♡</span>
-                            <span class="fav-icon-menu">⋮</span>
-                        </td>
-                    </tr>
-                </tbody>
-            </table>
         </div>
     </div>
 

@@ -16,15 +16,22 @@ if (!isset($_GET['id'])) {
     exit;
 }
 
-$id = intval($_GET['id']);
+$id = (int)$_GET['id'];
+$adminId = $_SESSION['admin_id'];
 
-$sql = "DELETE FROM News WHERE ID = ?";
-$stmt = $conn->prepare($sql);
-$stmt->bind_param("i", $id);
+// only allow deletion if the logged-in admin added the news
+$stmt = $conn->prepare("
+    DELETE FROM News
+    WHERE ID = ?
+      AND ADMIN_ID = ?
+");
+$stmt->bind_param("ii", $id, $adminId);
+$stmt->execute();
 
-if ($stmt->execute()) {
+if ($stmt->affected_rows === 1) {
     header("Location: admin-home.php?deleted=1");
     exit;
 } else {
-    echo "Error deleting record.";
+    header("Location: admin-home.php?error=unauthorized");
+    exit;
 }

@@ -19,10 +19,19 @@ if (isset($_GET['edit'])) {
     $edit_mode = true;
     $newsId = (int)$_GET['edit'];
 
-    $stmt = $conn->prepare("SELECT * FROM News WHERE ID = ?");
-    $stmt->bind_param("i", $newsId);
+    $stmt = $conn->prepare("
+        SELECT * FROM News
+        WHERE ID = ?
+        AND ADMIN_ID = ?
+    ");
+    $stmt->bind_param("ii", $newsId, $_SESSION['admin_id']);
     $stmt->execute();
     $edit_news = $stmt->get_result()->fetch_assoc();
+
+    if (!$edit_news) {
+        header("Location: admin-home.php?error=unauthorized");
+        exit;
+    }
     $stmt->close();
 
     // fetch selected categories
@@ -71,23 +80,33 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 ORGANIZATION = ?,
                 SUMMARY = ?
             WHERE ID = ?
+            AND ADMIN_ID = ?
         ");
 
         $stmt->bind_param(
-            "ssssssi",
+            "ssssssii",
             $source_url,
             $imagePath,
             $headline,
             $author,
             $organization,
             $summary,
-            $newsId
+            $newsId,
+            $adminId
         );
         $stmt->execute();
         $stmt->close();
 
         // reset categories
-        $conn->query("DELETE FROM News_Category WHERE NEWS_ID = $newsId");
+        $catDel = $conn->prepare("
+            DELETE nc FROM News_Category nc
+            JOIN News n ON nc.NEWS_ID = n.ID
+            WHERE nc.NEWS_ID = ?
+            AND n.ADMIN_ID = ?
+        ");
+        $catDel->bind_param("ii", $newsId, $adminId);
+        $catDel->execute();
+        $catDel->close();
 
     } else {
         $stmt = $conn->prepare("
@@ -123,7 +142,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $catStmt->close();
     }
 
-    header("Location: admin-home.php?updated=1");
+    header("Location: admin-home.php?" . ($edit_mode ? "updated=1" : "added=1"));
     exit;
 }
 ?>
@@ -161,7 +180,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         <label for="menu-toggle" class="menu-icon">&#9776;</label>
 
         <div class="dropdown-menu">
-            <a href="index.php">Logout</a>
+            <a href="backend/logout.php">Logout</a>
         </div>
     </header>
 

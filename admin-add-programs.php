@@ -19,6 +19,7 @@ $programs = $conn->query("
         p.END_TIME,
         p.DESCRIPTION,
         p.TYPE,
+        p.ADMIN_ID,
         GROUP_CONCAT(
             DISTINCT COALESCE(d.STAGE_NAME, UPPER(d.REAL_NAME))
             SEPARATOR ', '
@@ -65,9 +66,24 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             UPDATE Program
             SET TITLE=?, TYPE=?, START_TIME=?, END_TIME=?, DESCRIPTION=?
             WHERE ID=?
+            AND ADMIN_ID=?
         ");
-        $stmt->bind_param("sssssi", $title, $type, $start, $end, $desc, $program_id);
+        $stmt->bind_param(
+            "sssssis",
+            $title,
+            $type,
+            $start,
+            $end,
+            $desc,
+            $program_id,
+            $_SESSION['admin_id']
+        );
         $stmt->execute();
+
+        if ($stmt->affected_rows === 0) {
+            header("Location: admin-add-programs.php?error=unauthorized");
+            exit;
+        }
         $stmt->close();
 
         $conn->query("DELETE FROM Program_Day_Type WHERE PROGRAM_ID=$program_id");
@@ -75,11 +91,12 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
 
     } else {
         // insert
+        $admin_id = $_SESSION['admin_id'];
         $stmt = $conn->prepare("
-            INSERT INTO Program (TITLE, TYPE, START_TIME, END_TIME, DESCRIPTION)
-            VALUES (?, ?, ?, ?, ?)
+            INSERT INTO Program (TITLE, TYPE, START_TIME, END_TIME, DESCRIPTION, ADMIN_ID)
+            VALUES (?, ?, ?, ?, ?, ?)
         ");
-        $stmt->bind_param("sssss", $title, $type, $start, $end, $desc);
+        $stmt->bind_param("sssssi", $title, $type, $start, $end, $desc, $admin_id);
         $stmt->execute();
         $program_id = $stmt->insert_id;
         $stmt->close();
@@ -112,9 +129,18 @@ if (isset($_GET['edit'])) {
     $edit_mode = true;
     $edit_id = (int)$_GET['edit'];
 
+    $admin_id = $_SESSION['admin_id'];
+
     $edit_program = $conn->query("
-        SELECT * FROM Program WHERE ID = $edit_id
+        SELECT * FROM Program
+        WHERE ID = $edit_id
+        AND ADMIN_ID = $admin_id
     ")->fetch_assoc();
+
+    if (!$edit_program) {
+        header("Location: admin-add-programs.php?error=unauthorized");
+        exit;
+    }
 
     if ($edit_program) {
 
@@ -183,7 +209,7 @@ if (isset($_GET['edit'])) {
             <label for="menu-toggle" class="menu-icon">&#9776;</label>
 
             <div class="dropdown-menu">
-                <a href="index.php">Logout</a>
+                <a href="backend/logout.php">Logout</a>
             </div>
         </div>
     </header>
@@ -229,15 +255,19 @@ if (isset($_GET['edit'])) {
                     </div>
 
                     <div class="card-actions card-actions-news">
-                        <a href="admin-add-programs.php?edit=<?= $row['ID'] ?>" class="edit-icon">
-                            <i class="fas fa-pencil-alt"></i>
-                        </a>
+                        <?php if ($row['ADMIN_ID'] == $_SESSION['admin_id']): ?>
 
-                        <a href="admin-delete-program.php?id=<?= $row['ID'] ?>"
-                            onclick="return confirm('Are you sure you want to delete this program?');"
-                            class="delete-icon">
-                            <i class="fas fa-trash-alt"></i>
-                        </a>
+                            <a href="admin-add-programs.php?edit=<?= $row['ID'] ?>" class="edit-icon">
+                                <i class="fas fa-pencil-alt"></i>
+                            </a>
+
+                            <a href="admin-delete-program.php?id=<?= $row['ID'] ?>"
+                                onclick="return confirm('Are you sure you want to delete this program?');"
+                                class="delete-icon">
+                                <i class="fas fa-trash-alt"></i>
+                            </a>
+
+                        <?php endif; ?>
                     </div>
                 </div>
 
@@ -327,6 +357,13 @@ if (isset($_GET['edit'])) {
                         <i class="fas <?= $edit_mode ? 'fa-save' : 'fa-plus' ?>"></i>
                         <?= $edit_mode ? 'Update' : 'Add' ?>
                     </button>
+
+                    <?php if (isset($_GET['error']) && $_GET['error'] === 'unauthorized'): ?>
+                    <script>
+                        alert("You are not allowed to edit or delete this program because you did not create it.");
+                        window.history.replaceState({}, document.title, window.location.pathname);
+                    </script>
+                    <?php endif; ?>
 
                 </div>
             </form>
