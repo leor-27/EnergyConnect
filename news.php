@@ -114,6 +114,7 @@ $featuredNews = $featuredResult->fetch_assoc();
         <option value="oldest"> Oldest - Newest </option>
         <option value="title-az"> Title (A-Z) </option>
         <option value="org-az"> Organization (A-Z) </option>
+        <option value="author-az"> Author (A-Z) </option>
       </select>
     </div>
 
@@ -144,6 +145,7 @@ $featuredNews = $featuredResult->fetch_assoc();
               data-date="' . htmlspecialchars($row['DATE_POSTED'], ENT_QUOTES, 'UTF-8') . '"
               data-title="' . htmlspecialchars($row['HEADLINE'], ENT_QUOTES, 'UTF-8') . '"
               data-org="' . htmlspecialchars($row['ORGANIZATION'], ENT_QUOTES, 'UTF-8') . '"
+              data-author="'. htmlspecialchars(strtolower($row['AUTHOR']), ENT_QUOTES, 'UTF-8') .'"
               data-categories="' . htmlspecialchars($categories, ENT_QUOTES, 'UTF-8') . '">
                   <a href="' . $row["SOURCE_URL"] . '" target="_blank">
                       <img src="' . $row["HEADLINE_IMAGE_PATH"] . '" alt="News Image">

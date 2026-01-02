@@ -63,6 +63,24 @@ document.addEventListener('DOMContentLoaded', function () {
         });
         break;
 
+      case 'author-az':
+      sortedCards = cards.sort((a, b) => {
+        const authorA = (a.dataset.author || '').trim();
+        const authorB = (b.dataset.author || '').trim();
+
+        const aStartsWithNumber = /^[0-9]/.test(authorA);
+        const bStartsWithNumber = /^[0-9]/.test(authorB);
+
+        if (aStartsWithNumber && !bStartsWithNumber) return -1;
+        if (!aStartsWithNumber && bStartsWithNumber) return 1;
+
+        return authorA.localeCompare(authorB, undefined, {
+            numeric: true,
+            sensitivity: 'base'
+            });
+        });
+        break;
+
       default:
         return;
     }
