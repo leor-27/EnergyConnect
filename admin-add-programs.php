@@ -58,7 +58,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     }
 
     if (!empty($_POST['program_id'])) {
-        // UPDATE
+        // update
         $program_id = (int)$_POST['program_id'];
 
         $stmt = $conn->prepare("
@@ -74,7 +74,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $conn->query("DELETE FROM Program_Anchor_Assignment WHERE PROGRAM_ID=$program_id");
 
     } else {
-        // INSERT
+        // insert
         $stmt = $conn->prepare("
             INSERT INTO Program (TITLE, TYPE, START_TIME, END_TIME, DESCRIPTION)
             VALUES (?, ?, ?, ?, ?)
@@ -85,7 +85,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $stmt->close();
     }
 
-    // Reinsert day types
     foreach ($day_types as $day_id) {
         $conn->query("
             INSERT INTO Program_Day_Type (PROGRAM_ID, DAY_TYPE_ID)
@@ -93,7 +92,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         ");
     }
 
-    // Reinsert DJs
     foreach ($djs as $dj_id) {
         $conn->query("
             INSERT INTO Program_Anchor_Assignment (PROGRAM_ID, DJ_ID)
@@ -236,8 +234,8 @@ if (isset($_GET['edit'])) {
                         </a>
 
                         <a href="admin-delete-program.php?id=<?= $row['ID'] ?>"
-                        onclick="return confirm('Are you sure you want to delete this program?');"
-                        class="delete-icon">
+                            onclick="return confirm('Are you sure you want to delete this program?');"
+                            class="delete-icon">
                             <i class="fas fa-trash-alt"></i>
                         </a>
                     </div>
@@ -256,37 +254,29 @@ if (isset($_GET['edit'])) {
 
                 <div class="form-row form-top-row">
 
-                <input type="text"
-                    id="headline"
-                    name="title"
-                    placeholder="Title"
+                <input type="text" id="headline" name="title" placeholder="Title"
                     value="<?= $edit_mode ? htmlspecialchars($edit_program['TITLE']) : '' ?>"
                     required>
                     
                     <div class="input-group-left">
                         <div class="horizontal-align-row">
-                            <textarea id="description"
-                                      name="description"
-                                      placeholder="Description"
+                            <textarea id="description" name="description" placeholder="Description"
                                       required><?= $edit_mode ? htmlspecialchars($edit_program['DESCRIPTION']) : '' ?></textarea>
                             <div class="checkbox-container">
                                 <div class="checkbox-group">
                                     <label>
                                         <input type="checkbox" name="day_types[]" value="1"
-                                            <?= in_array(1, $assigned_days) ? 'checked' : '' ?>>
-                                        WEEKDAYS
+                                            <?= in_array(1, $assigned_days) ? 'checked' : '' ?>> WEEKDAYS
                                     </label>
 
                                     <label>
                                         <input type="checkbox" name="day_types[]" value="2"
-                                            <?= in_array(2, $assigned_days) ? 'checked' : '' ?>>
-                                        SAT
+                                            <?= in_array(2, $assigned_days) ? 'checked' : '' ?>> SAT
                                     </label>
 
                                     <label>
                                         <input type="checkbox" name="day_types[]" value="3"
-                                            <?= in_array(3, $assigned_days) ? 'checked' : '' ?>>
-                                        SUN
+                                            <?= in_array(3, $assigned_days) ? 'checked' : '' ?>> SUN
                                     </label>
 
                                 </div>
@@ -341,7 +331,6 @@ if (isset($_GET['edit'])) {
                 </div>
             </form>
         </section>
-
     </main>
     
     <footer>

@@ -56,7 +56,6 @@ $baseUrl = "http://localhost:8000/";
 
     <div class = "break-box"></div>
 
-    <!--harambogan sa radyo-->
     <div class="stream-section">
         <div class="harambogan-content">
             <div class="harambogan-text">
@@ -73,7 +72,6 @@ $baseUrl = "http://localhost:8000/";
 
     <div class = "break-box"></div>
 
-    <!--stream section-->
     <div class="stream-section">
         <h2 class="section-heading">STREAM THE LATEST VIDEO LIVESTREAMS!</h2>
         <div class="carousel">
@@ -90,7 +88,6 @@ $baseUrl = "http://localhost:8000/";
         </div>
     </div>
 
-    <!--audio broadcast section-->
     <div class="stream-section">
         <h2 class="section-heading">AUDIO BROADCASTS</h2>
         <div class="table-container">
@@ -154,7 +151,6 @@ $baseUrl = "http://localhost:8000/";
         </div>
     </div>
 
-    <!--played songs section-->
     <div class="stream-section">
         <h2 class="section-heading">PLAYED SONGS</h2>
         <div class="table-container">
@@ -227,7 +223,6 @@ $baseUrl = "http://localhost:8000/";
         </div>
     </div>
 
-    <!--favourites section-->
     <div class="stream-section">
         <h2 class="section-heading">FAVORITES</h2>
         <div class="favorites-container">

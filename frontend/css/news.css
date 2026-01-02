@@ -62,10 +62,16 @@
     justify-content: center;
     align-items: flex-start;
     flex-direction: row;
-    gap: 10px;
+    gap: 20px;
     width: 100%;
     height: auto;
     padding-top: 40px;
+}
+
+.featurednews > a {
+    display: block;
+    width: 35%;
+    min-width: 500px;
 }
 
 @media (max-width:768px) {

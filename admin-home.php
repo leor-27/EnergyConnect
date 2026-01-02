@@ -29,6 +29,7 @@ LEFT JOIN Category c ON nc.CATEGORY_ID = c.ID
 GROUP BY n.ID
 ORDER BY n.DATE_POSTED DESC
 ";
+
 $result = $conn->query($sql);
 ?>
 
@@ -97,11 +98,8 @@ $result = $conn->query($sql);
                             </div>
 
                             <a href="<?= htmlspecialchars($row['SOURCE_URL']) ?>" target="_blank">
-                                <img 
-                                    src="<?= htmlspecialchars($row['HEADLINE_IMAGE_PATH']) ?>" 
-                                    alt="News Image" 
-                                    class="news-image"
-                                >
+                                <img src="<?= htmlspecialchars($row['HEADLINE_IMAGE_PATH']) ?>" 
+                                    alt="News Image" class="news-image">
                             </a>
 
                             <div class="news-info">
@@ -121,14 +119,12 @@ $result = $conn->query($sql);
                                 </p>
 
                                 <div class="news-info">
-                                    <p class="published-date">
-                                        Attached On:
+                                    <p class="published-date"> Attached On:
                                         <b><?= date("F d, Y", strtotime($row['DATE_POSTED'])) ?></b>
                                         &nbsp; | &nbsp;
                                         Category/s:
                                         <b><?= $row['CATEGORIES'] ? htmlspecialchars($row['CATEGORIES']) : 'Uncategorized' ?></b>
                                     </p>
-
                                 </div>
                             </div>
 
@@ -137,11 +133,9 @@ $result = $conn->query($sql);
                                     <i class="fas fa-pencil-alt"></i>
                                 </a>
 
-                                <a 
-                                    href="admin-delete-news.php?id=<?= $row['ID'] ?>" 
+                                <a href="admin-delete-news.php?id=<?= $row['ID'] ?>" 
                                     class="delete-icon"
-                                    onclick="return confirm('Are you sure you want to delete this news?');"
-                                >
+                                    onclick="return confirm('Are you sure you want to delete this news?');">
                                     <i class="fas fa-trash-alt"></i>
                                 </a>
                             </div>
@@ -149,7 +143,7 @@ $result = $conn->query($sql);
                         </div>
                     </div>
 
-                <?php endwhile; ?>
+            <?php endwhile; ?>
             <?php else: ?>
                 <p>No news articles found.</p>
             <?php endif; ?>
@@ -159,5 +153,6 @@ $result = $conn->query($sql);
     <footer>
         Privacy Policy | Energy FM © 2025
     </footer>
+
 </body>
 </html>

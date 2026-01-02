@@ -83,14 +83,15 @@ include 'backend/db.php';
 
         </section>
 
+        <!-- shows the set credentials part -->
         <?php if (!empty($_SESSION['show_set_credentials'])): ?>
-<script>
-document.addEventListener("DOMContentLoaded", () => {
-    document.getElementById("show-admin").click();
-    showSetCredentials();
-});
-</script>
-<?php unset($_SESSION['show_set_credentials']); endif; ?>
+        <script>
+        document.addEventListener("DOMContentLoaded", () => {
+            document.getElementById("show-admin").click();
+            showSetCredentials();
+        });
+        </script>
+        <?php unset($_SESSION['show_set_credentials']); endif; ?>
 
 </body>
 </html>

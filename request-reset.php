@@ -1,3 +1,4 @@
+<!-- works the same as request-invite.php but for password resetting -->
 <?php
 include 'backend/db.php';
 
@@ -9,7 +10,6 @@ if (!$email) {
     die("Email required");
 }
 
-/* 1️⃣ Check admin exists AND is initialized */
 $stmt = $conn->prepare("
     SELECT ID, RESET_TOKEN_EXPIRES
     FROM Admin
@@ -23,13 +23,11 @@ $result = $stmt->get_result();
 
 $admin = $result->fetch_assoc();
 
-/* Do not reveal existence */
 if (!$admin) {
     echo "If this email exists, a reset link will be sent.";
     exit;
 }
 
-/* Prevent spamming */
 if (!empty($admin['RESET_TOKEN_EXPIRES']) &&
     strtotime($admin['RESET_TOKEN_EXPIRES']) > time()) {
 
@@ -39,12 +37,11 @@ if (!empty($admin['RESET_TOKEN_EXPIRES']) &&
     exit;
 }
 
-/* 2️⃣ Generate token */
 $token = bin2hex(random_bytes(32));
 $tokenHash = hash('sha256', $token);
+
 $expires = date('Y-m-d H:i:s', time() + 3600);
 
-/* 3️⃣ Save token */
 $update = $conn->prepare("
     UPDATE Admin
     SET RESET_TOKEN_HASH = ?, RESET_TOKEN_EXPIRES = ?
@@ -53,10 +50,8 @@ $update = $conn->prepare("
 $update->bind_param("ssi", $tokenHash, $expires, $admin['ID']);
 $update->execute();
 
-/* 4️⃣ Build reset link */
 $resetLink = "http://localhost:8000/reset-password.php?token=" . urlencode($token);
 
-/* DEV vs PROD */
 if (DEV_MODE) {
     echo $resetLink;
 } else {

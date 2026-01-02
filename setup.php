@@ -1,3 +1,4 @@
+<!-- handles admin invite token verification -->
 <?php
 session_start();
 include 'backend/db.php';
@@ -8,7 +9,6 @@ if (!$token) {
     die("Invalid link");
 }
 
-/* handle accidentally duplicated token like AAAA....AAAA.... */
 if (strlen($token) == 128 && substr($token, 0, 64) === substr($token, 64, 64)) {
     $token = substr($token, 0, 64);
 }
@@ -34,7 +34,6 @@ if (strtotime($admin['INVITE_TOKEN_EXPIRES']) < time()) {
     die("Link expired");
 }
 
-// token is valid → store ID in session
 $_SESSION['setup_admin_id'] = $admin['ID'];
 $_SESSION['show_set_credentials'] = true;
 

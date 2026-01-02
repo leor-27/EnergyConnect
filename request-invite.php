@@ -1,3 +1,4 @@
+<!-- handles admin access requests -->
 <?php
 include 'backend/db.php';
 
@@ -9,7 +10,6 @@ if (!$email) {
     die("Email required");
 }
 
-// Check email exists in Admin table and not yet initialized
 $stmt = $conn->prepare("
     SELECT ID, INVITE_TOKEN_EXPIRES
     FROM Admin
@@ -21,13 +21,13 @@ $result = $stmt->get_result();
 
 $row = $result->fetch_assoc();
 
-// Do not reveal whether the email exists
+// does not reveal whether the email exists for security
 if (!$row) {
     echo "If this email exists, an invite will be sent.";
     exit;
 }
 
-// Prevent spamming if token is still valid
+// prevents spamming if token is still valid
 if (!empty($row['INVITE_TOKEN_EXPIRES']) &&
     strtotime($row['INVITE_TOKEN_EXPIRES']) > time()) {
 
@@ -37,14 +37,12 @@ if (!empty($row['INVITE_TOKEN_EXPIRES']) &&
     exit;
 }
 
-// Generate 64-character token
 $token = bin2hex(random_bytes(32));
 $tokenHash = hash('sha256', $token);
 
-// Set 1 hour expiration
+// sets 1 hour expiration
 $expires = date('Y-m-d H:i:s', time() + 3600);
 
-// Save hash + expiration in DB
 $update = $conn->prepare("
     UPDATE Admin
     SET INVITE_TOKEN_HASH = ?, INVITE_TOKEN_EXPIRES = ?
@@ -53,7 +51,6 @@ $update = $conn->prepare("
 $update->bind_param("ssi", $tokenHash, $expires, $row['ID']);
 $update->execute();
 
-// Build invite link (token included once)
 $inviteLink = "http://localhost:8000/setup.php?token=" . urlencode($token);
 
 // DEV vs PROD behavior
@@ -63,7 +60,7 @@ if (DEV_MODE) {
     echo "If this email exists, an invite will be sent.";
 }
 
-// In production, send email instead (PHPMailer recommended)
+// If deployed with a doamin, the invite link will be sent to email instead
 // sendInviteEmail($email, $inviteLink);
 
 exit;

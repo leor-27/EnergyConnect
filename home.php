@@ -1,7 +1,6 @@
 <?php
 include 'backend/db.php';
 date_default_timezone_set('Asia/Manila');
-
 ?>
 
 <!DOCTYPE html>
@@ -40,7 +39,8 @@ date_default_timezone_set('Asia/Manila');
 
         <div class="listen">
             <button id="liveBtn" class="listen-button">
-                <div class="listen-title"><img src = "frontend/images/play_button.svg" class = "play" alt="Play Button">LISTEN LIVE HERE   <img src = "frontend/images/listen_live.svg" alt="Listen Live Icon"></div>
+                <div class="listen-title"><img src = "frontend/images/play_button.svg" class = "play" alt="Play Button">LISTEN LIVE HERE   
+                <img src = "frontend/images/listen_live.svg" alt="Listen Live Icon"></div>
                 <div class="listen-subtitle">On Air: Loading...</div>
             </button>
 
@@ -101,6 +101,7 @@ date_default_timezone_set('Asia/Manila');
 
         $conn->close();
         ?>
+
     </div>
 
     <div class = "footer">

@@ -26,10 +26,11 @@ function formatNewsDate($datetimeString) {
     return $posted->format("F j, Y");
 }
 
-// Fetch latest news for featured section
+// fetch the most latest news (one only) for featured section
 $featuredSql = "SELECT * FROM News ORDER BY DATE_POSTED DESC, ID DESC LIMIT 1";
 $featuredResult = $conn->query($featuredSql);
 $featuredNews = $featuredResult->fetch_assoc();
+
 ?>
 
 <!DOCTYPE html>
@@ -74,14 +75,21 @@ $featuredNews = $featuredResult->fetch_assoc();
 
   <main>
     <div class="featurednews">
-      <img src="<?= htmlspecialchars($featuredNews['HEADLINE_IMAGE_PATH']) ?>" 
-           alt="<?= htmlspecialchars($featuredNews['HEADLINE']) ?>" 
-           class="featurednews-image">
+      <a href="<?= htmlspecialchars($featuredNews['SOURCE_URL']) ?>" target="_blank">
+          <img src="<?= htmlspecialchars($featuredNews['HEADLINE_IMAGE_PATH']) ?>" 
+               alt="<?= htmlspecialchars($featuredNews['HEADLINE']) ?>" 
+                class="featurednews-image"> </a>
 
       <div class="news-content">
         <div class="featurednews-author">
           <div class="author-profile"></div>
-          <p><b><?= htmlspecialchars($featuredNews['AUTHOR']) ?></b></p>
+          <p>
+            <b> <a href="<?= htmlspecialchars($featuredNews['SOURCE_URL']) ?>" 
+                    target="_blank" style="color: inherit; text-decoration: none;">
+                <?= htmlspecialchars($featuredNews['AUTHOR']) ?></a>
+            </b>
+          </p>
+
           <div class="ellipse"></div>
           <p><?= formatNewsDate($featuredNews['DATE_POSTED']) ?></p>
         </div>
@@ -112,7 +120,6 @@ $featuredNews = $featuredResult->fetch_assoc();
     <div class="news-section">
 
       <?php
-      // Fetch all news for latest news section
       $sql = "
           SELECT 
               n.*,
@@ -128,7 +135,6 @@ $featuredNews = $featuredResult->fetch_assoc();
 
       if ($result->num_rows > 0) {
           while($row = $result->fetch_assoc()) {
-              // Skip the featured news to avoid duplication
               if ($row['ID'] == $featuredNews['ID']) continue;
 
               $categories = $row['CATEGORIES'] ? strtolower($row['CATEGORIES']) : '';
@@ -175,12 +181,9 @@ $featuredNews = $featuredResult->fetch_assoc();
       ?>
       
     </div>
-
     <br><br><br>
-
   </main>
 
-  <!-- Footer -->
   <div class="footer">
     <footer>Privacy Policy | Energy FM © 2010</footer>
   </div>

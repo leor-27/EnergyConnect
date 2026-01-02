@@ -59,7 +59,6 @@ $djs = $conn->query("SELECT * FROM DJ_Profile")->fetch_all(MYSQLI_ASSOC);
 
     <div class="program-list">
         <?php
-        // Merge all data for easy rendering
         function getDays($programId, $programDayTypes, $dayTypes) {
             $days = [];
             foreach ($programDayTypes as $p) {

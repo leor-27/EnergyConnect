@@ -39,7 +39,7 @@ if (isset($_GET['edit'])) {
     $catStmt->close();
 }
 
-/* Fetch categories */
+// fetch categories
 $categories = [];
 $catSql = "SELECT ID, NAME FROM Category ORDER BY NAME ASC";
 $catResult = $conn->query($catSql);
@@ -59,10 +59,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $summary      = trim($_POST['description']);
     $imagePath    = trim($_POST['image_url']);
     $categoryIds  = $_POST['categories'] ?? [];
+    $adminId = $_SESSION['admin_id'];
 
     if ($edit_mode) {
-
-        // UPDATE
         $stmt = $conn->prepare("
             UPDATE News SET
                 SOURCE_URL = ?,
@@ -91,16 +90,15 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         $conn->query("DELETE FROM News_Category WHERE NEWS_ID = $newsId");
 
     } else {
-
-        // INSERT
         $stmt = $conn->prepare("
             INSERT INTO News
-            (SOURCE_URL, HEADLINE_IMAGE_PATH, HEADLINE, AUTHOR, ORGANIZATION, SUMMARY, DATE_POSTED)
-            VALUES (?, ?, ?, ?, ?, ?, NOW())
+            (ADMIN_ID, SOURCE_URL, HEADLINE_IMAGE_PATH, HEADLINE, AUTHOR, ORGANIZATION, SUMMARY, DATE_POSTED)
+            VALUES (?, ?, ?, ?, ?, ?, ?, NOW())
         ");
 
         $stmt->bind_param(
-            "ssssss",
+            "issssss",
+            $adminId,
             $source_url,
             $imagePath,
             $headline,
@@ -191,24 +189,22 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 </div>
 
                 <div class="two-column-container">
-                <div class="left-column">
-                    <span class="category-placeholder">Category/s:</span>
-    
-                    <div class="categories-checkboxes">
-                        <?php foreach ($categories as $category): ?>
-                            <label class="category-item">
-                                <input type="checkbox"
-                    name="categories[]"
-                    value="<?= $category['ID'] ?>"
-                    <?= in_array($category['ID'], $selected_categories) ? 'checked' : '' ?>>
-                                <?= htmlspecialchars($category['NAME']) ?>
-                            </label>
-                        <?php endforeach; ?>
-                    </div>
+                    <div class="left-column">
+                        <span class="category-placeholder">Category/s:</span>
+        
+                        <div class="categories-checkboxes">
+                            <?php foreach ($categories as $category): ?>
+                                <label class="category-item">
+                                    <input type="checkbox" name="categories[]" value="<?= $category['ID'] ?>"
+                                        <?= in_array($category['ID'], $selected_categories) ? 'checked' : '' ?>>
+                                        <?= htmlspecialchars($category['NAME']) ?>
+                                </label>
+                            <?php endforeach; ?>
+                        </div>
     
                         <input type="text" id="image_url" name="image_url"
-                        value="<?= $edit_mode ? htmlspecialchars($edit_news['HEADLINE_IMAGE_PATH']) : '' ?>"
-                        placeholder="Image URL (https://...)">
+                            value="<?= $edit_mode ? htmlspecialchars($edit_news['HEADLINE_IMAGE_PATH']) : '' ?>"
+                            placeholder="Image URL (https://...)">
                     </div>
 
                     <div class="right-column">
@@ -223,7 +219,6 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                             placeholder="News Organization/Company" required>
                         <textarea id="description" name="description" placeholder="Description" required><?= $edit_mode ? htmlspecialchars($edit_news['SUMMARY']) : '' ?></textarea>
 
-
                         <button type="submit" class="add-button">
                             <i class="fas <?= $edit_mode ? 'fa-pen' : 'fa-plus' ?>"></i>
                             <?= $edit_mode ? 'Update' : 'Add' ?>
@@ -232,11 +227,11 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
                 </div>
             </form>
         </div>
-
     </div>
+
     <footer>
         Privacy Policy | Energy FM © 2025
     </footer>
-</body>
 
-</html> 
+</body>
+</html>

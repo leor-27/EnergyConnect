@@ -1,5 +1,5 @@
 <?php
-// currently just a static about page but can have a backend/interactivity in the future
+/* currently just a static about page but can have a backend/interactivity in the future */
 ?>
 
 <!DOCTYPE html>
@@ -14,7 +14,6 @@
       <link rel="preconnect" href="https://fonts.googleapis.com">
       <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 
-      <!-- Fonts: Poppins and Kantumruy Pro -->
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap">
       <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Kantumruy+Pro:wght@300;400;500;600;700&display=swap">
 
@@ -42,16 +41,14 @@
 				</nav>
 			</section>
     </header>
-    <main>
 
+    <main>
 		<section class="article-card1">
 
 			<div class="article-text">
-				<h2>Get to know about<br>Energy FM</h2>
-				<p> Energy FM is a radio station owned and operated by<br>
-				<strong>Ultrasonic Broadcasting System</strong>. It has several branches <br>
-				across the Philippines, including DWBQ, which is located <br>
-				on the 3rd Floor of Traders Square Bldg., P. Burgos St., Naga <br>
+				<h2>Get to know about Energy FM</h2>
+				<p> Energy FM is a radio station owned and operated by <strong>Ultrasonic Broadcasting System</strong>. It has several branches
+				across the Philippines, including DWBQ, which is located on the 3rd Floor of Traders Square Bldg., P. Burgos St., Naga
 				City, Camarines Sur, and broadcasts as 106.3 Energy FM. </p>
 			</div>
 
@@ -76,11 +73,9 @@
 
 			<div class="article-text">
 				<h2>A Crowd Favorite<br>in Naga</h2>
-				<p> The station is well-known in the city for its<br>
-				popular catchphrases, such as <strong>“Pangga, may<br>
-				Energy ka pa ba?”</strong> and <strong>“Basta Energy, Number 1<br> 
-				pirmi!”</strong>. It has also been recognized several<br> 
-				times as the Number 1 radio station in Naga. </p>
+				<p> The station is well-known in the city for its popular catchphrases, such as <strong>“Pangga, may<br>
+				Energy ka pa ba?”</strong> and <strong>“Basta Energy, Number 1<br> pirmi!”</strong>. It has also been 
+				recognized several<br> times as the Number 1 radio station in Naga. </p>
 			</div>
 
 		</section>
@@ -93,14 +88,10 @@
 
 			<div class="article-text">
 				<h2>Always On.<br>Always Energy.</h2>
-				<p>As a typical radio station, Energy FM 106.3 Naga<br>
-				<strong>broadcasts audio content to listeners 24/7</strong> through<br> 
-				radio waves, featuring music, advertisements,<br> 
-				comedic skits, interviews with public figures and<br> 
-				listeners, talk shows, sports updates, public service<br> 
-				announcements, political discussions, and the latest<br> 
-				news—not just from the city, but also nationally and<br> 
-				globally.</p>
+				<p>As a typical radio station, Energy FM 106.3 Naga<br> <strong>broadcasts audio content to listeners 24/7</strong> through<br> 
+				radio waves, featuring music, advertisements,<br> comedic skits, interviews with public figures and<br> 
+				listeners, talk shows, sports updates, public service<br> announcements, political discussions, and the latest<br> 
+				news—not just from the city, but also nationally and<br> globally.</p>
 			</div>
 		</section>
 

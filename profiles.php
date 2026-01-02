@@ -64,7 +64,7 @@ if ($result->num_rows > 0) {
                 </section>
                 <?php endforeach; ?>
 
-                <!-- Main DJs image -->
+                <!-- main DJs image -->
                 <section id="main">
                     <img style="width: 918.5px; height: auto;" src="frontend/images/djs_profiles.png" class="alldjs" alt="Main DJs Photo">
                 </section>

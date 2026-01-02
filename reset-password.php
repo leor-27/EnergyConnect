@@ -1,3 +1,4 @@
+<!-- works the same as setup.php but instead handles password reset token verification -->
 <?php
 session_start();
 include 'backend/db.php';
@@ -8,7 +9,7 @@ if (!$token) {
     die("Invalid link");
 }
 
-/* handle accidentally duplicated token like AAAA....AAAA.... */
+// handles accidentally duplicated token 
 if (strlen($token) == 128 && substr($token, 0, 64) === substr($token, 64, 64)) {
     $token = substr($token, 0, 64);
 }
@@ -34,11 +35,9 @@ if (strtotime($admin['RESET_TOKEN_EXPIRES']) < time()) {
     die("Link expired");
 }
 
-// token is valid → store ID in session
-// token is valid → store ID in session
 $_SESSION['reset_admin_id'] = $admin['ID'];
 $_SESSION['show_reset_password'] = true;
 
-// redirect to index.php to show reset UI
+// redirects to index.php after resetting
 header("Location: index.php");
 exit;

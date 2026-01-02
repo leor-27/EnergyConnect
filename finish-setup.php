@@ -1,3 +1,4 @@
+<!-- Finalizes admin account setup -->
 <?php
 session_start();
 include 'backend/db.php';
