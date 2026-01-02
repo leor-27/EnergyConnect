@@ -1,10 +1,9 @@
 <?php
-// backend/auto_ingest.php
 include 'db.php';
 
 date_default_timezone_set('Asia/Manila');
 
-// Folder containing recordings
+// accessing the audio broadcasts folder that contains the recordings
 $audioDir = __DIR__ . '/../audio_broadcasts/';
 $files = glob($audioDir . '*.mp3');
 
@@ -12,24 +11,22 @@ foreach ($files as $filePath) {
 
     $fileName = basename($filePath);
 
-    // Expect filename: rec_YYYYMMDD-HHMMSS.mp3
+    // expected filename: rec_YYYYMMDD-HHMMSS.mp3
     if (!preg_match('/rec_(\d{8})-(\d{6})\.mp3/', $fileName, $m)) {
         continue;
     }
 
-    // Parse date & start time from filename
+    // parses the date & start time from filename
     $date = DateTime::createFromFormat('Ymd', $m[1])->format('Y-m-d');
     $startTime = DateTime::createFromFormat('His', $m[2])->format('H:i:s');
 
-    // Assume 1-hour duration
+    // assumes 1-hour duration
     $endTime = date('H:i:s', strtotime($startTime . ' +1 hour'));
 
-    // Path saved in DB
+    // path is then saved in the DB
     $relativePath = 'audio_broadcasts/' . $fileName;
 
-    /* ===============================
-       Prevent duplicates
-    ================================ */
+    // prevents duplicates
     $check = $conn->prepare("
         SELECT ID FROM Audio_Broadcast_Log
         WHERE AUDIO_FILE_PATH = ?
@@ -44,9 +41,6 @@ foreach ($files as $filePath) {
     }
     $check->close();
 
-    /* ===============================
-       Determine DAY TYPE
-    ================================ */
     $dayNum = date('N', strtotime($date)); // 1=Mon ... 7=Sun
 
     if ($dayNum >= 1 && $dayNum <= 5) {
@@ -57,9 +51,7 @@ foreach ($files as $filePath) {
         $dayType = 'SUN';
     }
 
-    /* ===============================
-       Find matching PROGRAM
-    ================================ */
+    // finds matching program
     $programId = null;
 
     $stmt = $conn->prepare("
@@ -77,9 +69,6 @@ foreach ($files as $filePath) {
     $stmt->fetch();
     $stmt->close();
 
-    /* ===============================
-       Insert into Audio_Broadcast_Log
-    ================================ */
     $insert = $conn->prepare("
         INSERT INTO Audio_Broadcast_Log
         (DATE, START_TIME, END_TIME, AUDIO_FILE_PATH, PROGRAM_ID)

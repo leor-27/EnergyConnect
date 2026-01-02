@@ -22,7 +22,6 @@ document.addEventListener("DOMContentLoaded", () => {
         return daysArray.includes(todayType) && now >= start && now <= end;
     }
 
-    // grabs program container and cards
     const list = document.querySelector('.program-list');
     const cards = Array.from(list.children);
 
@@ -44,7 +43,7 @@ document.addEventListener("DOMContentLoaded", () => {
         }
     });
 
-    // sorts/filters cards
+    // sorts / filters cards
     function render(filter = 'title') {
         let sortedCards = [...cards];
 
@@ -65,6 +64,5 @@ document.addEventListener("DOMContentLoaded", () => {
     // initial render (default): Title A–Z
     render('title');
 
-    // listen to dropdown changes
     document.getElementById('filter-select').addEventListener('change', e => render(e.target.value));
 });

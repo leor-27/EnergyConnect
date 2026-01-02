@@ -1,74 +1,74 @@
 /* =>> LOCAL FONTS */
-    @font-face {
-        font-family: 'Poppins';
-        src: url('fonts/poppins/Poppins-Light.woff2') format('woff2');
-        font-weight: 300;
-        font-style: normal;
-        font-display: swap; }
+@font-face {
+    font-family: 'Poppins';
+    src: url('fonts/poppins/Poppins-Light.woff2') format('woff2');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap; }
 
-    @font-face {
-        font-family: 'Poppins';
-        src: url('fonts/poppins/Poppins-Regular.woff2') format('woff2');
-        font-weight: 400;
-        font-style: normal;
-        font-display: swap; }
+@font-face {
+    font-family: 'Poppins';
+    src: url('fonts/poppins/Poppins-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap; }
 
-    @font-face {
-        font-family: 'Poppins';
-        src: url('fonts/poppins/Poppins-Medium.woff2') format('woff2');
-        font-weight: 500;
-        font-style: normal;
-        font-display: swap; }
+@font-face {
+    font-family: 'Poppins';
+    src: url('fonts/poppins/Poppins-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap; }
 
-    @font-face {
-        font-family: 'Poppins';
-        src: url('fonts/poppins/Poppins-SemiBold.woff2') format('woff2');
-        font-weight: 600;
-        font-style: normal;
-        font-display: swap; }
+@font-face {
+    font-family: 'Poppins';
+    src: url('fonts/poppins/Poppins-SemiBold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap; }
 
-    @font-face {
-        font-family: 'Poppins';
-        src: url('fonts/poppins/Poppins-Bold.woff2') format('woff2');
-        font-weight: 700;
-        font-style: normal;
-        font-display: swap; }
+@font-face {
+    font-family: 'Poppins';
+    src: url('fonts/poppins/Poppins-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap; }
     
-    /* Kantumruy Pro */
-    @font-face {
-        font-family: 'Kantumruy Pro';
-        src: url('fonts/kantumruy-pro/KantumruyPro-Light.woff2') format('woff2');
-        font-weight: 300;
-        font-style: normal;
-        font-display: swap; }
+/* Kantumruy Pro */
+@font-face {
+    font-family: 'Kantumruy Pro';
+    src: url('fonts/kantumruy-pro/KantumruyPro-Light.woff2') format('woff2');
+    font-weight: 300;
+    font-style: normal;
+    font-display: swap; }
 
-    @font-face {
-        font-family: 'Kantumruy Pro';
-        src: url('fonts/kantumruy-pro/KantumruyPro-Regular.woff2') format('woff2');
-        font-weight: 400;
-        font-style: normal;
-        font-display: swap; }
+@font-face {
+    font-family: 'Kantumruy Pro';
+    src: url('fonts/kantumruy-pro/KantumruyPro-Regular.woff2') format('woff2');
+    font-weight: 400;
+    font-style: normal;
+    font-display: swap; }
 
-    @font-face {
-        font-family: 'Kantumruy Pro';
-        src: url('fonts/kantumruy-pro/KantumruyPro-Medium.woff2') format('woff2');
-        font-weight: 500;
-        font-style: normal;
-        font-display: swap; }
+@font-face {
+    font-family: 'Kantumruy Pro';
+    src: url('fonts/kantumruy-pro/KantumruyPro-Medium.woff2') format('woff2');
+    font-weight: 500;
+    font-style: normal;
+    font-display: swap; }
 
-    @font-face {
-        font-family: 'Kantumruy Pro';
-        src: url('fonts/kantumruy-pro/KantumruyPro-SemiBold.woff2') format('woff2');
-        font-weight: 600;
-        font-style: normal;
-        font-display: swap; }
+@font-face {
+    font-family: 'Kantumruy Pro';
+    src: url('fonts/kantumruy-pro/KantumruyPro-SemiBold.woff2') format('woff2');
+    font-weight: 600;
+    font-style: normal;
+    font-display: swap; }
 
-    @font-face {
-        font-family: 'Kantumruy Pro';
-        src: url('fonts/kantumruy-pro/KantumruyPro-Bold.woff2') format('woff2');
-        font-weight: 700;
-        font-style: normal;
-        font-display: swap; }
+@font-face {
+    font-family: 'Kantumruy Pro';
+    src: url('fonts/kantumruy-pro/KantumruyPro-Bold.woff2') format('woff2');
+    font-weight: 700;
+    font-style: normal;
+    font-display: swap; }
 
 html, body {
     height: auto;
@@ -124,8 +124,7 @@ html, body {
     left: 15px;           
     height: 75px;         
     width: auto;          
-    z-index: 10;          
-}
+    z-index: 10; }
 
 .about .header-text h1 {
 	position: absolute;
@@ -167,9 +166,6 @@ html, body {
 	gap: 40px;
 	margin-bottom: 100px;
 	flex-wrap: wrap; }
-
-.about .article-text {
-	padding: 30px 40px; }
 
 .about .article-card1 .article-text {
 	padding: 20px;
@@ -241,8 +237,8 @@ html, body {
 @font-face {
 	font-display: block;
 	font-family: "bootstrap-icons";
-	src: url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/fonts/bootstrap-icons.woff2") format("woff2"),
-		 url("fonts/icons/bootstrap-icons.woff2") format("woff2"); } 
+	src: url("https://cdn.jsdelivr.net/npm/bootstrap-icons@1.11.3/font/fonts/bootstrap-icons.woff2") 
+	     format("woff2"),url("fonts/icons/bootstrap-icons.woff2") format("woff2"); } 
 
 .bi::before {
 	display: inline-block;
@@ -363,13 +359,6 @@ html, body {
 	gap: 100px;
 	margin-top: 13px;
 	padding: 0px 20px; }
-    
-.about .social-items,
-.contact-items {
-	display: flex;
-	align-items: center;
-	gap: 15px;
-	pointer-events: none; }
 
 .about .social-items p,
 .contact-items p {
@@ -456,8 +445,7 @@ html, body {
 
 	.about .header-text h1 {
 		right: 70px;
-		font-size: 22px; 
-		}
+		font-size: 22px; }
 
 	/* Limit image height on mobile */
 	.about .article-img img {

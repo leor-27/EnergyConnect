@@ -33,9 +33,9 @@ document.addEventListener('DOMContentLoaded', function () {
         const aStartsWithNumber = /^[0-9]/.test(titleA);
         const bStartsWithNumber = /^[0-9]/.test(titleB);
 
-        // Letters first, numbers last
-        if (aStartsWithNumber && !bStartsWithNumber) return 1;
-        if (!aStartsWithNumber && bStartsWithNumber) return -1;
+        // numbers first before letters
+        if (aStartsWithNumber && !bStartsWithNumber) return -1;
+        if (!aStartsWithNumber && bStartsWithNumber) return 1;
 
         // Same type → normal A–Z compare
         return titleA.localeCompare(titleB, undefined, {
@@ -53,11 +53,9 @@ document.addEventListener('DOMContentLoaded', function () {
         const aStartsWithNumber = /^[0-9]/.test(orgA);
         const bStartsWithNumber = /^[0-9]/.test(orgB);
 
-        // Letters first, numbers last
-        if (aStartsWithNumber && !bStartsWithNumber) return 1;
-        if (!aStartsWithNumber && bStartsWithNumber) return -1;
+        if (aStartsWithNumber && !bStartsWithNumber) return -1;
+        if (!aStartsWithNumber && bStartsWithNumber) return 1;
 
-        // Same type → normal A–Z compare
         return orgA.localeCompare(orgB, undefined, {
             numeric: true,
             sensitivity: 'base'
@@ -69,7 +67,6 @@ document.addEventListener('DOMContentLoaded', function () {
         return;
     }
 
-    // Re-append sorted cards to the container
     sortedCards.forEach(card => container.appendChild(card));
   });
 

@@ -4,7 +4,6 @@ include 'db.php';
 
 $step = $_POST['step'] ?? 'login';
 
-/* ---------- LOGIN ---------- */
 if ($step === 'login') {
 
     $input = trim($_POST['email'] ?? '');
@@ -30,60 +29,26 @@ if ($step === 'login') {
         exit;
     }
 
-    /* ---------- FIRST TIME LOGIN ---------- */
-/* ---------- FIRST TIME LOGIN ---------- */
-if ($admin['IS_INITIALIZED'] == 0) {
-    echo "Please use your email invite link to set up your account.";
-    exit;
-}   
-
-    // // If there is no temp hash yet, auto-generate one and save it
-    // if (empty($admin['TEMP_PASSWORD_HASH'])) {
-
-    //     // 1) generate random temp password (8–10 characters)
-    //     $tempPlain = bin2hex(random_bytes(4));
-
-    //     // 2) hash it
-    //     $tempHash = password_hash($tempPlain, PASSWORD_DEFAULT);
-
-    //     // 3) save hash in DB
-    //     $save = $conn->prepare("
-    //         UPDATE Admin
-    //         SET TEMP_PASSWORD_HASH = ?
-    //         WHERE ID = ?
-    //     ");
-    //     $save->bind_param("si", $tempHash, $admin['ID']);
-    //     $save->execute();
-
-    //     // 4) show the generated password ONCE
-    //     echo "Temporary password generated: " . $tempPlain;
-    //     exit;
-    // }
-
-    // // If temp hash already exists, verify normally
-    // if (!password_verify($inputPassword, $admin['TEMP_PASSWORD_HASH'])) {
-    //     echo "Invalid temporary password.";
-    //     exit;
-    // }
-
-    // $_SESSION['setup_admin_id'] = $admin['ID'];
-    // echo "setup";
-    // exit;}
-
-    /* ---------- NORMAL LOGIN ---------- */
-    if (!password_verify($inputPassword, $admin['PASSWORD_HASH'])) {
-        echo "Invalid username/email or password.";
+    // first time login
+    if ($admin['IS_INITIALIZED'] == 0) {
+        echo "Please use your email invite link to set up your account.";
         exit;
-    }
+    }   
 
-    $_SESSION['logged_in'] = true;
-    $_SESSION['admin_id'] = $admin['ID'];
+        // normal login
+        if (!password_verify($inputPassword, $admin['PASSWORD_HASH'])) {
+            echo "Invalid username/email or password.";
+            exit;
+        }
 
-    echo "success"; // <-- JS redirects to admin-home.php
-    exit;
+        $_SESSION['logged_in'] = true;
+        $_SESSION['admin_id'] = $admin['ID'];
+
+        echo "success"; // JS redirects to admin-home.php
+        exit;
 }
 
-/* ---------- SET CREDENTIALS (FIRST LOGIN) ---------- */
+// setting credentials (for first login)
 if ($step === 'set') {
 
     if (empty($_SESSION['setup_admin_id'])) {
@@ -132,7 +97,7 @@ if ($step === 'set') {
     exit;
 }
 
-/* ---------- RESET PASSWORD ---------- */
+// resetting password in case it was forgotten
 if ($step === 'reset') {
 
     if (empty($_SESSION['reset_admin_id'])) {

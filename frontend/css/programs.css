@@ -1,6 +1,5 @@
 html, body {
     overflow-x: hidden;
-    width: 100%;
 }
 
 * {
@@ -128,7 +127,6 @@ html, body {
     padding-right: 10px;
 }
 
-/* TEXT STYLES */
 .title-status h3 {
     font-size: 20px;
     font-weight: 900;
@@ -261,7 +259,7 @@ html, body {
 }
 
 .online {
-    background: #FFEC40; /* yellow */
+    background: #FFEC40;
     color: #000;
     font-weight: 700;
 }

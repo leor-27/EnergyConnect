@@ -1,3 +1,4 @@
+/* landing page and login functionality */
 document.addEventListener("DOMContentLoaded", () => {
     const forgotWrapper = document.getElementById("forgot-wrapper");
     const form = document.getElementById("admin-form");
@@ -10,10 +11,9 @@ document.addEventListener("DOMContentLoaded", () => {
     const requestAccessWrapper = document.querySelector(".request-access");
 
     forgotWrapper.style.display = "none";
-
     let step = "login";
 
-    /* Show admin login */
+    // show admin login (main)
     document.getElementById("show-admin").addEventListener("click", () => {
         document.getElementById("main-continue").style.display = "none";
         const adminBox = document.getElementById("admin-login");
@@ -34,113 +34,110 @@ document.addEventListener("DOMContentLoaded", () => {
         requestAccessWrapper.style.display = "block";
     });
 
-    /* Form submission */
-form.addEventListener("submit", function (e) {
-    e.preventDefault();
+    // form submission
+    form.addEventListener("submit", function (e) {
+        e.preventDefault();
 
-    const formData = new FormData(form);
+        const formData = new FormData(form);
 
-    // 🔑 open tab synchronously (IMPORTANT)
-    let emailTab = null;
-    if (step === "request" || step === "forgot") {
-        emailTab = window.open("", "_blank");
-    }
+        let emailTab = null;
+        if (step === "request" || step === "forgot") {
+            emailTab = window.open("", "_blank");
+        }
 
-    /* ---------- REQUEST ACCESS ---------- */
-    if (step === "request") {
+        // admin request access
+        if (step === "request") {
 
-        fetch("request-invite.php", {
+            fetch("request-invite.php", {
+                method: "POST",
+                body: formData
+            })
+            .then(res => res.text())
+            .then(response => {
+
+                if (!response.startsWith("http")) {
+                    if (emailTab) emailTab.close();
+                    alert(response);
+                    return;
+                }
+
+                emailTab.document.write(`
+                    <!DOCTYPE html>
+                    <html lang="en">
+                    <head>
+                    <meta charset="UTF-8">
+                    <title>Admin Invite</title>
+                    </head>
+                    <body style="font-family:Arial;padding:40px;">
+                        <h2>Admin Invite</h2>
+                        <p>Click below:</p>
+                        <a href="${response}">${response}</a>
+                    </body>
+                    </html>`);
+
+                emailTab.document.close();
+            });
+
+            return;
+        }
+
+        // admin forgots password
+        if (step === "forgot") {
+
+            fetch("request-reset.php", {
+                method: "POST",
+                body: formData
+            })
+            .then(res => res.text())
+            .then(response => {
+
+                if (!response.startsWith("http")) {
+                    if (emailTab) emailTab.close();
+                    alert(response);
+                    return;
+                }
+
+                emailTab.document.write(`
+                    <!DOCTYPE html>
+                    <html>
+                    <head><title>Password Reset</title></head>
+                    <body style="font-family:Arial;padding:40px;">
+                        <h2>Password Reset</h2>
+                        <p>Click below:</p>
+                        <a href="${response}">${response}</a>
+                    </body>
+                    </html>`);
+
+                emailTab.document.close();
+            });
+
+            return;
+        }
+
+        // logging in / setting credentials
+        fetch("backend/admin-auth.php", {
             method: "POST",
             body: formData
         })
         .then(res => res.text())
         .then(response => {
-
-            if (!response.startsWith("http")) {
-                if (emailTab) emailTab.close();
-                alert(response);
-                return;
+            if (response === "success") {
+                window.location.href = "admin-home.php";
             }
-
-            emailTab.document.write(`
-<!DOCTYPE html>
-<html lang="en">
-<head>
-<meta charset="UTF-8">
-<title>Admin Invite</title>
-</head>
-<body style="font-family:Arial;padding:40px;">
-    <h2>Admin Invite</h2>
-    <p>Click below:</p>
-    <a href="${response}">${response}</a>
-</body>
-</html>
-            `);
-
-            emailTab.document.close();
-        });
-
-        return;
-    }
-
-    /* ---------- FORGOT PASSWORD ---------- */
-    if (step === "forgot") {
-
-        fetch("request-reset.php", {
-            method: "POST",
-            body: formData
-        })
-        .then(res => res.text())
-        .then(response => {
-
-            if (!response.startsWith("http")) {
-                if (emailTab) emailTab.close();
-                alert(response);
-                return;
+            else if (response === "reset_success") {
+                alert("Password reset successful.") 
+                window.location.replace("index.php");
             }
-
-            emailTab.document.write(`
-<!DOCTYPE html>
-<html>
-<head><title>Password Reset</title></head>
-<body style="font-family:Arial;padding:40px;">
-    <h2>Password Reset</h2>
-    <p>Click below:</p>
-    <a href="${response}">${response}</a>
-</body>
-</html>
-            `);
-
-            emailTab.document.close();
+            else if (response === "setup") {
+                showSetCredentials();
+            }
+            else {
+                alert(response);
+            }
         });
+    });
 
-        return;
-    }
-
-    /* ---------- LOGIN / SET ---------- */
-    fetch("backend/admin-auth.php", {
-        method: "POST",
-        body: formData
-    })
-    .then(res => res.text())
-.then(response => {
-    if (response === "success") {
-        window.location.href = "admin-home.php";
-    }
-    else if (response === "reset_success") {
-        alert("Password reset successful.") 
-        window.location.replace("index.php");
-    }
-    else if (response === "setup") {
-        showSetCredentials();
-    }
-    else {
-        alert(response);
-    }
-});
-});
-
-    /* ---------- SET CREDENTIALS UI ---------- */
+    // set credentials UI
     window.showSetCredentials = function () {
         step = "set";
         stepField.value = "set";
@@ -157,7 +154,7 @@ form.addEventListener("submit", function (e) {
         requestAccessWrapper.style.display = "none";
     };
 
-    /* ---------- REQUEST ACCESS UI ---------- */
+    // request access ui
     document.getElementById("request-access").addEventListener("click", (e) => {
         e.preventDefault();
 
@@ -182,31 +179,7 @@ form.addEventListener("submit", function (e) {
         document.querySelector(".continue").style.height = "330px";
     });
 
-    window.showResetPassword = function () {
-        step = "reset";
-        stepField.value = "reset";
-
-        formTitle.innerText = "Reset Password";
-
-        // hide username/email field completely
-        inputField.value = "";
-        inputField.disabled = true;
-        inputField.style.display = "none";
-        inputLabel.style.display = "none";
-
-        passwordField.value = "";
-        passwordField.disabled = false;
-        passwordField.style.display = "block";
-        document.getElementById("password-label").style.display = "block";
-
-        button.innerText = "Save New Password";
-
-        forgotWrapper.style.display = "none";
-        requestAccessWrapper.style.display = "none";
-
-        document.querySelector(".continue").style.height = "330px";
-    };
-
+    // reset password UI
     document.getElementById("forgot-password").addEventListener("click", (e) => {
         e.preventDefault();
 
@@ -231,4 +204,28 @@ form.addEventListener("submit", function (e) {
         document.querySelector(".continue").style.height = "330px";
     });
 
+    // set new password UI
+    window.showResetPassword = function () {
+        step = "reset";
+        stepField.value = "reset";
+
+        formTitle.innerText = "Reset Password";
+
+        inputField.value = "";
+        inputField.disabled = true;
+        inputField.style.display = "none";
+        inputLabel.style.display = "none";
+
+        passwordField.value = "";
+        passwordField.disabled = false;
+        passwordField.style.display = "block";
+        document.getElementById("password-label").style.display = "block";
+
+        button.innerText = "Save New Password";
+
+        forgotWrapper.style.display = "none";
+        requestAccessWrapper.style.display = "none";
+
+        document.querySelector(".continue").style.height = "330px";
+    };
 });

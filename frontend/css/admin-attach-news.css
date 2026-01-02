@@ -82,7 +82,6 @@ body {
     z-index: 100;
 }
 
-/* Dropdown Menu */
 .dropdown-menu {
     position: absolute;
     top: 85px; 
@@ -172,12 +171,13 @@ hr {
 }
 
 .form-container {
-    max-width: 1050px; 
-    height: 530px;
+    height: auto !important;
+    max-width: 1050px;
+    min-height: 530px;
     border-radius: 10px;
-    margin: 20px auto; 
-    padding: 20px;
-    background-color: #f0f0f0; 
+    margin: 20px auto;
+    padding: 30px;
+    background-color: #f0f0f0;
 }
 
 input[type="text"], textarea {
@@ -189,7 +189,9 @@ input[type="text"], textarea {
 }
 
 #news-link {
-    width: 49%;
+    width: 100%;
+    margin-bottom: 20px;
+    margin-top: 20px;
 }
 
 .filter-dropdown-btn {
@@ -208,13 +210,10 @@ input[type="text"], textarea {
 }
 
 .two-column-container {
-    display: flex;
-    gap: 20px;   
+    display: flex; 
+    gap: 30px;
     width: 100%;
-}
-
-.right-column {
-    margin-top: 50px;
+    align-items: flex-start;
 }
 
 .left-column, .right-column {
@@ -223,17 +222,9 @@ input[type="text"], textarea {
     flex-direction: column; 
 }
 
-/* .left-column input,
-.right-column input {
-    width: 50%;
-    padding: 5px;
-    box-sizing: border-box; 
-} */
-
-/* #image {
-    box-sizing: border-box;
-    width: 300px;
-} */
+.right-column {
+    margin-top: 0;
+}
 
 .image-upload-container {
     margin-top: 50px;
@@ -258,7 +249,6 @@ input[type="text"], textarea {
 #description {
     flex-grow: 1; 
     resize: none;
-    /* width: 500px; */
     height: 138px;
     margin-bottom: 40px;
 }
@@ -275,11 +265,9 @@ input[type="text"], textarea {
     align-self: flex-end;
     text-align: center;
     height: 44px; 
-    /* margin-top: 0; */
     text-decoration: none;
 }
 
-/*ATTACH NEWS PART*/
 .attach-news-card {
     background-color: #ddd;
     padding: 20px;
@@ -288,13 +276,8 @@ input[type="text"], textarea {
     display: flex;
     margin: auto;
     margin-top: 2%;
-    margin-bottom: 60px;
     border-radius: 10px;
     border-color: #999;
-}
-
-.attach-news-card {
-    display: flex;
     gap: 15px; 
     margin-bottom: 15px; 
 }
@@ -313,22 +296,9 @@ input[type="text"], textarea {
     transition: border-color 0.2s;
     height: 44px; 
     width: 500px;
-    margin-bottom: 50px;
-}
-
-/* headline, news org */
-.add-item2 input[type="text2"], 
-.add-item2 select {
-    padding: 12px; 
-    border: 1px solid #ccc; 
-    border-radius: 5px; 
-    font-size: 1em; 
-    box-sizing: border-box;
-    transition: border-color 0.2s;
-    height: 44px; 
-    width: 500px;
     display: flex;
     margin-top: 20px;
+    margin-bottom: 50px;
 }
 
 .add-item2 textarea,
@@ -357,29 +327,6 @@ footer {
     z-index: 1000; /* ensures it’s on top of other elements */
 }
 
-/* Ensure the container uses flexbox correctly */
-.two-column-container {
-    display: flex;
-    gap: 30px;
-    width: 100%;
-    align-items: flex-start; /* Aligns both columns to the top */
-}
-
-/* Adjust the columns */
-.left-column {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-}
-
-.right-column {
-    flex: 1;
-    display: flex;
-    flex-direction: column;
-    margin-top: 0; /* Resetting your previous 50px margin to align with the top */
-}
-
-/* Styling for the checkbox area to make it scrollable if too long */
 .categories-checkboxes {
     background: #fff;
     padding: 15px;
@@ -388,100 +335,56 @@ footer {
     max-height: 300px;
     overflow-y: auto;
     border-radius: 5px;
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
 }
 
-/* Ensure inputs take full width of their respective columns */
 .left-column input, 
 .right-column input, 
 .right-column textarea {
     width: 100%;
 }
 
-/* Fix the news link to look better at the top */
-#news-link {
-    width: 100%; /* Changed from 49% to fill the top bar */
-    margin-bottom: 20px;
-    margin-top: 20px;
-}
-
-/* Adjust container height if content overflows */
-.form-container {
-    max-width: 1050px;
-    height: auto; /* Changed from 530px to auto to accommodate content */
-    min-height: 530px;
-    border-radius: 10px;
-    margin: 20px auto;
-    padding: 30px;
-    background-color: #f0f0f0;
-}
-
-/* Style for the 'Category/s:' label */
 .category-placeholder {
     display: block;
     font-size: 14px;
-    color: #757575; /* Gray color to look like a placeholder */
+    color: #757575;
     margin-bottom: 8px;
     font-weight: bold;
 }
 
-/* Updated container to use Grid for 3 per row */
-.categories-checkboxes {
-    background: #fff;
-    padding: 15px;
-    border: 1px solid #ccc;
-    margin-bottom: 20px;
-    max-height: 300px;
-    overflow-y: auto;
-    border-radius: 5px;
-
-    /* Grid settings */
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); /* 3 equal columns */
-    gap: 10px; /* Space between items */
-}
-
-/* Ensure labels don't wrap weirdly */
 .category-item {
     display: flex;
     align-items: center;
     font-size: 12px;
     cursor: pointer;
-    white-space: nowrap; /* Keeps name on one line */
+    white-space: nowrap;
     color: rgb(171, 171, 171);
 }
 
 .category-item input {
     margin-right: 8px;
-    width: auto !important; /* Overrides the 100% width rule for checkboxes */
-}
-
-/* Fix for the form container height */
-.form-container {
-    height: auto !important; /* Allow it to grow with the grid */
-    min-height: 530px;
+    width: auto !important;
 }
 
 #image_url {
     height: 90px;
 }
 
-/* Target mobile and tablet screens */
 @media screen and (max-width: 768px) {
-    /* 1. Stack columns so they take up full width */
     .two-column-container {
         flex-direction: column;
         gap: 10px;
     }
 
-    /* 2. Make the button long, matching the top input field */
     .add-button {
-        width: 100%;        /* Stretches to match the input fields */
-        align-self: center; /* Centers it within the form */
+        width: 100%;
+        align-self: center;
         margin-top: 10px;
-        height: 44px;       /* Keeps it consistent with input heights */
+        height: 44px; 
     }
     
-    /* Ensure the column itself doesn't restrict width */
     .right-column {
         width: 100%;
     }

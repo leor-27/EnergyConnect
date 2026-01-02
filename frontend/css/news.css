@@ -31,7 +31,6 @@
 
 .header-overlay h1 {
     padding-top: 24px;
-    font-size: 60px;
     font-weight: 900;
     letter-spacing: -2px;
     font-size: clamp(2rem, 6vw, 60px);
@@ -49,7 +48,6 @@
 .intro-news {
     color: #FFEC40;
     padding: 50px;
-    padding-right: 50px;
 }
 
 .break-box {
@@ -139,6 +137,9 @@ h4 {
     margin-top: 30px;
     margin-left: 25px;
     font-size: 30px;
+    padding-top: 50px;
+    padding-bottom: 20px;
+    padding-left: 30px;
 }
 
 .search-filter-section {
@@ -184,6 +185,7 @@ h4 {
     padding: 5px;
     border: none;
     border-radius: 30px;
+    cursor: pointer;
 }
 
 .news-section {
@@ -196,10 +198,10 @@ h4 {
     padding-top: 20px;
     padding-bottom: 75px;
     padding-left: 30px;
-    overflow-x: auto; /* enables horizontal scrolling */
+    overflow-x: auto;
     overflow-y: hidden;
     scroll-behavior: smooth;
-    flex-wrap: nowrap; /* makes sure that it dosn't wrap to next row */
+    flex-wrap: nowrap;
     white-space: nowrap; 
 }
 
@@ -284,8 +286,8 @@ h4 {
     color: white;
     font-size: 11px;
     white-space: nowrap;
+    cursor: pointer;
 }
-
 
 .footer {
     background-color: #1C5186;
@@ -349,12 +351,6 @@ h4 {
 
 #menu-toggle:checked~.dropdown-menu {
     display: block;
-}
-
-h4 {
-    padding-top: 50px;
-    padding-bottom: 20px;
-    padding-left: 30px;
 }
 
 .category-pill.active {

@@ -1,6 +1,5 @@
 html, body {
     overflow-x: hidden;
-    width: 100%;
 }
 
 * {
@@ -10,17 +9,13 @@ html, body {
     box-sizing: border-box;
 }
 
-/* LANDING PAGE HOME */
 body.landing-page {
     background: linear-gradient(#1d4f8f, #d1d1d1);
     background-attachment: fixed;
     font-family: 'Inter', sans-serif;
-    margin: 0;
-    padding: 0;
     text-align: center;
 }
 
-/* HEADER */
 .landing-page-header {
     margin-top: 80px;
 }
@@ -71,7 +66,6 @@ body.landing-page {
     text-shadow: 1px 1px 3px rgba(0, 0, 0, 0.2); 
 }
 
-/* BUTTONS */
 .button-row {
     margin-top: 90px;
     display: flex;
@@ -103,16 +97,14 @@ body.landing-page {
     box-shadow: 0 2px 4px rgba(0,0,0,0.3);
 }
 
-.user-button:hover , .admin-button:hover {
+.user-button:hover, .admin-button:hover {
   transform: scale(1.02);
 }
 
-/* Makes the box taller when login appears */
 .admin-section {
     padding: 0 40px 30px 40px;
 }
 
-/* Login title */
 .admin-section h1 {
     margin-top: 30px;
     margin-bottom: 35px;
@@ -183,7 +175,7 @@ body.landing-page {
 .continue {
     margin: 0 auto;
     width: 520px;
-    height: 240px; /* this is overriden usiung JS */
+    height: 240px; /* this is overriden using the JS file */
     border-radius: 15px;
     background: rgba(255,255,255,0.45);
     box-shadow: 0 4px 20px rgba(0,0,0,0.15);

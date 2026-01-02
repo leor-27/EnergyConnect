@@ -1,6 +1,5 @@
 html, body {
     overflow-x: hidden;
-    width: 100%;
 }
 
 .header-home {
@@ -9,7 +8,7 @@ html, body {
     justify-content: space-between;
     align-items: center;
     position: relative;
-    z-index: 30px;
+    z-index: 30;
     margin-left: 20px;
     top: 3px;
 }
@@ -85,6 +84,31 @@ html, body {
     }
 }
 
+@media (max-width: 600px) {
+    .dj-section {
+        flex-direction: column;
+        gap: 10px;
+    }
+
+    .left-button img {
+        width: 30px;
+    }
+
+    .right-button img {
+        width: 27.5px;
+    }
+}
+
+@media (min-width: 1200px) {
+    .left-button {
+        left: calc(45% - 425px / 2 - 60px); /* bigger gap for large screens */
+    }
+
+    .right-button {
+        right: calc(45% - 425px / 2 - 60px);
+    }
+}
+
 .section-title, .section-title-news {
     padding-top: 40px;
     padding-left: 40px;
@@ -149,31 +173,6 @@ html, body {
 
 .news-card-home img {
     padding-bottom: 15px;
-}
-
-@media (max-width: 600px) {
-    .dj-section {
-        flex-direction: column;
-        gap: 10px;
-    }
-
-    .left-button img {
-        width: 30px;
-    }
-
-    .right-button img {
-        width: 27.5px;
-    }
-}
-
-@media (min-width: 1200px) {
-    .left-button {
-        left: calc(45% - 425px / 2 - 60px); /* bigger gap for large screens */
-    }
-
-    .right-button {
-        right: calc(45% - 425px / 2 - 60px);
-    }
 }
 
 * {

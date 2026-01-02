@@ -1,13 +1,11 @@
 <?php
 session_start();
 
-/* Unset all session variables */
+/* unset all session variables */
 $_SESSION = [];
-
-/* Destroy the session */
 session_destroy();
 
-/* Prevent session fixation via browser cache */
+/* prevents session fixation via browser cache */
 if (ini_get("session.use_cookies")) {
     $params = session_get_cookie_params();
     setcookie(

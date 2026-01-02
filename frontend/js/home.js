@@ -19,7 +19,7 @@ document.addEventListener("DOMContentLoaded", () => {
     });
     setPlayState();
 
-    /* fetches data */
+    // fetches data
     Promise.all([
         fetch('http://localhost:8000/backend/fetch.php?table=Program').then(r => r.json()),
         fetch('http://localhost:8000/backend/fetch.php?table=Program_Day_Type').then(r => r.json()),
@@ -69,7 +69,7 @@ document.addEventListener("DOMContentLoaded", () => {
             subtitle.textContent = upcoming ? `Next: ${upcoming.TITLE} at ${upcoming.START_TIME}` : "No Active Program";
         }
 
-        /* for feeatured programs */
+        // for featured programs
         programs.map(p => ({...p,
                 hosts: getHosts(p.ID)
             }))

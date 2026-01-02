@@ -10,7 +10,7 @@ function toggleDJFields() {
         djContainer.classList.add('disabled-dj');
         checkboxes.forEach(cb => {
             cb.disabled = true;
-            cb.checked = false; // Clear selection if switched back
+            cb.checked = false; // clear selection if switched back
         });
     }
 }
