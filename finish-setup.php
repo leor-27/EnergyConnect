@@ -1,5 +1,5 @@
-<!-- Finalizes admin account setup -->
 <?php
+// Finalizes admin account setup
 session_start();
 include 'backend/db.php';
 

@@ -1,5 +1,5 @@
-<!-- works the same as setup.php but instead handles password reset token verification -->
 <?php
+// works the same as setup.php but instead handles password reset token verification
 session_start();
 include 'backend/db.php';
 

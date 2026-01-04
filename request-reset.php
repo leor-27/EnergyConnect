@@ -1,5 +1,5 @@
-<!-- works the same as request-invite.php but for password resetting -->
 <?php
+// works the same as request-invite.php but for password resetting
 include 'backend/db.php';
 
 define('DEV_MODE', true);

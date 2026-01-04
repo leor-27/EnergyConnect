@@ -1,5 +1,5 @@
-<!-- handles admin invite token verification -->
 <?php
+// handles admin invite token verification
 session_start();
 include 'backend/db.php';
 

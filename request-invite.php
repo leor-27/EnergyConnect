@@ -1,5 +1,5 @@
-<!-- handles admin access requests -->
 <?php
+// handles admin access requests
 include 'backend/db.php';
 
 define('DEV_MODE', true);
