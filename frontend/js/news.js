@@ -159,7 +159,14 @@ document.addEventListener('DOMContentLoaded', function () {
 
     function setActivePill(activePill) {
         clearActivePills();
-        activePill.classList.add('active');
+
+        const category = activePill.textContent.toLowerCase().trim();
+
+        categoryPills.forEach(pill => {
+            if (pill.textContent.toLowerCase().trim() === category) {
+                pill.classList.add('active');
+            }
+        });
     }
 
     function showAllCards() {
