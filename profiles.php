@@ -3,7 +3,7 @@ include 'backend/db.php';
 ?>
 
 <?php
-$sql = "SELECT * FROM DJ_Profile ORDER BY ID ASC";
+$sql = "SELECT * FROM DJ ORDER BY ID ASC";
 $result = $conn->query($sql);
 
 $djs = [];

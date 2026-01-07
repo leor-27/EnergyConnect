@@ -28,7 +28,7 @@ $programs = $conn->query("
     FROM Program p
     LEFT JOIN Program_Anchor_Assignment paa
         ON p.ID = paa.PROGRAM_ID
-    LEFT JOIN DJ_Profile d
+    LEFT JOIN DJ d
         ON paa.DJ_ID = d.ID
     LEFT JOIN Program_Day_Type pdt
         ON p.ID = pdt.PROGRAM_ID
@@ -38,7 +38,7 @@ $programs = $conn->query("
     ORDER BY p.TITLE ASC
 ");
 
-$dj_list = $conn->query("SELECT * FROM DJ_Profile ORDER BY STAGE_NAME ASC");
+$dj_list = $conn->query("SELECT * FROM DJ ORDER BY STAGE_NAME ASC");
 
 if (!$dj_list) {
     die("Query failed: " . $conn->error);

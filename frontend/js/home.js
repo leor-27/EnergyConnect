@@ -25,7 +25,7 @@ document.addEventListener("DOMContentLoaded", () => {
         fetch('http://localhost:8000/backend/fetch.php?table=Program_Day_Type').then(r => r.json()),
         fetch('http://localhost:8000/backend/fetch.php?table=Day_Type').then(r => r.json()),
         fetch('http://localhost:8000/backend/fetch.php?table=Program_Anchor_Assignment').then(r => r.json()),
-        fetch('http://localhost:8000/backend/fetch.php?table=DJ_Profile').then(r => r.json())
+        fetch('http://localhost:8000/backend/fetch.php?table=DJ').then(r => r.json())
     ]).then(([programs, programDayTypes, dayTypes, assignments, djs]) => {
         const subtitle = document.querySelector(".listen-subtitle");
         const container = document.querySelector(".programs");

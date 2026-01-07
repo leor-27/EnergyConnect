@@ -5,7 +5,7 @@ $programs = $conn->query("SELECT * FROM Program")->fetch_all(MYSQLI_ASSOC);
 $programDayTypes = $conn->query("SELECT * FROM Program_Day_Type")->fetch_all(MYSQLI_ASSOC);
 $dayTypes = $conn->query("SELECT * FROM Day_Type")->fetch_all(MYSQLI_ASSOC);
 $assignments = $conn->query("SELECT * FROM Program_Anchor_Assignment")->fetch_all(MYSQLI_ASSOC);
-$djs = $conn->query("SELECT * FROM DJ_Profile")->fetch_all(MYSQLI_ASSOC);
+$djs = $conn->query("SELECT * FROM DJ")->fetch_all(MYSQLI_ASSOC);
 ?>
 
 <!DOCTYPE html>
