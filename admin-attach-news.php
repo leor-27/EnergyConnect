@@ -68,6 +68,13 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     $summary      = trim($_POST['description']);
     $imagePath    = trim($_POST['image_url']);
     $categoryIds  = $_POST['categories'] ?? [];
+        if (empty($categoryIds)) {
+        echo "<script>
+            alert('Please select at least one category.');
+            history.back();
+        </script>";
+        exit;
+    }
     $adminId = $_SESSION['admin_id'];
 
     if ($edit_mode) {
@@ -251,6 +258,16 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     <footer>
         Privacy Policy | Energy FM © 2025
     </footer>
+
+    <script>
+    document.querySelector('form').addEventListener('submit', function (e) {
+        const checked = document.querySelectorAll('input[name="categories[]"]:checked');
+        if (checked.length === 0) {
+            alert('Please select at least one category.');
+            e.preventDefault();
+        }
+    });
+    </script>
 
 </body>
 </html>

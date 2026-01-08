@@ -126,8 +126,8 @@ $featuredNews = $featuredResult->fetch_assoc();
               n.*,
               GROUP_CONCAT(c.NAME ORDER BY c.NAME SEPARATOR ', ') AS CATEGORIES
           FROM News n
-          LEFT JOIN News_Category nc ON n.ID = nc.NEWS_ID
-          LEFT JOIN Category c ON nc.CATEGORY_ID = c.ID
+          INNER JOIN News_Category nc ON n.ID = nc.NEWS_ID
+          INNER JOIN Category c ON nc.CATEGORY_ID = c.ID
           GROUP BY n.ID
           ORDER BY n.DATE_POSTED DESC, n.ID DESC
       ";

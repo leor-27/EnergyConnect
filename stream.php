@@ -30,6 +30,11 @@ $baseUrl = "http://localhost:8000/";
     <script src = "frontend/js/stream.js"></script>
 </head>
 <body>
+   <div id="fb-root"></div>
+    <script async defer crossorigin="anonymous" 
+        src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v18.0" 
+        nonce="energyfm">
+    </script>
 
     <header class="header">
         <a href = "home.php">
@@ -59,12 +64,27 @@ $baseUrl = "http://localhost:8000/";
     <div class="stream-section">
         <div class="harambogan-content">
             <div class="harambogan-text">
-                <h2>HARAMBOGAN SA RADYO</h2>
+                <h2>CATCH ENERGY FM LIVE</h2>
                 <p>The station is well-known in the city for its popular catchphrases, such as "Pangga, may Energy ka pa ba?" and "Basta Energy, Number 1 pirmi!". 
-                    It has also been recognized several times as the Number 1 radio station in Nago.</p>
+                    It has also been recognized several times as the Number 1 radio station in Naga.</p>
             </div>
             <div class="harambogan-video">
-                <div class="video-placeholder">
+                <div class="fb-video-mask">
+                    <div class="fb-video-cropper">
+                        <div class="fb-page" 
+                            data-href="https://www.facebook.com/EnergyFMNaga" 
+                            data-tabs="timeline" 
+                            data-width="1100" 
+                            data-height="350" 
+                            data-small-header="true" 
+                            data-adapt-container-width="true" 
+                            data-hide-cover="true" 
+                            data-show-facepile="false">
+                            <blockquote cite="https://www.facebook.com/EnergyFMNaga" class="fb-xfbml-parse-ignore">
+                                <a href="https://www.facebook.com/EnergyFMNaga">Energy FM Naga</a>
+                            </blockquote>
+                        </div>
+                    </div>
                 </div>
             </div>
         </div>
@@ -73,35 +93,57 @@ $baseUrl = "http://localhost:8000/";
     <div class = "break-box"></div>
 
     <div class="stream-section">
-        <h2 class="section-heading">STREAM THE LATEST VIDEO LIVESTREAMS!</h2>
+        <h2 class="section-heading">STREAM THE LATEST YOUTUBE LIVESTREAMS!</h2>
         <div class="carousel">
-            <div class="player-card"></div>
-            <div class="player-card"></div>
-            <div class="player-card"></div>
-            <div class="player-card"></div>
-            <div class="player-card"></div>
-            <div class="player-card"></div>
-            <div class="player-card"></div>
-            <div class="player-card"></div>
-            <div class="player-card"></div>
-            <div class="player-card"></div>
+            <?php 
+            $playlist_id = "UUJRPf-4NvEbTGY-zYWcOqwg"; 
+
+            // amount of videos to show (10)
+            for ($i = 1; $i <= 10; $i++) { 
+            ?>
+                <div class="player-card">
+                    <iframe 
+                        loading="lazy"
+                        width="100%" 
+                        height="100%" 
+                        src="https://www.youtube.com/embed?listType=playlist&list=<?= $playlist_id ?>&index=<?= $i ?>" 
+                        frameborder="0" 
+                        allowfullscreen>
+                    </iframe>
+                </div>
+            <?php 
+            } 
+            ?>
         </div>
     </div>
 
     <div class="stream-section">
         <h2 class="section-heading">AUDIO BROADCASTS</h2>
         <div class="table-container">
-            <div class="search-box">
+            <div class="search-box" style="display: flex; gap: 10px; align-items: center;">
                 <span class="search-icon">🔍︎</span>
-                <input type="text" placeholder="Search">
+                <input type="text" id="streamSearch" onkeyup="filterTable()" placeholder="Search title or date...">
+                <select id="programFilter" onchange="filterTable()">
+                        <option value="">All Programs</option>
+                        <?php
+                        $prog_sql = "SELECT DISTINCT TITLE FROM Program ORDER BY TITLE ASC";
+                        $prog_res = $conn->query($prog_sql);
+                        if ($prog_res) {
+                            while($p_row = $prog_res->fetch_assoc()) {
+                                echo '<option value="'.htmlspecialchars($p_row['TITLE']).'">'.htmlspecialchars($p_row['TITLE']).'</option>';
+                            }
+                        }
+                        ?>
+                </select>
             </div>
+
             <div class="table-wrapper">
-                <table class="stream-table">
+                <table id="broadcastTable" class="stream-table">
                     <thead>
                         <tr>
-                            <th class="col-name">Name <span class="sort-icon">▼</span></th>
-                            <th class="col-date">Date <span class="sort-icon">▼</span></th>
-                            <th class="col-time">Time <span class="sort-icon">▼</span></th>
+                            <th class="col-name" onclick="sortTable(0)">Name <span class="sort-icon">▼</span></th>
+                            <th class="col-date" onclick="sortTable(1)">Date <span class="sort-icon">▼</span></th>
+                            <th class="col-time" onclick="sortTable(2)">Time <span class="sort-icon">▼</span></th>
                             <th class="col-action"></th>
                         </tr>
                     </thead>
