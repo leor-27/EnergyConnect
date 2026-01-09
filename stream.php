@@ -17,7 +17,7 @@ $sql = "
 
 $result = $conn->query($sql);
 
-$baseUrl = "http://localhost:8000/";
+$baseUrl = "";
 ?>
 
 <!DOCTYPE html>
@@ -30,7 +30,7 @@ $baseUrl = "http://localhost:8000/";
     <script src = "frontend/js/stream.js"></script>
 </head>
 <body>
-   <div id="fb-root"></div>
+    <div id="fb-root"></div>
     <script async defer crossorigin="anonymous" 
         src="https://connect.facebook.net/en_US/sdk.js#xfbml=1&version=v18.0" 
         nonce="energyfm">
@@ -64,9 +64,9 @@ $baseUrl = "http://localhost:8000/";
     <div class="stream-section">
         <div class="harambogan-content">
             <div class="harambogan-text">
-                <h2>CATCH ENERGY FM LIVE</h2>
+                <h2>HARAMBOGAN SA RADYO</h2>
                 <p>The station is well-known in the city for its popular catchphrases, such as "Pangga, may Energy ka pa ba?" and "Basta Energy, Number 1 pirmi!". 
-                    It has also been recognized several times as the Number 1 radio station in Naga.</p>
+                    It has also been recognized several times as the Number 1 radio station in Nago.</p>
             </div>
             <div class="harambogan-video">
                 <div class="fb-video-mask">
@@ -74,8 +74,8 @@ $baseUrl = "http://localhost:8000/";
                         <div class="fb-page" 
                             data-href="https://www.facebook.com/EnergyFMNaga" 
                             data-tabs="timeline" 
-                            data-width="1100" 
-                            data-height="350" 
+                            data-width="500" 
+                            data-height="800" 
                             data-small-header="true" 
                             data-adapt-container-width="true" 
                             data-hide-cover="true" 
@@ -87,13 +87,17 @@ $baseUrl = "http://localhost:8000/";
                     </div>
                 </div>
             </div>
+
         </div>
     </div>
 
     <div class = "break-box"></div>
 
     <div class="stream-section">
-        <h2 class="section-heading">STREAM THE LATEST YOUTUBE LIVESTREAMS!</h2>
+
+            <h2 class="section-heading">STREAM THE LATEST VIDEO LIVESTREAMS!</h2>
+    
+
         <div class="carousel">
             <?php 
             $playlist_id = "UUJRPf-4NvEbTGY-zYWcOqwg"; 
@@ -116,14 +120,15 @@ $baseUrl = "http://localhost:8000/";
             ?>
         </div>
     </div>
-
+    
     <div class="stream-section">
         <h2 class="section-heading">AUDIO BROADCASTS</h2>
         <div class="table-container">
             <div class="search-box" style="display: flex; gap: 10px; align-items: center;">
                 <span class="search-icon">🔍︎</span>
-                <input type="text" id="streamSearch" onkeyup="filterTable()" placeholder="Search title or date...">
-                <select id="programFilter" onchange="filterTable()">
+                    <input type="text" id="streamSearch" onkeyup="filterTable()" placeholder="Search title or date...">
+
+                    <select id="programFilter" onchange="filterTable()">
                         <option value="">All Programs</option>
                         <?php
                         $prog_sql = "SELECT DISTINCT TITLE FROM Program ORDER BY TITLE ASC";
@@ -137,16 +142,22 @@ $baseUrl = "http://localhost:8000/";
                 </select>
             </div>
 
-            <div class="table-wrapper">
-                <table id="broadcastTable" class="stream-table">
-                    <thead>
-                        <tr>
-                            <th class="col-name" onclick="sortTable(0)">Name <span class="sort-icon">▼</span></th>
-                            <th class="col-date" onclick="sortTable(1)">Date <span class="sort-icon">▼</span></th>
-                            <th class="col-time" onclick="sortTable(2)">Time <span class="sort-icon">▼</span></th>
-                            <th class="col-action"></th>
-                        </tr>
-                    </thead>
+        <div class="table-wrapper">
+            <table class="stream-table" id="broadcastTable">
+                <thead>
+                    <tr>
+                        <th class="col-name" onclick="sortTable(0)" style="cursor: pointer;">
+                            Name <span class="sort-icon">⇅</span>
+                        </th>
+                        <th class="col-date" onclick="sortTable(1)" style="cursor: pointer;">
+                            Date <span class="sort-icon">⇅</span>
+                        </th>
+                        <th class="col-time" onclick="sortTable(2)" style="cursor: pointer;">
+                            Time <span class="sort-icon">⇅</span>
+                        </th>
+                        <th class="col-action"></th>
+                    </tr>
+                </thead>
                     <tbody>
                     <?php if ($result && $result->num_rows > 0): ?>
                         <?php while ($row = $result->fetch_assoc()): ?>
