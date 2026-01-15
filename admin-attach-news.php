@@ -202,6 +202,9 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
             <a href="admin-add-programs.php" class="btn add-programs-button">
                 <i class="fas fa-plus"></i> Add Programs
             </a>
+            <a href="admin-audio-broadcasts.php" class="btn check-audio-broadcasts-button">
+                <i class="fa-solid fa-file-audio"></i>  Check Audio Broadcasts
+            </a>
         </div>
 
         <hr>

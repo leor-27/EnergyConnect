@@ -41,6 +41,7 @@ $result = $conn->query($sql);
     <title>Admin Dashboard</title>
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
     <link href="frontend/css/admin-home.css" rel="stylesheet">
+    <script src="frontend/js/admin-home.js"></script>
 </head>
 <body class="admin-home">
 
@@ -78,17 +79,45 @@ $result = $conn->query($sql);
             <a href="admin-add-programs.php" class="btn add-programs-button">
                 <i class="fas fa-plus"></i> Add Programs
             </a>
+            <a href="admin-audio-broadcasts.php" class="btn check-audio-broadcasts-button">
+                <i class="fa-solid fa-file-audio"></i>  Check Audio Broadcasts
+            </a>
         </div> 
 
         <hr>
-        
+
         <div class="news-card-grid">
-            <h3>Attached News</h3>
+
+            <div class="admin-news-header">
+                <h3>Attached News</h3>
+
+                <div class="admin-search-filter">
+                    <div class="search">
+                        <img src="frontend/images/search_icon.png" alt="Search Icon">
+                        <input type="text" id="adminNewsSearch" placeholder="Search news...">
+                    </div>
+
+                    <select id="adminSortSelect" class="news-filter">
+                        <option value="newest">Newest - Oldest</option>
+                        <option value="oldest">Oldest - Newest</option>
+                        <option value="title-az">Title (A-Z)</option>
+                        <option value="org-az">Organization (A-Z)</option>
+                        <option value="author-az">Author (A-Z)</option>
+                    </select>
+                </div>
+            </div>
+
 
             <?php if ($result && $result->num_rows > 0): ?>
                 <?php while ($row = $result->fetch_assoc()): ?>
 
-                    <div class="program-card-admin">
+                    <div class="program-card-admin"
+                        data-date="<?= htmlspecialchars($row['DATE_POSTED']) ?>"
+                        data-title="<?= htmlspecialchars($row['HEADLINE']) ?>"
+                        data-org="<?= htmlspecialchars($row['ORGANIZATION']) ?>"
+                        data-author="<?= htmlspecialchars(strtolower($row['AUTHOR'])) ?>"
+                        data-categories="<?= htmlspecialchars(strtolower($row['CATEGORIES'] ?? '')) ?>">
+
                         <div class="card-details-wrapper">
 
                             <div class="card-header-news">
@@ -123,7 +152,17 @@ $result = $conn->query($sql);
                                         <b><?= date("F d, Y", strtotime($row['DATE_POSTED'])) ?></b>
                                         &nbsp; | &nbsp;
                                         Category/s:
-                                        <b><?= $row['CATEGORIES'] ? htmlspecialchars($row['CATEGORIES']) : 'Uncategorized' ?></b>
+                                        <span class="category-container">
+                                            <?php
+                                            if ($row['CATEGORIES']) {
+                                                foreach (explode(',', $row['CATEGORIES']) as $cat) {
+                                                    echo '<span class="category-pill">' . htmlspecialchars(trim($cat)) . '</span>';
+                                                }
+                                            } else {
+                                                echo '<span class="category-pill uncategorized">Uncategorized</span>';
+                                            }
+                                            ?>
+                                        </span>
                                     </p>
                                 </div>
                             </div>

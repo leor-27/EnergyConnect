@@ -62,32 +62,42 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
         // update
         $program_id = (int)$_POST['program_id'];
 
+        // ownership check FIRST
+        $check = $conn->prepare("
+            SELECT 1 FROM Program
+            WHERE ID = ? AND ADMIN_ID = ?
+        ");
+        $check->bind_param("ii", $program_id, $_SESSION['admin_id']);
+        $check->execute();
+        $check->store_result();
+
+        if ($check->num_rows === 0) {
+            header("Location: admin-add-programs.php?error=unauthorized");
+            exit;
+        }
+        $check->close();
+
+        // perform update (no ADMIN_ID condition here)
         $stmt = $conn->prepare("
             UPDATE Program
             SET TITLE=?, TYPE=?, START_TIME=?, END_TIME=?, DESCRIPTION=?
             WHERE ID=?
-            AND ADMIN_ID=?
         ");
         $stmt->bind_param(
-            "sssssis",
+            "sssssi",
             $title,
             $type,
             $start,
             $end,
             $desc,
-            $program_id,
-            $_SESSION['admin_id']
+            $program_id
         );
         $stmt->execute();
-
-        if ($stmt->affected_rows === 0) {
-            header("Location: admin-add-programs.php?error=unauthorized");
-            exit;
-        }
         $stmt->close();
 
-        $conn->query("DELETE FROM Program_Day_Type WHERE PROGRAM_ID=$program_id");
-        $conn->query("DELETE FROM Program_Anchor_Assignment WHERE PROGRAM_ID=$program_id");
+        // reset relations
+        $conn->query("DELETE FROM Program_Day_Type WHERE PROGRAM_ID = $program_id");
+        $conn->query("DELETE FROM Program_Anchor_Assignment WHERE PROGRAM_ID = $program_id");
 
     } else {
         // insert
@@ -223,16 +233,41 @@ if (isset($_GET['edit'])) {
                 
             <a href="admin-add-programs.php" class="btn add-programs-button">
                 <i class="fas fa-plus"></i> Add Programs </a>
+
+            <a href="admin-audio-broadcasts.php" class="btn check-audio-broadcasts-button">
+                <i class="fa-solid fa-file-audio"></i>  Check Audio Broadcasts </a>
         </div>
         
-        <hr>
+<hr>
 
-        <section class="program-list-section">
+<div class="admin-news-header">
+
+    <div class="admin-search-filter">
+        <div class="search">
+            <img src="frontend/images/search_icon.png" alt="Search Icon">
+            <input type="text" id="adminProgramSearch" placeholder="Search programs...">
+        </div>
+
+        <select id="adminProgramFilter" class="news-filter">
+            <option value="title">Title (A–Z)</option>
+            <option value="time">Time (Earliest to Latest)</option>
+            <option value="weekdays">Weekdays</option>
+            <option value="sat">Saturday</option>
+            <option value="sun">Sunday</option>
+        </select>
+    </div>
+</div>
+
+<section class="program-list-section">
+
             <div class="program-list">
 
             <?php while ($row = $programs->fetch_assoc()): ?>
 
-                <div class="program-card">
+                <div class="program-card"
+                    data-title="<?= htmlspecialchars(strtolower($row['TITLE'])) ?>"
+                    data-start="<?= $row['START_TIME'] ?>"
+                    data-days="<?= htmlspecialchars($row['DAY_TYPES'] ?? '') ?>">
                     <div class="card-details">
                         <div class="card-left-info">
                             <h3 class="program-title"><?= htmlspecialchars($row['TITLE']) ?></h3>

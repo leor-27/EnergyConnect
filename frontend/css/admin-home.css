@@ -116,32 +116,33 @@ h1 {
 
 .admin-buttons {
     display: flex;
-    gap: 10px;
+    gap: 15px;
     margin-bottom: 20px;
-    height: 25%;
-    width: 70%;
+    height: auto;
+    width: 100%;
+    flex-wrap: wrap;
 }
 
 .btn {
     text-decoration: none;
     font-family: Arial;
-    padding: 10px 15px; 
-    border-radius: 5px; 
+    padding: 10px 18px;
+    border-radius: 5px;
     font-weight: bold;
-    display: flex; 
+    display: flex;
     align-items: center;
-    gap: 5px;
-    transition: background-color 0.2s, border-color 0.2s; 
-    width: auto; 
+    gap: 10px;
+    transition: background-color 0.2s, border-color 0.2s;
+    width: auto;
 }
 
-.attach-news-button {
+.attach-news-button, .check-audio-broadcasts-button {
     background-color: var(--energy-blue); 
     color: white;
     border: 1px solid var(--energy-blue); 
 }
 
-.attach-news-button:hover {
+.attach-news-button:hover, .check-audio-broadcasts-button:hover {
     background-color: #143e68; 
     border-color: #143e68;
 }
@@ -188,7 +189,7 @@ hr {
     line-height: 1.4;
     padding-top: 5px;
     padding-bottom: 30px;
-    padding-right: 45px;
+    padding-right: 50px;
 }
 
 .card-actions {
@@ -252,6 +253,7 @@ footer {
 .published-date {
     color: #555;
     font-size: 0.9em;
+    line-height: 1.8;
 }
 
 .hosts a {
@@ -260,11 +262,11 @@ footer {
 }
 
 .news-card-grid h3 {
-    padding-bottom: 25px;
+    padding-bottom: 10px;
     padding-top: 10px;
-    font-weight: 500;
+    font-weight: 600;
     color: #555;
-    margin-left: 10px;
+    margin-left: 4px;
 }
 
 .img {
@@ -386,4 +388,87 @@ footer {
     position: absolute;
     top: 15px;
     right: 15px;
+}
+
+/* ===== Admin Search + Filter Header ===== */
+.admin-news-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px;
+}
+
+.admin-news-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 0;
+    gap: 20px;
+}
+
+.admin-search-filter {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.admin-search-filter .search {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    background-color: #e5e5e5;
+    border-radius: 30px;
+    padding: 5px 15px;
+    height: 40px;
+}
+
+.admin-search-filter .search img {
+    width: 22px;
+    height: 22px;
+}
+
+.admin-search-filter .search input {
+    border: none;
+    outline: none;
+    background: none;
+    font-size: 14px;
+    width: 150px; 
+}
+
+.admin-search-filter .news-filter {
+    height: 38px;
+    border-radius: 20px;
+    border: none;
+    padding: 5px 12px;
+    font-size: 14px;
+    cursor: pointer;
+    background-color: #FFD54F;
+}
+
+.category-container {
+    display: inline-flex;
+    gap: 8px; 
+    row-gap: 10px; 
+    margin-left: 4px;
+    vertical-align: middle;
+    flex-wrap: wrap;
+    margin-top: 8px; 
+    padding-bottom: 5px;
+    margin-top: 4px;
+}
+
+.category-pill {
+    background-color: #777;
+    padding: 5px 10px;
+    border-radius: 999px;
+    font-size: 11px;
+    color: white;
+    cursor: pointer;
+    white-space: nowrap;
+}
+
+.category-pill.active {
+    background-color: #FFD54F;
+    color: #000;
+    font-weight: bold;
 }
