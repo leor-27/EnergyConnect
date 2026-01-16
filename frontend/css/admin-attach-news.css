@@ -223,6 +223,10 @@ input[type="text"], textarea {
     flex-direction: column; 
 }
 
+.left-column {
+    width: 100%;
+}
+
 .right-column {
     margin-top: 0;
 }
@@ -339,6 +343,8 @@ footer {
     display: grid;
     grid-template-columns: repeat(3, 1fr);
     gap: 10px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 .left-column input, 
@@ -371,6 +377,8 @@ footer {
 
 #image_url {
     height: 90px;
+    width: 100%;
+    box-sizing: border-box;
 }
 
 @media screen and (max-width: 768px) {
